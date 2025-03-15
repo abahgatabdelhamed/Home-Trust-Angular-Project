@@ -1,0 +1,78 @@
+<h2>{{"shared.expenses-template"|translate}}</h2>
+<ay-treeTable [value]="tree" selectionMode="single" (onNodeSelect)="openModal(template, $event)">
+  <ay-column field="nameAr" header='{{ "shared.nameAr" | translate }}'></ay-column>
+  <ay-column field="nameEn" header='{{ "shared.nameEn" | translate }}'></ay-column>
+</ay-treeTable>
+
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{"shared.edit" | translate}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #f="ngForm" (ngSubmit)="f.form.valid ? editTreeNode() : showErrorAlert('يوجد حقول مطلوبة', '')">
+      <div class="row flexy">
+        <div class="col-md-4 form-group">
+          <label class="control-label" for="nameAr">
+            {{"shared.NameAr" | translate }}
+          </label>
+          <input id="nameAr" name="nameArInput" #nameArInput="ngModel" class="form-control"
+            [(ngModel)]="selectedTreeNode.data.nameAr" required />
+        </div>
+
+        <div class="col-md-4 form-group">
+          <label class="control-label" for="nameEn">
+            {{"shared.nameEn" | translate }}
+          </label>
+          <input id="nameEn" name="nameEnInput" #nameEnInput="ngModel" class="form-control"
+            [(ngModel)]="selectedTreeNode.data.nameEn" />
+        </div>
+
+        <div class="col-md-2 form-group bottom-align-text">
+          <button type="submit" class="btn btn-success" [disabled]="!f.form.valid">{{("shared.edit" |
+            translate)}}</button>
+        </div>
+        <div class="col-md-2 form-group bottom-align-text">
+          <button type="button" class="btn btn-danger" (click)="delete()" [disabled]="!(selectedTreeNode.data.id && selectedTreeNode.data.parentId)">
+            {{("shared.delete" | translate)}}</button>
+        </div>
+      </div>
+    </form>
+
+    <hr>
+    <div style="text-align: center;">
+      <h2>
+        {{"shared.addNewChild" | translate}}
+      </h2>
+    </div>
+
+    <form #f1="ngForm"
+      (ngSubmit)="f1.form.valid ? addTreeNode() : showErrorAlert('يوجد حقول مطلوبة', '')">
+      <div class="row flexy">
+        <div class="col-md-4 form-group">
+          <label class="control-label" for="nameAr">
+            {{"shared.NameAr" | translate }}
+          </label>
+          <input id="nameAr" name="nameArInput" class="form-control"
+            [(ngModel)]="newTreeItem.nameAr" required />
+        </div>
+
+        <div class="col-md-4 form-group">
+          <label class="control-label" for="nameEn">
+            {{"shared.nameEn" | translate }}
+          </label>
+          <input id="nameEn" name="nameEnInput" class="form-control"
+            [(ngModel)]="newTreeItem.nameEn" required />
+        </div>
+
+        <div class="col-md-4 form-group bottom-align-text">
+          <button type="submit" class="btn btn-success" [disabled]="!f1.form.valid">{{("shared.add" |
+            translate)}}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>

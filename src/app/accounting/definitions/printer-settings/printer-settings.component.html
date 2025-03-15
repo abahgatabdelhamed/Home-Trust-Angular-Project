@@ -1,0 +1,488 @@
+<div>
+    <form
+        *ngIf="formResetToggle"
+        class="form-horizontal"
+        name="printerSettingsInfoForm"
+        #f="ngForm"
+        novalidate
+        (ngSubmit)="save()"
+    >
+        <section>
+            <div class="section-title">
+                <h2>{{ "shared.normalPrinterSettings" | translate }}</h2>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-12" for="header-{{uniqueId}}">
+                    {{ "shared.header" | translate }}
+                </label>
+                <div *ngIf="!isEditMode" class="col-md-12">
+                    <p class="form-control-static">
+                        {{ printerSettings.header }}
+                    </p>
+                </div>
+                <div
+                    *ngIf="isEditMode"
+                    class="col-md-12"
+                >
+                    <textarea
+                        type="text"
+                        attr.id="header-{{uniqueId}}"
+                        name="header"
+                        class="form-control"
+                        [(ngModel)]="printerSettingsEdit.header"
+                        #name="ngModel"
+
+                    ></textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <hr
+                        [class.separator-hr]="!isEditMode"
+                        [class.edit-separator-hr]="isEditMode"
+                    />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-12" for="footer-{{uniqueId}}">
+                    {{ "shared.footer" | translate }}
+                </label>
+                <div *ngIf="!isEditMode" class="col-md-12">
+                    <p class="form-control-static">
+                        {{ printerSettings.footer }}
+                    </p>
+                </div>
+                <div *ngIf="isEditMode" class="col-md-12">
+                    <textarea
+                        type="text"
+                        attr.id="footer-{{uniqueId}}"
+                        name="footer"
+                        class="form-control"
+                        [(ngModel)]="printerSettingsEdit.footer"
+                    ></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-12" for="footer-{{uniqueId}}">
+                    {{ "shared.isDefault" | translate }}
+                </label>
+                <div *ngIf="!isEditMode" class="col-md-12">
+                    <p class="form-control-static">
+                        {{ printerSettings.defaultPrinterDisplay }}
+                    </p>
+                </div>
+                <div *ngIf="isEditMode" class="col-md-12">
+                    <input
+                        type="checkbox"
+                        attr.id="default-{{uniqueId}}"
+                        name="defaultNoraml"
+                        class="form-control"
+                        [(ngModel)]="printerSettingsEdit.defaultPrinter"
+                        (ngModelChange)="handleNormalDefaultChange($event)"
+                    />
+                </div>
+            </div>
+             <!-- <div class="form-group">
+                <label class="control-label col-md-12" for="footer-{{uniqueId}}">
+                    {{ "shared.viewTax" | translate }}
+                </label>
+                <div *ngIf="!isEditMode" class="col-md-12">
+                    <p class="form-control-static">
+                        {{ printerSettings.tobaccoTrade?'نعم':'لا' }}
+                    </p>
+                </div>
+                <div *ngIf="isEditMode" class="col-md-12">
+                    <input
+                        type="checkbox"
+                        attr.id="tobaccoTrade-{{uniqueId}}"
+                        name="tobaccoTrade"
+                        class="form-control"
+                        [(ngModel)]="printerSettingsEdit.tobaccoTrade"
+                        (ngModelChange)="handleNormaltobaccoTradeChange($event)"
+                    />
+                </div>
+            </div>  -->
+
+            <div class="row">
+                <div class="col-md-12">
+                    <hr
+                        [class.separator-hr]="!isEditMode"
+                        [class.edit-separator-hr]="isEditMode"
+                    />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-7">
+                    <div class="pull-right">
+                        <button
+                            *ngIf="!isEditMode"
+                            type="button"
+                            name="edit"
+                            (click)="edit($event)"
+                            class="btn btn-default"
+                        >
+                            <i class="fa fa-edit"></i>
+                            {{ "shared.Edit" | translate }}
+                        </button>
+                        <button
+                            *ngIf="isEditMode"
+                            type="button"
+                            name="cancel"
+                            class="btn btn-danger cancel-button"
+                            (click)="cancel($event)"
+                        >
+                            {{ "shared.Cancel" | translate }}
+                        </button>
+                        <button
+                            *ngIf="isEditMode"
+                            type="button"
+                            class="btn btn-primary"
+                            (click)="save($event)"
+                            name="save"
+                            [disabled]="isSaving"
+                        >
+                            <i *ngIf="!isSaving" class="fa fa-save"></i
+                            ><i
+                                *ngIf="isSaving"
+                                class="fa fa-circle-o-notch fa-spin"
+                            ></i>
+                            {{
+                                isSaving
+                                    ? ("shared.Saving" | translate)
+                                    : ("shared.Save" | translate)
+                            }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="thermal-settings">
+            <div class="section-title">
+                <h2>{{ "shared.thermalPrinterSettings" | translate }}</h2>
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label col-md-12" for="header-{{uniqueId}}">
+                    {{ "shared.shopName" | translate }}
+                </label>
+                <div *ngIf="!isEditThermalMode" class="col-md-12">
+                    <p class="form-control-static">
+                        {{ thermalPrinterSettings.shopName }}
+                    </p>
+                </div>
+                <div *ngIf="isEditThermalMode"
+                     class="col-md-12">
+                    <input type="text"
+                           attr.id="shopName-{{uniqueId}}"
+                           name="ThermalshopName"
+                           class="form-control"
+                           [(ngModel)]="thermalPrinterSettingsEdit.shopName"
+                           #name="ngModel">
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <hr [class.separator-hr]="!isEditThermalMode"
+                        [class.edit-separator-hr]="isEditThermalMode" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-12" for="shopNameEn-{{uniqueId}}">
+                    {{ "shared.shopNameEn" | translate }}
+                </label>
+                <div *ngIf="!isEditThermalMode" class="col-md-12">
+                    <p class="form-control-static">
+                        {{ thermalPrinterSettings.shopNameEn }}
+                    </p>
+                </div>
+                <div *ngIf="isEditThermalMode"
+                     class="col-md-12">
+                    <input type="text"
+                           attr.id="shopNameEn-{{uniqueId}}"
+                           name="ThermalshopNameEn"
+                           class="form-control"
+                           [(ngModel)]="thermalPrinterSettingsEdit.shopNameEn"
+                           #name="ngModel">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <hr [class.separator-hr]="!isEditThermalMode"
+                        [class.edit-separator-hr]="isEditThermalMode" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-12" for="phone-{{uniqueId}}">
+                    {{ "shared.phone" | translate }}
+                </label>
+                <div *ngIf="!isEditThermalMode" class="col-md-12">
+                    <p class="form-control-static">
+                        {{ thermalPrinterSettings.phone }}
+                    </p>
+                </div>
+                <div *ngIf="isEditThermalMode"
+                     class="col-md-12">
+                    <input type="text"
+                           attr.id="phone-{{uniqueId}}"
+                           name="Thermalphone"
+                           class="form-control"
+                           [(ngModel)]="thermalPrinterSettingsEdit.phone"
+                           #name="ngModel">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <hr [class.separator-hr]="!isEditThermalMode"
+                        [class.edit-separator-hr]="isEditThermalMode" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-12" for="header-{{uniqueId}}">
+                    {{ "shared.mobile" | translate }}
+                </label>
+                <div *ngIf="!isEditThermalMode" class="col-md-12">
+                    <p class="form-control-static">
+                        {{ thermalPrinterSettings.mobile }}
+                    </p>
+                </div>
+                <div *ngIf="isEditThermalMode"
+                     class="col-md-12">
+                    <input type="text"
+                           attr.id="mobile-{{uniqueId}}"
+                           name="Thermalmobile"
+                           class="form-control"
+                           [(ngModel)]="thermalPrinterSettingsEdit.mobile"
+                           #name="ngModel">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <hr [class.separator-hr]="!isEditThermalMode"
+                        [class.edit-separator-hr]="isEditThermalMode" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-12" for="header-{{uniqueId}}">
+                    {{ "shared.address" | translate }}
+                </label>
+                <div *ngIf="!isEditThermalMode" class="col-md-12">
+                    <p class="form-control-static">
+                        {{ thermalPrinterSettings.address }}
+                    </p>
+                </div>
+                <div *ngIf="isEditThermalMode"
+                     class="col-md-12">
+                    <input type="text"
+                           attr.id="address-{{uniqueId}}"
+                           name="Thermaladdress"
+                           class="form-control"
+                           [(ngModel)]="thermalPrinterSettingsEdit.address"
+                           #name="ngModel">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <hr [class.separator-hr]="!isEditThermalMode"
+                        [class.edit-separator-hr]="isEditThermalMode" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-12" for="header-{{uniqueId}}">
+                    {{ "shared.vatNumber" | translate }}
+                </label>
+                <div *ngIf="!isEditThermalMode" class="col-md-12">
+                    <p class="form-control-static">
+                        {{ thermalPrinterSettings.vatNumber }}
+                    </p>
+                </div>
+                <div *ngIf="isEditThermalMode"
+                     class="col-md-12">
+                    <input type="text"
+                           attr.id="vatNumber-{{uniqueId}}"
+                           name="ThermalvatNumber"
+                           class="form-control"
+                           [(ngModel)]="thermalPrinterSettingsEdit.vatNumber"
+                           #name="ngModel">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <hr [class.separator-hr]="!isEditThermalMode"
+                        [class.edit-separator-hr]="isEditThermalMode" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-12" for="header-{{uniqueId}}">
+                    {{ "shared.header" | translate }}
+                </label>
+                <div *ngIf="!isEditThermalMode" class="col-md-12">
+                    <p class="form-control-static">
+                        {{ thermalPrinterSettings.header }}
+                    </p>
+                </div>
+                <div *ngIf="isEditThermalMode"
+                     class="col-md-12">
+                    <textarea type="text"
+                              attr.id="Thermalheader-{{uniqueId}}"
+                              name="Thermalheader"
+                              class="form-control"
+                              [(ngModel)]="thermalPrinterSettingsEdit.header"
+                              #name="ngModel"></textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <hr [class.separator-hr]="!isEditThermalMode"
+                        [class.edit-separator-hr]="isEditThermalMode" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-12" for="footer-{{uniqueId}}">
+                    {{ "shared.footer" | translate }}
+                </label>
+                <div *ngIf="!isEditThermalMode" class="col-md-12">
+                    <p class="form-control-static">
+                        {{ thermalPrinterSettings.footer }}
+                    </p>
+                </div>
+                <div *ngIf="isEditThermalMode" class="col-md-12">
+                    <textarea type="text"
+                              attr.id="footer-{{uniqueId}}"
+                              name="Thermalfooter"
+                              class="form-control"
+                              [(ngModel)]="thermalPrinterSettingsEdit.footer"></textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <hr [class.separator-hr]="!isEditThermalMode"
+                        [class.edit-separator-hr]="isEditThermalMode" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-12" for="Terms-{{uniqueId}}">
+                    {{ "shared.terms" | translate }}
+                </label>
+                <div *ngIf="!isEditThermalMode" class="col-md-12">
+                    <p class="form-control-static">
+                        {{ thermalPrinterSettings.terms }}
+                    </p>
+                </div>
+                <div *ngIf="isEditThermalMode" class="col-md-12">
+                    <textarea type="text"
+                              attr.id="Terms-{{uniqueId}}"
+                              name="ThermalTerms"
+                              [(ngModel)]="thermalPrinterSettingsEdit.terms"
+                              class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <hr [class.separator-hr]="!isEditThermalMode"
+                        [class.edit-separator-hr]="isEditThermalMode" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-12" for="Terms-{{uniqueId}}">
+                    {{ "shared.isDefault" | translate }}
+                </label>
+                <div *ngIf="!isEditThermalMode" class="col-md-12">
+                    <p class="form-control-static">
+                        {{ thermalPrinterSettings.defaultThermalPrinterDisplay }}
+                    </p>
+                </div>
+                <div *ngIf="isEditThermalMode" class="col-md-12">
+                    <input type="checkbox"
+                           attr.id="defaultThermalPrinter-{{uniqueId}}"
+                           name="thermalDefault"
+                           [(ngModel)]="thermalPrinterSettingsEdit.defaultThermalPrinter"
+                           (ngModelChange)="handleThermalDefaultChange($event)"
+                           class="form-control">
+                </div>
+            </div>
+ <!-- <div class="form-group">
+                <label class="control-label col-md-12" for="Terms-{{uniqueId}}">
+                    {{ "shared.viewTax" | translate }}
+                </label>
+                <div *ngIf="!isEditThermalMode" class="col-md-12">
+                    <p class="form-control-static">
+                        {{ thermalPrinterSettings.tobaccoTrade?'نعم':'لا' }}
+                    </p>
+                </div>
+                <div *ngIf="isEditThermalMode" class="col-md-12">
+                    <input type="checkbox"
+                           attr.id="tobaccoTrade-{{uniqueId}}"
+                           name="tobaccoTrade"
+                           [(ngModel)]="thermalPrinterSettingsEdit.tobaccoTrade"
+                           (ngModelChange)="handleThermaltobaccoTradeChange($event)"
+                           class="form-control">
+                </div>
+            </div>  -->
+
+            <div class="row">
+                <div class="col-md-12">
+                    <hr [class.separator-hr]="!isEditThermalMode"
+                        [class.edit-separator-hr]="isEditThermalMode" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-7">
+                    <div class="pull-right">
+                        <button *ngIf="!isEditThermalMode"
+                                type="button"
+                                name="edit-thermal"
+                                (click)="edit($event)"
+                                class="btn btn-default">
+                            <i class="fa fa-edit"></i>
+                            {{ "shared.Edit" | translate }}
+                        </button>
+                        <button *ngIf="isEditThermalMode"
+                                type="button"
+                                name="cancel-thermal"
+                                class="btn btn-danger cancel-button cancel-button"
+                                (click)="cancel($event)">
+                            {{ "shared.Cancel" | translate }}
+                        </button>
+                        <button *ngIf="isEditThermalMode"
+                                type="button"
+                                class="btn btn-primary"
+                                name="thermal-save"
+                                (click)="save($event)"
+                                [disabled]="isSaving">
+                            <i *ngIf="!isSaving" class="fa fa-save"></i><i *ngIf="isSaving"
+                                                                           class="fa fa-circle-o-notch fa-spin"></i>
+                            {{
+                                isSaving
+                                    ? ("shared.Saving" | translate)
+                                    : ("shared.Save" | translate)
+                            }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="clearfix"></div>
+    </form>
+</div>

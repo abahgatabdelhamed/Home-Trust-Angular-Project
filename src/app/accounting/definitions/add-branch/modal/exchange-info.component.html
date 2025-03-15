@@ -1,0 +1,308 @@
+<!--<div>
+    <form
+        *ngIf="formResetToggle"
+        class="form-horizontal"
+        name="exchangeVarInfoForm"
+        #f="ngForm"
+        novalidate
+        (ngSubmit)="save()"
+    >
+        
+        <div class="form-group has-feedback">
+            <label  class="control-label col-md-2" for="toBranch">
+                {{ "shared.toBranch" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-10">
+                <p class="form-control-static">
+                    {{
+                        exchangeVar.toBranch ? exchangeVar.toBranch.name : "no name"
+                    }}
+                </p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-10">
+                <select
+                    id="toBranch"
+                    name="toBranch"
+                    [(ngModel)]="exchangeVarEdit.toBranchId"
+                    class="form-control"
+                    (ngModelChange)="handleToBranchChange($event)"
+                    (change)="handleAccChange($event)"
+                    #toBranchId="ngModel"
+                    #toBranchIdSelector="bootstrap-select"
+                    class="selectpicker form-control"
+                    bootstrapSelect
+                    data-live-search="true"
+                    data-actions-box="false"
+                    data-live-search-placeholder="Search..."
+                >
+                <option *ngIf="newDailyDocument"></option>
+
+                    <option [defaultSelected]="true" *ngFor="let f of branches" value="{{ f.id }}">
+                        {{ f.name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="quantity-{{ uniqueId }}">
+                {{ "shared.quantity" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-10">
+                <p class="form-control-static">{{ exchangeVar.quantity }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-10">
+                <input
+                    type="number"
+                    (change)="handleAmountChange($event)"
+                    attr.id="quantity-{{ uniqueId }}"
+                    name="quantity"
+                    class="form-control"
+                    [(ngModel)]="exchangeVarEdit.quantity"
+                />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label
+                class="control-label col-md-2"
+                for="defaultCost-{{ uniqueId }}"
+            >
+                {{ "shared.notes" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-10">
+                <p class="form-control-static">{{ exchangeVar.notes }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-10">
+                <textarea
+                    type="text"
+                    attr.id="notes-{{ uniqueId }}"
+                    name="notes"
+                    class="form-control"
+                    [(ngModel)]="exchangeVarEdit.notes"
+                ></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label
+                class="control-label col-md-2"
+                for="vatTypeId-{{ uniqueId }}"
+            >
+                {{ "shared.date" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-10">
+                <p class="form-control-static">
+                    {{ exchangeVar.date | date: "dd/MM/yyyy" }}
+                </p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-10">
+                <input
+                    attr.id="date-{{ uniqueId }}"
+                    name="date"
+                    type="text"
+                    class="form-control"
+                    (ngModelChange)="handleDateChanging($event)"
+
+                    [(ngModel)]="exchangeVarEdit.date"
+                    bsDatepicker
+                />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+        <section *ngIf="isAdvanced && isEditMode">
+            <button
+                type="button"
+                (click)="handleAdd($event)"
+                class="btn btn-primary"
+            >
+                {{ "shared.add" | translate }}
+            </button>
+            <button
+                type="button"
+                (click)="saveEdited($event)"
+                class="btn btn-primary"
+                *ngIf="hasClickedEdit"
+            >
+                {{ "shared.saveEdited" | translate }}
+            </button>
+            <div class="tbl-header">
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <thead>
+                        <tr>
+                            <th>{{ "shared.fromBranch" | translate }}</th>
+                            <th>{{ "shared.to" | translate }}</th>
+                            <th>{{ "shared.quantity" | translate }}</th>
+                            <th>{{ "shared.code" | translate }}</th>
+                            <th>{{ "shared.Edit" | translate }}</th>
+                            <th>{{ "shared.delete" | translate }}</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="tbl-content">
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tbody>
+                        <tr *ngFor="let adv of exchangeVarAdvanced">
+                            <td>{{ adv.fromBranch.name }}</td>
+                            <td>{{ adv.toBranch.name }}</td>
+                            <td>{{ adv.quantity }}</td>
+                            <td>{{ adv.code }}</td>
+                            <td>
+                                <button (click)="editDoc(adv)"
+                type="button"
+
+                                        class="btn btn-info">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <button
+                type="button"
+
+                                    (click)="deleteDocAdvanced(adv)"
+                                    class="btn btn-danger"
+                                >
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <div class="form-group">
+            <div class="col-sm-7">
+                <div class="pull-right">
+                    <button
+                        *ngIf="!isEditMode"
+                        type="button"
+                        (click)="close()"
+                        class="btn btn-default"
+                    >
+                        <i class="fa fa-close"></i>
+                        {{ "shared.Close" | translate }}
+                    </button>
+                    <button
+                        *ngIf="!isEditMode && !isAdvanced"
+                        type="button"
+                        (click)="edit()"
+                        class="btn btn-default"
+                    >
+                        <i class="fa fa-edit"></i>
+                        {{ "shared.Edit" | translate }}
+                    </button>
+
+                    <button
+                        *ngIf="!isEditMode"
+                        type="button"
+                        (click)="printDocumnent()"
+                        class="btn btn-default"
+                    >
+                        <i class="fa fa-printer"></i>
+                        {{ "shared.print" | translate }}
+                    </button>
+                    <button
+                        *ngIf="!isEditMode"
+                        type="button"
+                        (click)="exportAsPDFDocumnent()"
+                        class="btn btn-default"
+                    >
+                    <i
+                    class="fa fa-file-pdf-o"
+                    style="font-size:20px;color:red"
+                ></i>
+                    <span dir="rtl">{{ "shared.exportAsPDF" | translate }}</span>
+                    </button>
+                    <button
+                        *ngIf="isEditMode"
+                        type="button"
+                        (click)="cancel()"
+                        class="btn btn-danger"
+                        [disabled]="isSaving"
+                    >
+                        <i class="fa fa-times"></i>
+                        {{ "shared.Cancel" | translate }}
+                    </button>
+                    <button
+                    *ngIf="isEditMode"
+                    type="button"
+                    (click)="saveWithoutPrint($event)"
+                    class="btn btn-primary"
+                    [disabled]="isSaving"
+                >
+                    <i *ngIf="!isSaving" class="fa fa-save"></i
+                    ><i
+                        *ngIf="isSaving"
+                        class="fa fa-circle-o-notch fa-spin"
+                    ></i>
+                    {{
+                        isSaving
+                            ? ("shared.Saving" | translate)
+                            : ("shared.Save" | translate)
+                    }}
+                </button>
+                    <button
+                    *ngIf="canPrint()"
+                    type="button"
+                        (click)="printDocumnent()"
+                        class="btn btn-primary"
+                    >
+                   {{"shared.print" | translate}}
+                    </button>
+                    <button
+                        *ngIf="canPrint()"
+                        type="submit"
+                        class="btn btn-primary"
+                        [disabled]="isSaving"
+                    >
+                        <i *ngIf="!isSaving" class="fa fa-save"></i
+                        ><i
+                            *ngIf="isSaving"
+                            class="fa fa-circle-o-notch fa-spin"
+                        ></i>
+                        {{
+                            isSaving
+                                ? ("shared.Saving" | translate)
+                                : ("shared.SaveAndPrint" | translate)
+                        }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </form>
+</div>-->

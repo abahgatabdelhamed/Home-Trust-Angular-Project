@@ -1,0 +1,9 @@
+.flexy {
+    display: flex;
+  }
+
+  .flexy .bottom-align-text {
+    display: flex;
+    align-items: flex-end;
+  
+  }

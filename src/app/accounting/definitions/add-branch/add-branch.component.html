@@ -1,0 +1,184 @@
+<form class="main-form" #f="ngForm" novalidate
+    (ngSubmit)="f.form.valid ? handleSubmit() : showErrorAlert(gT('messages.requiredfields'), '')">
+    <section>
+        <h2 class="section-title">{{ "shared.mainInfo" | translate }}</h2>
+        <div class="row">
+            <div class="form-group col-md-5">
+                <label for="name">
+                    {{ "shared.nameAr" | translate }}
+                </label>
+                <input type="text" attr.id="name" name="name" class="form-control" [(ngModel)]="branch.name" required />
+
+            </div>
+
+            <div class="form-group col-md-5">
+                <label for="phone">
+                    {{ "shared.phone" | translate }}
+                </label>
+                <input type="text" attr.id="phone" name="phone" class="form-control" [(ngModel)]="branch.phone"
+                    required />
+            </div>
+
+            <div class="col-md-2 form-check">
+                <input id="isDefault" type="checkbox" name="isDefault" #name="ngModel" [(ngModel)]="branch.isDefault"
+                    class="form-check-input" />
+                <label for="isDefault" class="form-check-label">
+                    {{ "shared.isDefault" | translate }}
+                </label>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="form-group col-md-8">
+                <label for="notes">
+                    {{ "shared.notes" | translate }}
+                </label>
+                <textarea attr.id="notes" name="notes" class="form-control" [(ngModel)]="branch.notes"></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.edit-separator-hr]="true" />
+            </div>
+        </div>
+
+        <div class="row">
+            <button class="btn btn-success col-md-3" [disabled]="f.invalid" type="submit">
+                {{ (branch.id? "shared.Save" : "shared.add") | translate }}
+            </button>
+            <button class="btn btn-success col-md-3 col-md-offset-1" [disabled]="f.invalid" (click)="saveAndPrint()"
+                type="button">
+                {{ "shared.SaveAndPrint" | translate }}
+            </button>
+            <button class="btn btn-primary col-md-3 col-md-offset-1" [disabled]="!branch.id" (click)="justPrint()"
+                type="button">
+                {{ "shared.print" | translate }}
+            </button>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.edit-separator-hr]="true" />
+            </div>
+        </div>
+    </section>
+</form>
+
+
+<section>
+    <h2 class="section-title col-md-12">{{"shared.branchUnits"|translate}}</h2>
+
+    <div  *ngIf="isSuperAdmin" class="row">
+        <div class="col-md-6 form-group">
+            <label for="selectedItem">
+                {{ "shared.items" | translate }}
+            </label>
+            <ng-select *ngIf="!viewSaveEdited" name="selectedItem" [items]="items" bindLabel="nameAr" bindValue="id"
+                [(ngModel)]="itemUnitBranch.itemId" (change)="getAssociatedUnits($event)">
+            </ng-select>
+            <input *ngIf="viewSaveEdited" disabled [value]="itemUnitBranch.itemName" type="text" name="selectedItem"
+                class="form-control" />
+        </div>
+
+        <div class="col-md-6 form-group" *ngIf="canSelectFromUnits || viewSaveEdited">
+                <label for="unitItems">
+                    {{"shared.itemsUnits"|translate}}
+                </label>
+                <ng-select name="unitItems" *ngIf="!viewSaveEdited" [items]="itemUnitSelect" bindLabel="name"
+                    bindValue="id" [(ngModel)]="itemUnitBranch.itemUnitId" >
+                </ng-select>
+                <input *ngIf="viewSaveEdited" disabled [value]="itemUnitBranch.itemUnitName" type="text"
+                    name="selectedItemUnit" class="form-control" />
+        </div>
+    </div>
+
+    <div  *ngIf="isSuperAdmin" class="row">
+        <div class="form-group col-md-4">
+            <label for="initialQuantity">
+                {{ "shared.initialQuantity" | translate }}
+            </label>
+            <input id="initialQuantity" [(ngModel)]="itemUnitBranch.initialQuantity" type="text" name="initialQuantity"
+                class="form-control" />
+        </div>
+
+        <div class="col-md-4 form-group">
+            <label for="expireDate">
+                {{ "shared.expireDate" | translate }}
+            </label>
+            <input id="expireDate" [(ngModel)]="itemUnitBranch.expireDate" type="text" name="expireDate"
+                class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" />
+        </div>
+
+        <div class="col-md-4">
+            <button *ngIf="viewSaveEdited" type="button" (click)="saveEdited($event)"  class="btn btn-success table-button">
+                {{ "shared.saveEdited" | translate }}
+            </button>
+            <button type="button" *ngIf="!viewSaveEdited" (click)="addUnitBranch($event)" class="btn btn-success table-button">
+                {{ "shared.AddUnitBranch" | translate }}
+            </button>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6 form-group">
+            <input type="text" attr.id="item-unit-search" name="item-unit-search" class="form-control"
+                placeholder="ابحث عن وحدة صنف  ضمن هذا الفرع" [(ngModel)]="searchTerm" />
+        </div>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-success" (click)="searchForItemUnit($event)"
+                [disabled]="searchDisable"><i class="fa fa-search"></i></button>
+        </div>
+    </div>
+
+    <div class="tbl-header">
+        <table cellpadding="0" cellspacing="0" border="0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>{{ "shared.code" | translate }}</th>
+                    <th>{{ "shared.itemNameOffer" | translate }}</th>
+                    <th>{{ "shared.itemUnitName" | translate }}</th>
+                    <th>{{ "shared.expirationDate" | translate }}</th>
+                    <th>{{ "shared.initialQuantity" | translate }}</th>
+                    <th>{{"shared.realQuantity" | translate}}</th>
+                    <th>{{ "shared.Edit" | translate }}</th>
+                    <!--th>{{ "shared.Delete" | translate }}</th-->
+                    <!--<th>{{ "shared.Transfer" | translate }}</th>-->
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="tbl-content" (scroll)="onScroll($event)">
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tbody>
+                <tr *ngFor="let i of branch.itemUnitBranches; let idx=index;">
+                    <td>{{idx + 1}}</td>
+                    <td>{{ i.code }}</td>
+                    <td>{{ i.itemName }}</td>
+                    <td>{{ i.itemUnitName }}</td>
+                    <td> <input class="form-control" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" [(ngModel)]="i.expireDate" bsDatepicker  /></td>
+                    <td> <input class="form-control"  style="border-radius: 4px;" [(ngModel)]=" i.initialQuantity"  type="number"/> </td>
+                    <td>{{ i.realQuantity }}</td>
+                    <td>
+                        <button (click)="editUnitBranch(i)" [disabled]="!(i.initialQuantity!=nul)" type="button" class="btn btn-info">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                    </td>
+                    <!--td>
+                            <button (click)="deleteUnitBranch(i)" type="button" class="btn btn-danger">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td-->
+                    <!--<td>
+                            <button (click)="TransferUnitBranch(i)"
+                                    class="btn btn-warning">
+                                <i class="fa fa-exchange"></i>
+                            </button>
+                        </td>-->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>

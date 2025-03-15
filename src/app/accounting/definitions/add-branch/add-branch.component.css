@@ -1,0 +1,95 @@
+h1 {
+    font-size: 30px;
+    color: #222;
+    text-transform: uppercase;
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 15px;
+}
+table {
+    width: 100%;
+    table-layout: fixed;
+}
+.tbl-header {
+    background: var(--user-theme);
+}
+
+.show-number {
+    font-family: monospace;
+    font-weight: bolder;
+    font-size: 1.2rem;
+}
+.buttons {
+    display: grid;
+    grid-gap: 5px;
+}
+.tbl-content {
+    height: 300px;
+    overflow-x: auto;
+    margin-top: 0px;
+    border: 1px solid var(--user-theme);
+    margin-bottom: 10px;
+}
+
+.table-buttons {
+    margin-top: 20px;
+}
+th {
+    padding: 20px 15px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 12px;
+    color: #fff;
+    text-transform: uppercase;
+}
+td {
+    padding: 15px;
+    text-align: left;
+    vertical-align: middle;
+    font-weight: 300;
+    font-size: 12px;
+    color: #222;
+    border-bottom: solid 1px rgba(24, 0, 112, 0.425);
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(224, 48, 4, 0.3);
+}
+::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(224, 48, 4, 0.3);
+}
+
+.table-button {
+    margin-bottom: 10px;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.section-title {
+    text-align: center;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"] {
+    border-radius: 15px;
+    padding: 5px;
+    outline: none;
+}
+
+select:disabled {
+    background: gray;
+    opacity: 0.2;
+}

@@ -1,0 +1,79 @@
+<div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <app-branch-cc-filter (filter)="filter($event)" (exportAsXLSXEvent)="exportAsXLSX()" [withUser]="withUsers"
+                (searchChanged)="onSearchChanged($event)" [withbtn]="!router.url.includes('info')"  [withSearch]="!router.url.includes('info')" [withExpensesLables]="false"
+                [withBillTypeFilter]="!router.url.includes('info')" [validBranch]="false" [validCC]="false" [withBranch]="!router.url.includes('info')"   [withCC]="CCPermissions&&!router.url.includes('info')" [withdate]="!router.url.includes('info')" [withAddNew]="false" [withExportAsXLSX]="!router.url.includes('info')"></app-branch-cc-filter>
+        </div>
+    </div>
+
+
+    <ngx-datatable class="material colored-header sm table table-striped table-hover"
+        [loadingIndicator]="loadingIndicator" 
+        [rows]="rows"
+         [rowHeight]="35" 
+         [headerHeight]="35" 
+         [footerHeight]="35"
+        [columns]="columns"
+        [externalPaging]="true"
+         [scrollbarV]="false" 
+         [columnMode]="'force'"
+          [count]="page.count" 
+          [offset]="page.offset"
+        [limit]="page.size" 
+        (page)="setPage($event)">
+    </ngx-datatable>
+
+    <ng-template #indexTemplate let-value="value">
+        <strong>{{ value }}</strong>
+    </ng-template>
+
+    <ng-template #sbillTypeTemplate let-row="row" let-value="value" let-i="index">
+        <span class="sbill-role">{{ value }}</span>
+    </ng-template>
+
+    <ng-template #sbillDateTemplate let-row="row" let-value="value" let-i="index">
+        <span class="sbill-role">{{ value | date: "dd/MM/yyyy" }}</span>
+    </ng-template>
+
+    <ng-template #amount let-row="row" let-value="value" let-i="index">
+        <span class="show-number">{{ value }}</span>
+    </ng-template>
+
+    <ng-template #isDeliveredTemplate let-row="row" let-value="value" let-i="index" >
+        <div>
+            <select id="isDelivered" [(ngModel)]="row.isDelivered" [disabled]="(!ChangeDeliveryStatus&&row.isDelivered)"  (change)="changeStatus(row)">
+                <option value="true">{{'shared.yes' | translate}}</option>
+                <option value="false">{{'shared.no' | translate}}</option>
+            </select>
+        </div>
+    </ng-template>
+
+    <ng-template #actionsTemplate let-row="row" let-value="value" let-i="index">
+        <div>
+            <a class="btn btn-link btn-xs" href="javascript:;"  (click)="showBill(row)">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+                {{ "shared.view" | translate }}
+            </a>
+        </div>
+        <!--superadmin-->
+        <div *ngIf="isSuperAdmin">
+            <a class="btn btn-link btn-xs" href="javascript:;" (click)="editSBill(row)">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                {{ "shared.Edit" | translate }}
+            </a>
+            <!--span *ngIf="canDeleteSBill">|</span>
+            <a *ngIf="canDeleteSBill"
+               class="btn btn-link btn-xs"
+               href="javascript:;"
+               (click)="deleteSBill(row)">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                {{ "shared.Delete" | translate }}
+            </a-->
+        </div>
+
+    </ng-template>
+
+
+</div>

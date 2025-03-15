@@ -1,0 +1,88 @@
+<div class="row">
+  <div class="col-md-6 form-group" *ngIf="withSearch">
+    <search-box (searchChange)="onSearchChanged($event)" placeholder="{{'shared.SearchItem' | translate}}">>
+    </search-box>
+  </div>
+  <div class="col-md-10" *ngIf="!withSearch">
+
+  </div>
+  <div class="col-md-2" *ngIf="withAddNew" style="text-align: center;">
+    <a href="javascript:;" (click)="addNew()">
+      <i class="fa fa-plus-circle"></i>
+      {{ "shared.NewItem" | translate }}
+    </a>
+  </div>
+
+  
+</div>
+
+  <div class=" flexy " [ngClass]="withTime? 'col-md-12':'col-md-12'">
+    <div *ngIf="withBillTypeFilter" class="col-md-3 form-group">
+      <label for="billType-id">{{'shared.billsType'|translate}}</label>
+      <ng-select name="billType-id" [items]="billTypes" bindLabel="name" bindValue="code" [multiple]="false"
+        [(ngModel)]="filterData.selectedBillType">
+      </ng-select>
+    </div>
+
+    <div *ngIf="withBranch" class="col-md-3 form-group">
+      <label for="branch-id">{{'shared.branch'|translate}}</label>
+      <ng-select name="branch-id" [items]="branchList" bindLabel="name" bindValue="id" [multiple]="false"
+        [(ngModel)]="filterData.selectedBranch" (change)="getCCByBranch()">
+      </ng-select>
+    </div>
+
+    <div *ngIf="withCC==true&&(isCCPermission||validCC)" class="col-md-3 form-group">
+      <label for="cc-id">{{'shared.costCenter'|translate}}</label>
+      <ng-select name="cc-id" [items]="costCenterList" bindLabel="nameAr" bindValue="id" [multiple]="false"
+        [(ngModel)]="filterData.selectedCC" (change)="getAllUesdExpensesLables()">
+      </ng-select>
+    </div>
+
+    <div *ngIf="withExpensesLables" class="col-md-3 form-group">
+      <label for="used-labels-id">{{'shared.expenses-template'|translate}}</label>
+      <ng-select name="used-labels-id" [items]="expensesTemplateList" bindLabel="nameAr" bindValue="id"
+        [multiple]="false" [(ngModel)]="filterData.selectedExpensesId">
+      </ng-select>
+    </div>
+    
+    <div *ngIf="withUser" class="col-md-3 form-group">
+      <label for="used-labels-id">{{'shared.users'|translate}}</label>
+      <ng-select name="used-labels-id" [items]="Users" bindLabel="fullName" bindValue="id"
+        [multiple]="false" [(ngModel)]="filterData.userSelected">
+      </ng-select>
+    </div>
+
+    <div *ngIf="withdate" class="form-group" [ngClass]="withBranch&&withCC? 'col-md-3':'col-md-3'">
+      <label class="control-label" for="from">
+        {{ "shared.from" | translate }}
+      </label>
+      <input type="text" attr.id="from" name="from" class="form-control" [(ngModel)]="filterData.serachModel.from"
+        #name="ngModel" bsDatepicker />
+      <timepicker *ngIf="withTime" [(ngModel)]="filterData.fromTime"></timepicker>
+    </div>
+
+    <div *ngIf="withdate" class="form-group"[ngClass]="withBranch&&withCC? 'col-md-3':'col-md-3'">
+      <label class="control-label" for="itemCategoryParentId">
+        {{ "shared.to" | translate }}
+      </label>
+      <input type="text" attr.id="code" name="code" class="form-control" [(ngModel)]="filterData.serachModel.to"
+        #name="ngModel" bsDatepicker />
+      <timepicker *ngIf="withTime" [(ngModel)]="filterData.toTime"></timepicker>
+    </div>
+    <div *ngIf="!withTime" class="col-md-1 form-group ">
+      <br />
+      <button *ngIf="withbtn==true" type="button" class="btn btn-success" [disabled]="validation()" (click)="applyFilter()"> {{"shared.submit"
+        | translate}}</button>
+    </div>
+
+    <div *ngIf="withTime" class="col-md-1 form-group ">
+      <br />
+      <button *ngIf="withbtn==true" type="button" class="btn btn-success" [disabled]="validation()" (click)="applyFilter()"> {{"shared.submit" |
+        translate}}</button>
+    </div>
+    <div class="col-md-1" *ngIf="withExportAsXLSX" style="text-align: center;">
+      <div class="btn" style="padding-top: 23px;" (click)="exportAsXLSX()"><img src="../../../../assets/Excel.png" width="35px" height="35px"></div>
+    </div>
+  </div>
+  
+  

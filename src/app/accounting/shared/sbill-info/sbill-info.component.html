@@ -1,0 +1,850 @@
+<div class="row">
+
+    <!-- <div class="col-md-12">
+        <hr [class.edit-separator-hr]="isEditMode" />
+    </div> -->
+</div>
+<div>
+
+    <form *ngIf="formResetToggle" class="form-horizontal" name="sbillInfoForm" #f="ngForm" novalidate (ngSubmit)="
+            f.form.valid ? save() : showErrorAlert(gT('messages.requiredfields'), '')
+        ">
+        
+    <div class="col-md-12 row">
+        
+        <div class="form-group has-feedback col-md-4 ">
+          <div class="col-md-12">
+            <label class=" control-label col-md-4 ltr"  for="branchID-{{uniqueId}}" [ngStyle]="{'display':config.language=='ar'?'none':''}">
+                {{ "shared.branch" | translate }}
+            </label>
+            <div *ngIf="isNewRpurch || isNewRsale ||isRsale||isRpurch" class="col-md-8">
+                <select id="branchID" name="branchID" [(ngModel)]="sbillEdit.branchId" #branchID="ngModel" #branchIDSelector="bootstrap-select" class="selectpicker form-control" bootstrapSelect data-live-search="true" data-actions-box="false" data-live-search-placeholder="Search..."
+                    (change)="onChangedBranchID($event)" *ngIf="allBranches.length>0" [required]="!isSale" [disabled]="!isSuperAdmin && !isNewSBill">
+                    <option attr.value="0"> </option>
+                    <option *ngFor="let branch of allBranches"
+                            attr.value="{{branch.id}}">
+                        {{ branch.name }}
+                    </option>
+                </select>
+
+
+            </div>
+            <div *ngIf=" isSale||isPurch||isQuate||isExchange" class="col-md-8">
+                <select id="branchID" name="branchID" [(ngModel)]="sbillEdit.branchId" #branchID="ngModel" #branchIDSelector="bootstrap-select" class="selectpicker form-control" bootstrapSelect data-live-search="true" data-actions-box="false" data-live-search-placeholder="Search..."
+                    (change)="onChangedBranchID($event)" *ngIf="allBranches.length>0" [required]="!isSale" [disabled]="!isSuperAdmin && !isNewSBill">
+                    <option attr.value="0"> </option>
+                    <option *ngFor="let branch of allBranches"
+                            attr.value="{{branch.id}}">
+                        {{ branch.name }}
+                    </option>
+                </select>
+
+
+            </div>
+            <label class="control-label col-md-4 rtl"  for="branchID-{{uniqueId}}" [ngStyle]="{'display':config.language=='en'?'none':''}">
+                {{ "shared.branch" | translate }}
+            </label>
+        </div>
+        <div class="col-md-12"> <br></div>
+        <div class="col-md-12">
+          
+            <label *ngIf="isCCPermission" class="control-label col-md-4 ltr" for="costCenterId-{{uniqueId}}" [ngStyle]="{'display':config.language=='ar'?'none':''}">
+                {{ "shared.costCenter" | translate }}
+            </label>
+            
+            <div *ngIf="(isNewRpurch || isNewRsale ||isSale||isRsale||isPurch||isRpurch||isQuate||isExchange)&&isCCPermission" class="col-md-8">
+                <select id="costCenterId" name="costCenterId" [(ngModel)]="sbillEdit.costCenterId" #costCenterId="ngModel" #branchIDSelector="bootstrap-select" class="selectpicker form-control" bootstrapSelect data-live-search="true" data-actions-box="false" data-live-search-placeholder="Search..."
+                     *ngIf="costCenterList.length>0" [disabled]="!isSuperAdmin && !isNewSBill"
+                     (change)="onCostCenterChanged()">
+                    <option attr.value="0"> </option>
+                    <option *ngFor="let costCenter of costCenterList"
+                            attr.value="{{costCenter.id}}">
+                        {{ costCenter.nameAr }}
+                    </option>
+                </select>
+
+            </div>
+
+            <label *ngIf="isCCPermission" class="control-label col-md-4 rtl" for="costCenterId-{{uniqueId}}" [ngStyle]="{'display':config.language=='en'?'none':''}">
+                {{ "shared.costCenter" | translate }}
+            </label>
+        </div>
+
+        </div>
+        <div class="control-box col-md-4 border"  *ngIf="isQuate&&(isNewRpurch || isNewRsale ||isSale || isRsale || isPurch||isRpurch|| isQuate)">
+            <div class="col-md-12" style="height: 20px;"><br></div>
+            <label *ngIf="isNewRsale ||isSale || isQuate || isRsale" class="col-md-4 control-label ltr" for="membershipID" [ngStyle]="{'display':config.language=='ar'?'none':''}">{{"shared.SalesMembership"| translate}} </label>
+            <label *ngIf="isNewRpurch || isPurch||isRpurch" class="col-md-4 control-label ltr" for="membershipID" [ngStyle]="{'display':config.language=='ar'?'none':''}">{{"shared.PurchasesMembership" | translate}} </label>
+          
+            <div class="col-md-8">
+                <ng-select [items]="people3$ | async" [placeholder]="clientPlaceholder" name="membershipID" bindLabel="nameAr"  (change)="peopleSearchSelected($event)" 
+                [addTag]="false" [multiple]="false"  [hideSelected]="true" [loading]="people3Loading" [typeahead]="people3input$"
+                    [(ngModel)]="selectedPeople" [required]="sbillEdit.isDept" #membershipID="ngModel" [disabled]="!isSuperAdmin && !isNewSBill">
+                </ng-select>
+            </div>
+            <label *ngIf="isNewRsale ||isSale || isQuate || isRsale" class="col-md-4 control-label rtl" for="membershipID" [ngStyle]="{'display':config.language=='en'?'none':''}">{{"shared.SalesMembership"| translate}} </label>
+            <label *ngIf="isNewRpurch || isPurch||isRpurch" class="col-md-4 control-label rtl" for="membershipID" [ngStyle]="{'display':config.language=='en'?'none':''}">{{"shared.PurchasesMembership" | translate}} </label>
+            <div class="col-md-12" style="height: 20px;"><br></div>
+            <!-- <div *ngIf="isQuate " class="col-md-12"> <label  class="control-label col-md-6 ltr" for="notes-{{uniqueId}}" [ngStyle]="{'display':config.language=='ar'?'none':''}">
+                {{ "shared.notes" | translate }}
+            </label>
+            <div *ngIf="isNewRpurch || isNewRsale ||isSale||isRsale||isPurch||isRpurch||isQuate||isExchange" class="col-md-6">
+                <textarea name="notes-{{uniqueId}}" attr.id="notes-{{uniqueId}}" class="form-control" [(ngModel)]="sbillEdit.notes" #notes="ngModel" [disabled]="!isSuperAdmin && !isNewSBill"></textarea>
+            </div>
+            <label class="control-label col-md-6 rtl" for="notes-{{uniqueId}}" [ngStyle]="{'display':config.language=='en'?'none':''}">
+                {{ "shared.notes" | translate }}
+            </label>
+        </div> -->
+        </div>
+     
+        <div *ngIf="isExchange ">
+            <div class="form-group has-feedback col-md-4 border">
+              <div class="col-md-12">
+                <label class="control-label col-md-4 ltr" for="fromAccountId" [ngStyle]="{'display':config.language=='ar'?'none':''}">
+                    {{ "shared.fromAccountId" | translate }}
+                </label>
+                <div class="col-md-8">
+                    <!-- <select id="fromAccountId" name="fromAccountId" [(ngModel)]="sbillEdit.fromAccountId" #fromAccountId="ngModel" #fromAccountIdSelector="bootstrap-select" class="selectpicker form-control" bootstrapSelect data-live-search="true" data-actions-box="false"
+                        data-live-search-placeholder="Search..." required [disabled]="!isSuperAdmin && !isNewSBill">
+                        <option></option>
+                        <option *ngFor="let f of accounts" value="{{ f.id }}">
+                            {{ f.name }}
+                        </option>
+                    </select> -->
+                    <ng-select [items]="account$ | async" [placeholder]=' "shared.fromAccountId" | translate ' name="fromAccountId" bindLabel="name"  (change)="fromAccountSearchSelected($event)" 
+                    [addTag]="false" [multiple]="false" required [hideSelected]="true" [loading]="accountLoading" [typeahead]="accountinput$"
+                        [(ngModel)]="fromAccount" required #membershipID="ngModel" [disabled]="!isSuperAdmin && !isNewSBill">
+                    </ng-select>
+
+                </div>
+                <label class="control-label col-md-4 rtl" for="fromAccountId" [ngStyle]="{'display':config.language=='en'?'none':''}">
+                    {{ "shared.fromAccountId" | translate }}
+                </label>
+            </div>
+            <div class="col-md-12"><br></div>
+            <div class="col-md-12">
+                <label class="control-label col-md-4 ltr" for="toAccountId" [ngStyle]="{'display':config.language=='ar'?'none':''}">
+                    {{ "shared.toAccountId" | translate }}
+                </label>
+                <div class="col-md-8">
+                    <!-- <select id="toAccountId" name="toAccountId" [(ngModel)]="sbillEdit.toAccountId" #toAccountId="ngModel" #toAccountIdSelector="bootstrap-select" class="selectpicker form-control" bootstrapSelect data-live-search="true" data-actions-box="false" data-live-search-placeholder="Search..."
+                        required  [disabled]="!isSuperAdmin && !isNewSBill">
+                        <option></option>
+
+                        <option [defaultSelected]="true" *ngFor="let f of accounts" value="{{ f.id }}">
+                            {{ f.name }}
+                        </option>
+                    </select> -->
+                    <ng-select [items]="accountTo$ | async" [placeholder]='"shared.toAccountId" | translate' name="toAccountId" bindLabel="name"  (change)="toAccountSearchSelected($event)" 
+                    [addTag]="false" [multiple]="false" required [hideSelected]="true" [loading]="accountLoadingTo" [typeahead]="accountinputTo$"
+                        [(ngModel)]="toAccount" required #membershipID="ngModel" [disabled]="!isSuperAdmin && !isNewSBill">
+                    </ng-select>
+
+                </div>
+                <label class="control-label col-md-4 rtl" for="toAccountId" [ngStyle]="{'display':config.language=='en'?'none':''}">
+                    {{ "shared.toAccountId" | translate }}
+                </label>
+            </div>
+            </div>
+
+
+            
+        </div>
+    <div class="payments col-md-4 ">
+
+        <div *ngIf="isNewRpurch || isNewRsale || isSale||isRsale||isPurch||isRpurch"
+            class="form-group has-feedback">
+           <!-- <div class="" [ngClass]="{'col-md-1':!isMultiPaymentMethods}"></div> -->
+            <div *ngIf="isSuperAdmin || isNewSBill  || isNewRsale || isNewRpurch" class="col-md-12 border" >
+               <div class="col-md-4"  [ngStyle]="{'display':config.language=='ar'?'none':''}">  <label class="control-label  "  for="accountTypeID-{{uniqueId}}">
+                    {{ "shared.paymentMethodelogy" | translate }}
+                </label>
+            </div>
+            <div class="col-md-8" >
+                <select id="accountTypeID" name="accountTypeID" [(ngModel)]="accountTypeId"
+                    (change)="onChangedAccountTypeID($event)" #accountTypeID="ngModel"
+                    #accountTypeIDSelector="bootstrap-select" class="selectpicker form-control col-md-4"
+                    bootstrapSelect data-live-search="true" data-actions-box="false"
+                    data-live-search-placeholder="Search..." *ngIf="allAccountType.length>0" required
+                    [disabled]="!isSuperAdmin && !isNewSBill  && !isNewRsale &&!isNewRpurch">
+                    <option attr.value="0"> </option>
+                    <option *ngFor="let accountType of allAccountType" attr.value="{{accountType.id}}">
+                        {{ accountType.name }}
+                    </option>
+                </select>
+
+
+            </div>
+            <div *ngIf="!sbillEdit.isDept " class="col-md-4"  [ngStyle]="{'display':config.language=='en'?'none':''}">  <label class="control-label  "  for="accountTypeID-{{uniqueId}}">
+                {{ "shared.paymentMethodelogy" | translate }}
+            </label>
+        </div>
+        
+        </div>
+        <div *ngIf="sbillEdit.accountTypeId!=4&&(isSuperAdmin || isNewSBill  || isNewRsale || isNewRpurch)"  class="col-md-12 border"> <br></div>
+            <div *ngIf="sbillEdit.accountTypeId!=4 &&(isSuperAdmin || isNewSBill  || isNewRsale || isNewRpurch &&( !isExchange))" class="col-md-12  border" >
+                <div class="col-md-4 " [ngStyle]="{'display':config.language=='ar'?'none':''}">  <label *ngIf="(isNewRsale||isSale||isRsale) && sbillEdit.accountTypeId!=4" class="control-label "
+                    for="accountID-{{uniqueId}}">
+                    {{ "shared.SalesAccount" | translate }}
+                </label>
+                <label *ngIf="(isNewRpurch || isPurch||isRpurch) && sbillEdit.accountTypeId!=4" class="control-label "
+                    for="accountID-{{uniqueId}}">
+                    {{ "shared.PurchasesAccount" | translate }}
+                </label>
+                </div>
+                <div class="col-md-8" > 
+                <ng-select id="accountID-{{uniqueId}}" name="accountID-{{uniqueId}}"
+                    [(ngModel)]="sbillEdit.accountId" #accountID="ngModel" #accountIDSelector="bootstrap-select"
+                    class=" " bootstrapSelect data-live-search="true" data-actions-box="false"
+                    data-live-search-placeholder="Search..." *ngIf="allAccount.length>0"
+                    [disabled]="!isSuperAdmin && !isNewSBill  && !isNewRsale &&!isNewRpurch" [items]="allAccount"
+                    bindLabel="name" bindValue="id">
+                    
+                </ng-select>
+            </div>
+            <div class="col-md-4" [ngStyle]="{'display':config.language=='en'?'none':''}" >  <label *ngIf="(isNewRsale||isSale||isRsale) && sbillEdit.accountTypeId!=4" class="control-label "
+                for="accountID-{{uniqueId}}">
+                {{ "shared.SalesAccount" | translate }}
+            </label>
+            <label *ngIf="(isNewRpurch || isPurch||isRpurch) && sbillEdit.accountTypeId!=4" class="control-label "
+                for="accountID-{{uniqueId}}">
+                {{ "shared.PurchasesAccount" | translate }}
+            </label>
+            </div>
+            </div>
+            <!-- <div class="row">
+            <div class="col-md-12">
+               <br>
+            </div>
+        </div> -->
+            <!-- <div class="row" style="padding-left: 1%;"> -->
+            <div  *ngIf="isSuperAdmin || isNewSBill  || isNewRsale || isNewRpurch" class="col-md-12 " [ngClass]="{'multipayment':isMultiPaymentMethods}">
+                <label  style="color: var(--user-theme-secoundary);" for="multipayment control-label">{{'shared.mutiPayment'|translate}}</label>
+                <input id="multipayment" type="checkbox" name="multipayment" [(ngModel)]="isMultiPaymentMethods" />
+            </div>
+
+            <div *ngIf="isMultiPaymentMethods &&(isSuperAdmin ||(isNewRpurch||isNewRsale||isNewSBill)) " class="row col-md-12">
+                <div class="col-md-6" [ngStyle]="{'display':config.language=='ar'?'none':''}">
+                    <label class="control-label">{{'shared.amount'|translate}}</label>
+                </div>
+                <div class="col-md-6">
+                <input class="form-control  col-md-12" name="amount" (change)="roundAmount()" 
+                [disabled]="!isSuperAdmin&&!isNewSBill  && !isNewRsale &&!isNewRpurch " [(ngModel)]="amount" type="number" step=".01" />
+                </div>
+                    <div class="col-md-6" [ngStyle]="{'display':config.language=='en'?'none':''}">
+                        <label class="control-label">{{'shared.amount'|translate}}</label>
+                    </div>
+                    
+            </div>
+            <div *ngIf="isMultiPaymentMethods &&(isSuperAdmin ||(isNewRpurch||isNewRsale||isNewSBill))" class="col-md-6 multipayment">
+
+                <button (click)="addpaymentMethod(false)"
+                    [disabled]="!(amount>0&&((allPaymentMethods+amount)<=getTotal()))" type="button"
+                    class="btn btn-primary col-md-12">{{ "shared.add" | translate }}</button>
+            </div>
+            <div *ngIf="isMultiPaymentMethods &&(isSuperAdmin ||(isNewRpurch||isNewRsale||isNewSBill))" class="col-md-6 multipayment">
+                <button (click)="addpaymentMethod(true)"
+                    [disabled]="!getTotal()||(allPaymentMethods==getTotal())||!(getAccountamount(sbillEdit.accountId)>=0)"
+                    type="button" class="btn btn-primary ">{{allPaymentMethods==0?("shared.allAmount" |
+                    translate):allPaymentMethods>getTotal()?("shared.removeAmount" | translate): ("shared.addAmount"
+                    | translate) }}</button>
+
+            </div>
+            <!-- <div class="col-md-2"></div> -->
+            <!-- </div> -->
+        </div>
+        <div class="row">
+            <div *ngIf=" isSuperAdmin || isNewSBill  || isNewRsale || isNewRpurch " class="col-md-12"></div>
+            <div *ngIf="(sbillEdit.paymentMethods&&sbillEdit.paymentMethods.length>0&&isMultiPaymentMethods)|| ((!isNewSBill&&isMultiPaymentMethods)&&!(isNewRsale||isNewRpurch))" class="container-t col-md-12 ">
+
+                <div class="d-flex justify-content-center header">
+                    <p class="col">{{'shared.paymentMethodelogy'|translate}} </p>
+                    <p class="col">{{'shared.account'|translate}}</p>
+                    <p class="col"> {{'shared.amount'|translate}} </p>
+                    <p  *ngIf="isSuperAdmin || isNewSBill  || isNewRsale  || isNewRpurch " class="col"> {{'settings.tab.options'|translate}} </p>
+                </div>
+                <div *ngFor="let p of sbillEdit.paymentMethods" class="list-group d-flex justify-content-center col-md-12"
+                    style="flex-direction: initial;">
+                    <p>{{getAccountTypeName(p.accountTypeId)}} </p>
+                    <p>{{getAccountIdName(p.accountId,p.accountTypeId) }}</p>
+                    <p>{{p.amount}} </p>
+                    <a *ngIf="isSuperAdmin || isNewSBill  || isNewRsale  || isNewRpurch "
+                        (click)="deletepayment(p.accountId)">{{'shared.delete'|translate}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="form-group col-md-4 border" >
+            <!-- <div *ngIf="!isExchange" class="col-md-6"></div> -->
+            <div class="col-md-12">
+            <label class="control-label col-md-4 ltr" for="receiptCode-{{uniqueId}}" *ngIf="!isExchange" [ngStyle]="{'display':config.language=='ar'?'none':''}">
+                {{ "shared.BillCode" | translate }}
+            </label>
+            <label class="control-label col-md-4 ltr" for="receiptCode-{{uniqueId}}" *ngIf="isExchange" [ngStyle]="{'display':config.language=='ar'?'none':''}">
+                {{ "shared.ReceiptDocumentCode" | translate }}
+            </label>
+            <div *ngIf="isNewRpurch || isNewRsale || isSale||isRsale||isPurch||isRpurch||isQuate||isExchange" class="col-md-8">
+                <input type="text" name="receiptCode-{{uniqueId}}" attr.id="receiptCode-{{uniqueId}}" class="form-control" [(ngModel)]="sbillEdit.receiptCode" #receiptCode="ngModel" [disabled]="true" />
+
+            </div>
+            <label class="control-label col-md-4 rtl" for="receiptCode-{{uniqueId}}" *ngIf="!isExchange" [ngStyle]="{'display':config.language=='en'?'none':''}">
+                {{ "shared.BillCode" | translate }}
+            </label>
+       
+           
+            <label class="control-label col-md-4 rtl" for="receiptCode-{{uniqueId}}" *ngIf="isExchange" [ngStyle]="{'display':config.language=='en'?'none':''}">
+                {{ "shared.ReceiptDocumentCode" | translate }}
+            </label>
+        </div>
+        <div *ngIf="!isExchange" class="col-md-12"><br></div>
+        <div class="col-md-12" *ngIf="!isExchange">
+            <label class="control-label col-md-4 ltr" for="date-{{uniqueId}}" [ngStyle]="{'display':config.language=='ar'?'none':''}">
+                {{ "shared.offerDate" | translate }}
+            </label>
+             <div *ngIf="isNewRpurch || isNewRsale ||isSale||isRsale||isPurch||isRpurch||isQuate||isExchange" class="col-md-8 ">
+                <!--input type="text" name="date" attr.id="date-{{uniqueId}}" date="date" class="form-control" [(ngModel)]="sbillEdit.date" #name="ngModel" required bsDatepicker [disabled]="!canChangeBillDate()" /-->
+               
+             
+                <input type="text" name="date" attr.id="date-{{uniqueId}}" date="date" class="form-control" [(ngModel)]="sbillEdit.date" #name="ngModel" required bsDatepicker [disabled]="true&&!isSuperAdmin" />
+                 <timepicker *ngIf="!(true&&!isSuperAdmin)" name="datetime"  [(ngModel)]="sbillEdit.date" ></timepicker>
+             
+                </div>
+
+                <label class="control-label col-md-4 rtl" for="date-{{uniqueId}}" [ngStyle]="{'display':config.language=='en'?'none':''}">
+                    {{ "shared.offerDate" | translate }}
+                </label>
+        </div>
+        <div *ngIf="isExchange" class="col-md-12"><br></div>
+            <div *ngIf="isExchange" class="col-md-12">
+                <label class="control-label col-md-4 ltr" for="receiptCode-{{uniqueId}}" [ngStyle]="{'display':config.language=='ar'?'none':''}">
+                    {{ "shared.BillCode" | translate }}
+                </label>
+                <div class="col-md-8">
+                    <input type="text" name="code-{{uniqueId}}" attr.id="code-{{uniqueId}}" class="form-control" [(ngModel)]="sbillEdit.code" #code="ngModel"  [disabled]="!isSuperAdmin && !isNewSBill"/>
+                </div>
+                <label class="control-label col-md-4 rtl" for="receiptCode-{{uniqueId}}" [ngStyle]="{'display':config.language=='en'?'none':''}">
+                    {{ "shared.BillCode" | translate }}
+                </label>
+            </div>
+
+            <!--
+            ------------------------ another control in the same row-------------------------
+        -->
+
+        </div>
+
+
+        <!--
+        **************************************New Row*******************************************
+    -->
+
+</div>
+    <!-- <div class="row">
+        <div class="col-md-12">
+            <hr [class.separator-hr]="!isEditMode" [class.edit-separator-hr]="isEditMode" />
+        </div>
+    </div>
+
+ -->
+
+
+
+
+        <div class="form-group">
+
+            <div class="control-box"  *ngIf="!isQuate&&(isNewRpurch || isNewRsale ||isSale || isRsale || isPurch||isRpurch|| isQuate)">
+                <label *ngIf="isNewRsale ||isSale || isQuate || isRsale" class="col-sm-2 control-label ltr" for="membershipID" [ngStyle]="{'display':config.language=='ar'?'none':''}">{{"shared.SalesMembership"| translate}} </label>
+                <label *ngIf="isNewRpurch || isPurch||isRpurch" class="col-sm-2 control-label ltr" for="membershipID" [ngStyle]="{'display':config.language=='ar'?'none':''}">{{"shared.PurchasesMembership" | translate}} </label>
+              
+                <div class="col-sm-4">
+                    <ng-select [items]="people3$ | async" [placeholder]="clientPlaceholder" name="membershipID" bindLabel="nameAr"  (change)="peopleSearchSelected($event)" 
+                    [addTag]="false" [multiple]="false"  [hideSelected]="true" [loading]="people3Loading" [typeahead]="people3input$"
+                        [(ngModel)]="selectedPeople" [required]="sbillEdit.isDept" #membershipID="ngModel" [disabled]="!isSuperAdmin && !isNewSBill">
+                    </ng-select>
+                </div>
+                <label *ngIf="isNewRsale ||isSale || isQuate || isRsale" class="col-sm-2 control-label rtl" for="membershipID" [ngStyle]="{'display':config.language=='en'?'none':''}">{{"shared.SalesMembership"| translate}} </label>
+                <label *ngIf="isNewRpurch || isPurch||isRpurch" class="col-sm-2 control-label rtl" for="membershipID" [ngStyle]="{'display':config.language=='en'?'none':''}">{{"shared.PurchasesMembership" | translate}} </label>
+               
+            </div>
+            <label *ngIf="isExchange" class="control-label col-md-2 ltr" for="date-{{uniqueId}}" [ngStyle]="{'display':config.language=='ar'?'none':''}">
+                {{ "shared.offerDate" | translate }}
+            </label>
+             <div *ngIf="isExchange&&(isNewRpurch || isNewRsale ||isSale||isRsale||isPurch||isRpurch||isQuate||isExchange)" class="col-md-4 ">
+                <!--input type="text" name="date" attr.id="date-{{uniqueId}}" date="date" class="form-control" [(ngModel)]="sbillEdit.date" #name="ngModel" required bsDatepicker [disabled]="!canChangeBillDate()" /-->
+               
+             
+                <input type="text" name="date" attr.id="date-{{uniqueId}}" date="date" class="form-control" [(ngModel)]="sbillEdit.date" #name="ngModel" required bsDatepicker [disabled]="true&&!isSuperAdmin" />
+                 <timepicker *ngIf="!(true&&!isSuperAdmin)" name="datetime"  [(ngModel)]="sbillEdit.date" ></timepicker>
+             
+                </div>
+           
+                <label *ngIf="isExchange" class="control-label col-md-2 rtl" for="date-{{uniqueId}}" [ngStyle]="{'display':config.language=='en'?'none':''}">
+                    {{ "shared.offerDate" | translate }}
+                </label>
+                <div class="col-md-6"> </div>
+                <label class="control-label col-md-2 ltr" for="notes-{{uniqueId}}" [ngStyle]="{'display':config.language=='ar'?'none':''}">
+                    {{ "shared.notes" | translate }}
+                </label>
+                <div *ngIf="(isNewRpurch || isNewRsale ||isSale||isRsale||isPurch||isRpurch||isQuate||isExchange)" class="col-md-4">
+                    <textarea name="notes-{{uniqueId}}" attr.id="notes-{{uniqueId}}" class="form-control" [(ngModel)]="sbillEdit.notes" #notes="ngModel" [disabled]="!isSuperAdmin && !isNewSBill"></textarea>
+                </div>
+                <label class="control-label col-md-2 rtl" for="notes-{{uniqueId}}" [ngStyle]="{'display':config.language=='en'?'none':''}">
+                    {{ "shared.notes" | translate }}
+                </label>
+             
+        </div>
+
+
+
+        <div class="form-group has-feedback">
+          
+          
+            <div *ngIf="isExchange">
+               
+                <label class="control-label col-md-2 ltr" for="notes-{{uniqueId}}" [ngStyle]="{'display':config.language=='ar'?'none':''}">
+                    {{ "shared.exchangeReason" | translate }}
+                </label>
+                <div class="col-md-4">
+                    <input name="exchangeReason-{{uniqueId}}" attr.id="exchangeReason-{{uniqueId}}" class="form-control" [(ngModel)]="sbillEdit.exchangeReason" #exchangeReason="ngModel" [disabled]="!isSuperAdmin && !isNewSBill"/>
+                </div>
+                <label class="control-label col-md-2 rtl" for="notes-{{uniqueId}}" [ngStyle]="{'display':config.language=='en'?'none':''}">
+                    {{ "shared.exchangeReason" | translate }}
+                </label>
+            </div>
+            <div class="col-md-12" *ngIf="iconPath">
+                <img style="height:100px;width:100px" [src]="iconPath" />
+            </div>
+        </div>
+        <div class="row1"></div>
+      <div  *ngIf="!isExchange" class="row col-md-12" >
+        <div *ngIf="!this.sbillEdit.isOldBillTemplate" class="col-md-4 total-container ">
+            <div class="total-price" style="background:white;">
+            <div class="show-number tota-number">
+                <input name="discount" attr.id="discount" type="number" placeholder="00.00" class="form-control show-number  " [(ngModel)]="sbillEdit.discount" #discount="ngModel" (change)="onChangeDiscount(sbillEdit.discount)" [disabled]="( (!canDiscount() || (isThereAnyItemDiscount && discountLimit))) || (!isSuperAdmin && !isNewSBill)" />
+            </div>
+            <br>
+            <p style="color: #F9A434;">{{ "shared.discount" | translate }} {{ "shared.SAR" | translate }}</p>
+           
+        </div>
+               
+        </div>
+        <div class="col-md-4 total-container" >
+           <div class="total-price"style="background:white;"> 
+            <p class="show-number tota-number">{{sbillEdit.totalBeforeDiscount? round(sbillEdit.totalBeforeDiscount, 2):'00.00' }}</p>
+            <p style="color: #10A924">{{this.sbillEdit.isOldBillTemplate?("shared.totalBeforeDiscount" | translate): ("shared.totalBeforeVat" | translate) }} {{ "shared.SAR" | translate }}</p>
+           
+        </div>    
+        </div>
+        <div *ngIf="this.sbillEdit.isOldBillTemplate" class="col-md-4 total-container ">
+            <div class="total-price"style="background:white;">
+            <div class="show-number tota-number">
+                <input name="discount" attr.id="discount" type="number" placeholder="00.00" class="form-control show-number  " [(ngModel)]="sbillEdit.discount" #discount="ngModel" (change)="onChangeDiscount()" [disabled]="( (!canDiscount() || (isThereAnyItemDiscount && discountLimit))) || (!isSuperAdmin && !isNewSBill)" />
+            </div>
+            <br>
+            <p style="color: #F9A434;">{{ "shared.discount" | translate }} {{ "shared.SAR" | translate }}</p>
+           
+        </div>
+               
+        </div>
+        <div class="col-md-4 total-container">
+            <div class="total-price"style="background:white;">
+            <p class="show-number tota-number">{{ sbillEdit.totalAfterDiscount?round(sbillEdit.totalAfterDiscount, 2):'00.00' }}</p>
+            <p style="color: #16AFDD">{{this.sbillEdit.isOldBillTemplate?("shared.totalAfterVat" | translate): ("shared.totalAfterVat" | translate) }} {{ "shared.SAR" | translate }}</p>
+          
+        </div>
+               
+        </div>
+        <!-- <table class="table table-bordered table-striped" *ngIf="!isExchange">
+            <tr>
+                <th>{{ "shared.totalBeforeDiscount" | translate }} {{ "shared.SAR" | translate }}</th>
+                <th>{{ "shared.discount" | translate }}</th>
+                <th>{{ "shared.totalAfterDiscount" | translate }} {{ "shared.SAR" | translate }}</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td class="show-number">{{ round(sbillEdit.totalBeforeDiscount, 2) }}</td>
+                <td class="show-number">
+                    <input name="discount" attr.id="discount" type="text" class="form-control show-number" [(ngModel)]="sbillEdit.discount" #discount="ngModel" (change)="onChangeDiscount()" [disabled]="( (!canDiscount() || (isThereAnyItemDiscount && discountLimit))) || (!isSuperAdmin && !isNewSBill)" />
+                </td>
+                <td class="show-number">{{ round(sbillEdit.totalAfterDiscount, 2) }}</td>
+
+            </tr>
+        </table> -->
+      </div>
+      
+      <div class="form-group row col-md-12">
+        <div class="col-md-12 row1"><br></div>
+        <div class="col-sm-10">
+            <div class="pull-right">
+               
+                 <!-- <button *ngIf="isSuperAdmin || !isNewSBill"  (click)="exportAsPDFDocumnent()" type="button" class="btn btn-primary" [disabled]="f.invalid ||isSaving ||(allBillItem.length==0&&allBillService==0)">
+                    {{"shared.exportAsPdf" | translate}}
+                </button> -->
+                
+            
+
+             
+
+
+                <button *ngIf="isSuperAdmin || isNewSBill || isNewRpurch || isNewRsale"  type="button" name="noprint" class="btn  btn-secondary" (click)="saveWithoutPrince($event)"
+                 [disabled]="f.invalid ||(allBillItem.length==0&&allBillService==0)||((allPaymentMethods!=getTotal())&&isMultiPaymentMethods)">
+                    <i *ngIf="!isSaving"
+                       class="fa fa-save"></i><i *ngIf="isSaving"
+                                                 class="fa fa-circle-o-notch fa-spin"></i>
+                    {{
+                        isSaving
+                            ? ("shared.Saving"
+                              | translate)
+                            : ("shared.Save"
+                              | translate)
+                    }}
+                </button>
+                <button *ngIf="isSuperAdmin || isNewSBill" type="submit" class="btn btn-primary" [disabled]="f.invalid ||isSaving ||(allBillItem.length==0&&allBillService==0)||((allPaymentMethods!=getTotal())&&isMultiPaymentMethods)||!confirm">
+                    <i *ngIf="!isSaving"
+                       class="fa fa-save"></i><i *ngIf="isSaving"
+                                                 class="fa fa-circle-o-notch fa-spin"></i>
+                    {{
+                        isSaving
+                            ? ("shared.Saving"
+                              | translate)
+                            : ("shared.SaveAndPrint"
+                              | translate)
+                    }}
+                </button>
+                <button *ngIf="isSuperAdmin || !isNewSBill" (click)="openWizard($event)" name="printer" type="button" class="btn btn-primary" [disabled]="f.invalid ||isSaving ||(allBillItem.length==0&&allBillService==0)">
+                    {{ "shared.print" | translate }}
+                </button>
+                <button *ngIf="isSuperAdmin || isNewSBill" type="button" (click)="cancel()" class="btn btn-danger" [disabled]="isSaving" >
+                    <i class="fa fa-times"></i>
+                    {{ "shared.Cancel" | translate }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+        <!--
+        ********************************Controls*******************************************
+    -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div>
+
+        <!--
+        *****************************************items************************************************
+    -->
+    <div class="row" *ngIf="itemNameDetails?.itemName" style="display: flex;">
+        <div class="col-md-3 form-group" style="margin-left: 10px;">
+            <label class="control-label ltr" [ngStyle]="{'display':config.language=='ar'?'none':''}">
+                {{ "shared.item" | translate }}
+            </label>
+            <input type="text" class="form-control" disabled [value]="itemNameDetails?.itemName"/>
+            <label class="control-label rtl" [ngStyle]="{'display':config.language=='en'?'none':''}">
+                {{ "shared.item" | translate }}
+            </label>
+        </div>
+        <div class="col-md-3 form-group"  style="margin-left: 10px;">
+            <label class="control-label ltr" [ngStyle]="{'display':config.language=='ar'?'none':''}">
+                {{ "shared.branch" | translate }}
+            </label>
+            <input type="text" class="form-control" disabled [value]="itemNameDetails?.branchName"/>
+            <label class="control-label rtl" [ngStyle]="{'display':config.language=='en'?'none':''}">
+                {{ "shared.branch" | translate }}
+            </label>
+        </div>
+        <div class="col-md-3 form-group"  style="margin-left: 10px;">
+            <label class="control-label ltr" [ngStyle]="{'display':config.language=='ar'?'none':''}">
+                {{ "shared.costCenter" | translate }}
+            </label>
+            <input type="text" class="form-control" disabled [value]="itemNameDetails?.costCenterName"/>
+            <label class="control-label rtl" [ngStyle]="{'display':config.language=='en'?'none':''}">
+                {{ "shared.costCenter" | translate }}
+            </label>
+        </div>
+        <div class="col-md-3 form-group"style="display: flex;align-items: flex-end;justify-content: center;">
+                <button type="button" class="btn btn-success" (click)="itemNameDetails.itemName='';">
+                    <i class="fa fa-window-minimize" aria-hidden="true"></i></button>
+        </div>
+    </div>
+    
+        <div *ngIf="isNewRpurch || isNewRsale ||isSale||isRsale||isPurch||isRpurch||isQuate||isExchange">
+            <div class="row control-box">
+                <div class="col-sm-6">
+                    <ng-select #myInput *ngIf="flag" [items]="items" [placeholder]="servicePlaceholder" name="select" bindLabel="branchCCName" (change)="SearchSelected()" [addTag]="false" [multiple]="false" [hideSelected]="true"
+
+                    [loading]="item3Loading" [typeahead]="item3input$"
+                        [(ngModel)]="selectedItem"  [disabled]="!isSuperAdmin && !isNewSBill">
+                    </ng-select>
+                </div>
+                <div class="col-sm-3">
+                    <div class="custom-control custom-checkbox">
+                        <label class="custom-control-label ltr" for="Barcode" [ngStyle]="{'display':config.language=='ar'?'none':''}">{{ "shared.isBarcodeReader" | translate }}</label>
+                      
+                        <input type="checkbox" class="custom-control-input" name="Barcode" [(ngModel)]="isBarcodeReader"  [disabled]="!isSuperAdmin && !isNewSBill">
+                         <label class="custom-control-label rtl" for="Barcode" [ngStyle]="{'display':config.language=='en'?'none':''}">{{ "shared.isBarcodeReader" | translate }}</label>
+                      
+                    </div>
+                </div>
+                <div class="col-sm-2" *ngIf="currentBalance !== undefined && currentBalance !== null" style="height: 40px; border: 1px dashed var(--user-theme-secoundary);
+                border-radius: 10px;">
+                    {{"shared.balance"|translate}}: {{currentBalance}}
+                </div>
+            </div>
+
+            
+
+            <div class="col-md-12 row1"><br></div>
+            <div>
+
+                <table class="table table-to-print table-bordered table-striped">
+                    <tr class="withBorder">
+                        <th>#</th>
+                        <th>{{ "shared.code" | translate }}</th>
+                        <th>{{ "shared.NameAr" | translate }}</th>
+                        <th *ngIf="!isExchange">{{ "shared.nameEn" | translate }}</th>
+                        <th >{{ "shared.itemUnitName" | translate }}</th>
+                        <th *ngIf="!isExchange">Serial No.</th>
+                        <th *ngIf="!isExchange">{{ "shared.price" | translate }} </th>
+                        <th>{{ "shared.quantity" | translate }}</th>
+                        <th  *ngIf="(!isNewSBill && isSale)|| isNewRsale || isNewRpurch|| (!isNewSBill && isPurch)">{{ "shared.refundQuantity" | translate }}</th>
+                        <th *ngIf="!isExchange">{{ "shared.discount" | translate }}</th>
+                        <th *ngIf="!isExchange">{{ "shared.pricAfterDiscound" | translate }} {{ "shared.SAR" | translate }}</th>
+                        <th *ngIf="!isExchange&&tobaccoView">{{ "shared.Tobacco" | translate }}</th>
+                        <th *ngIf="!isExchange&&tobaccoView">{{ "shared.ValueOfTobacco" | translate }}</th>
+                        <th *ngIf="!isExchange&&isVatEnable">{{ "shared.vatPercent" | translate }}</th>
+                        <th *ngIf="!isExchange&&isVatEnable">{{ "shared.actualValue" | translate }} {{ "shared.SAR" | translate }}</th>
+                        <th *ngIf="isExchange">{{ "shared.notes" | translate }}</th>
+                        <th *ngIf="!isExchange">{{ "shared.totalPrice" | translate }} {{ "shared.SAR" | translate }}</th>
+                        <th></th>
+                    </tr>
+                    <tr *ngFor="let billItem of allBillItem ; let i = index " >
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ billItem.code }}</td>
+                        <td>{{ billItem.nameAr }}</td>
+                        <td *ngIf="!isExchange">{{ billItem.nameEn }}</td>
+                        <td >
+                            <select id="itemUnitId-{{i}}" name="itemUnitId-{{i}}" 
+                            [(ngModel)]="billItem.itemUnitId" #branchID="ngModel" #branchIDSelector="bootstrap-select" class="selectpicker form-control" bootstrapSelect data-live-search="true" data-actions-box="false" data-live-search-placeholder="Search..."
+                                (change)="
+                                    changeItemUnit(
+                                        billItem,
+                                        billItem.itemUnitId
+                                    )
+                                "  [disabled]="!isSuperAdmin && !isNewSBill">
+                                <option attr.value="0"> </option>
+                                <option *ngFor="let itemUnit of billItem.itemUnits"
+                                        attr.value="{{itemUnit.id}}"
+                                        #selectedItemUnit>
+                                    {{ itemUnit.name }}
+                                </option>
+                            </select>
+                        </td>
+                        <td *ngIf="!isExchange">
+                            <input name="serialNo-{{i}}" attr.id="serialNo-{{i}}" type="text" class="form-control" [(ngModel)]="billItem.serialNo"  [disabled]="!isSuperAdmin && !isNewSBill" />
+                        </td>
+                        <td class="show-number" *ngIf="!isExchange">
+                            <input name="price-{{i}}" attr.id="price-{{i}}" type="text"  class="form-control  show-number" [(ngModel)]="billItem.price" (change)="onPriceChanged(billItem)"  [disabled]="!canDiscount() || !isSuperAdmin && !isNewSBill"/>
+                        </td>
+
+
+                        <td class="show-number">
+                            <input name="quantity-{{i}}" attr.id="quantity-{{i}}" type="text" class="form-control  show-number" [(ngModel)]="billItem.quantity" #quantity="ngModel" (change)="onQuantityChanged(billItem)"  [disabled]="!isSuperAdmin && !isNewSBill"/>
+                        </td>
+
+                        <td class="show-number" *ngIf="(!isNewSBill && isSale)|| isNewRsale || isNewRpurch|| (!isNewSBill && isPurch)">
+                            <input name="refund-quantity-{{i}}" attr.id="refund-quantity-{{i}}" type="number" class="form-control  show-number" [value]="billItem.refundQuantity"   disabled />
+                        </td>
+                        <td class="show-number" *ngIf="!isExchange">
+                            <input name="discount-{{i}}" attr.id="discount-{{i}}" type="number"
+                                class="form-control  show-number" [(ngModel)]="billItem.discount" #discount="ngModel"
+                                (change)="onDiscountItemChanged(billItem)"
+                                [disabled]="!canDiscount() || (!isSuperAdmin && !isNewSBill)" />
+                        </td>
+                        <td class="show-number" *ngIf="!isExchange">{{ round(billItem.price * billItem.quantity - billItem.discount, 2) }}</td>
+                        <td class="show-number" *ngIf="!isExchange&&tobaccoView">
+               
+                            {{1*100}}%
+                        </td>
+                       
+                        <td class="show-number" *ngIf="!isExchange&&tobaccoView">
+               
+                            {{billItem.actualVatTwo?round(billItem.actualVatTwo, 2):0}}
+                        </td>
+                        <td  class="show-number" *ngIf="!isExchange&&isVatEnable">
+                          
+                            {{billItem.vatTypeDefaultValue * 100}}%
+                        </td>
+                        <td class="show-number" *ngIf="!isExchange&&isVatEnable">
+                            {{round(billItem.actualVat, 2)}}
+                        </td>
+
+                        <td *ngIf="isExchange">
+                            <input name="notes-{{i}}" attr.id="notes-{{i}}" type="text" class="form-control" [(ngModel)]="billItem.notes" #notes="ngModel"  [disabled]="!isSuperAdmin && !isNewSBill"/>
+                        </td>
+
+                        <td class="show-number" *ngIf="!isExchange">{{ round(billItem.totalPrice, 2) }}</td>
+                        <td>
+                            <a  style="width: 50px;" *ngIf="isSuperAdmin || isNewSBill" class="btn btn-link btn-xs" href="javascript:;" (click)="deleteItem(billItem)">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i> {{ "shared.Delete" | translate }}
+                            </a>
+                            <a style="width: 50px;" *ngIf="isSale || isRsale || isNewRsale" class="btn btn-link btn-xs" href="javascript:;" (click)="parseNameDetails(billItem)">
+                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i> 
+                            </a>
+                            <form *ngIf="isNewRsale || isNewRpurch"
+                             #refundForm="ngForm" (ngSubmit)="refundItem(billItem, refundForm)">
+                                <input type="number" style="width: 50px;" name="refundQuantity" ngModel  
+                                #refundQuantity="ngModel"/>
+                                <button  style="margin-top: 5px;width: 50px;" type="submit" class="btn btn-xs btn-primary" href="javascript" [disabled]="( 0 >= refundQuantity.value) || (billItem.quantity == billItem.refundQuantity) ||
+                                 (billItem.refundQuantity + refundQuantity.value > billItem.quantity)">
+                                    <i class="fa fa-reply" aria-hidden="true"></i> {{ "shared.Refund" | translate }}
+                                </button>
+                            </form>
+                            
+                        </td>
+                    </tr>
+                </table>
+                <!--************************************Services**********************************************-->
+                <div *ngIf="isNewRpurch || isNewRsale ||isSale||isRsale||isPurch||isRpurch||isQuate">
+                    <!--div class="row control-box">
+                    <div class="col-sm-6">
+                        <ng-select [items]="service3$ | async"
+                                   placeholder="ابحث عن الخدمة بالكود او الاسم"
+                                   name="select"
+                                   bindLabel="nameAr"
+                                   (change)="serviceSearchSelected($event)"
+                                   [addTag]="false"
+                                   [multiple]="false"
+                                   [hideSelected]="true"
+                                   [loading]="service3Loading"
+                                   [typeahead]="service3input$"
+                                   [(ngModel)]="selectedService">
+                        </ng-select>
+                    </div>
+                </div-->
+
+                    <table class="table table-to-print table-bordered table-striped" *ngIf="allBillService && allBillService.length > 0">
+                        <tr class="withBorder">
+                            <th>#</th>
+                            <th>{{ "shared.code" | translate }}</th>
+                            <th>{{ "shared.NameAr" | translate }}</th>
+                            <th>{{ "shared.nameEn" | translate }}</th>
+                            <th>{{ "shared.price" | translate }}</th>
+                            <th>{{ "shared.quantity" | translate }}</th>
+                            <th  *ngIf="(!isNewSBill && isSale)|| isNewRsale || isNewRpurch|| (!isNewSBill && isPurch)">{{ "shared.refundQuantity" | translate }}</th>
+                            <th>{{ "shared.discount" | translate }}</th>
+                            <th>{{ "shared.pricAfterDiscound" | translate }} {{ "shared.SAR" | translate }}</th>
+                            <th *ngIf="isVatEnable">{{ "shared.vatPercent" | translate }}</th>
+                            <th *ngIf="isVatEnable">{{ "shared.actualValue" | translate }} {{ "shared.SAR" | translate }}</th>
+                            <th>{{ "shared.totalPrice" | translate }} {{ "shared.SAR" | translate }}</th>
+                            <th></th>
+                        </tr>
+                        <tr *ngFor="let billService of allBillService?.reverse(); let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ billService.code }}</td>
+                            <td>{{ billService.nameAr }}</td>
+                            <td>{{ billService.nameEn }}</td>
+                            <td class="show-number">
+                                <input name="priceService-{{i}}" attr.id="priceService-{{i}}" type="text" class="form-control  show-number" [(ngModel)]="billService.price" (change)="onPriceServiceChanged(billService)" [disabled]="!canDiscount() || !isSuperAdmin && !isNewSBill"/>
+                            </td>
+                            <td class="show-number">
+                                <input name="quantityService-{{i}}" attr.id="quantityService-{{i}}" type="text" class="form-control  show-number" [(ngModel)]="billService.quantity" (change)="onPriceServiceChanged(billService)" [disabled]="!isSuperAdmin && !isNewSBill"/>
+                            </td>
+                            <td class="show-number" *ngIf="(!isNewSBill && isSale)|| isNewRsale || isNewRpurch|| (!isNewSBill && isPurch)">
+                                <input name="service-refund-quantity-{{i}}" attr.id="service-refund-quantity-{{i}}" type="number" class="form-control  show-number" [value]="billService.refundQuantity"   disabled />
+                            </td>
+                            <td class="show-number">
+                                <input name="discountService-{{i}}" attr.id="discountService-{{i}}" type="text" class="form-control  show-number" [(ngModel)]="billService.discount" #discount="ngModel" (change)="onDiscountServiceChanged(billService)" [disabled]="!canDiscount() || (!isSuperAdmin && !isNewSBill)"  />
+                            </td>
+                            <td class="show-number">{{ round(billService.price *  billService.quantity - billService.discount, 2) }}</td>
+                            <td *ngIf="isVatEnable">
+                                <!--input name="vatTypeDefaultValueService-{{i}}"
+           attr.id="vatTypeDefaultValueService-{{i}}"
+           type="text"
+           class="form-control"
+           [(ngModel)]="billService.vatTypeDefaultValue"
+
+           (change)="
+            onVatTypeDefaultValueServiceChanged(billService)
+        "
+           [disabled]="true" /-->
+                                {{billService.vatTypeDefaultValue * 100}}%
+                            </td>
+                            <td *ngIf="isVatEnable" class="show-number">
+                                {{round(billService.actualVat, 2)}}
+                            </td>
+
+
+                            <td class="show-number">{{ billService.totalPrice }}</td>
+                            <td>
+                                <a *ngIf="isSuperAdmin || isNewSBill" class="btn btn-link btn-xs" href="javascript:;" (click)="deleteService(billService)">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i> {{ "shared.Delete" | translate }}
+                                </a>
+                                <a style="width: 50px;" *ngIf="isSale || isRsale || isNewRsale" class="btn btn-link btn-xs" href="javascript:;" (click)="parseServiceNameDetails(billService)">
+                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i> 
+                                </a>
+                                <form *ngIf="isNewRsale || isNewRpurch"
+                                 #refundServiceForm="ngForm" (ngSubmit)="refundService(billService, refundServiceForm)">
+                                    <input type="number" style="width: 50px;" name="refundServiceQuantity" ngModel  
+                                    #refundServiceQuantity="ngModel"/>
+                                    <button  style="margin-top: 5px;width: 50px;" type="submit" class="btn btn-xs btn-primary" href="javascript" [disabled]="( 0 >= refundServiceQuantity.value) || (billService.quantity == billService.refundQuantity) ||
+                                     (billService.refundQuantity + refundServiceQuantity.value > billService.quantity)">
+                                        <i class="fa fa-reply" aria-hidden="true"></i> {{ "shared.Refund" | translate }}
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!--****************************print*******************************************-->
+                <!-- <div *ngIf="!sbillEdit.IsOldBillTemplate" class="row col-md-6">
+                 
+                       
+                    <div class="show-number col-md-6">
+                         <label >{{ "shared.discount" | translate }}</label> 
+                        <input name="discount" attr.id="discount" type="number" class="form-control show-number" placeholder="00.00"
+                            name="ngModel" [(ngModel)]="sbillEdit.discount"
+                            [disabled]="( (!canDiscount() || (isThereAnyItemDiscount && discountLimit))) || (!isSuperAdmin && !isNewSBill)" />
+                    </div>
+                    <div class="col-md-6"><button  type="button" (click)="onChangeDiscount(sbillEdit.discount)" class="btn btn-danger"
+                    [disabled]="isSaving">
+                    <i class=""></i>
+                    {{ "shared.discountBill" | translate }}
+                </button>
+            </div>
+                </div> -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <hr [class.edit-separator-hr]="isEditMode" />
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+        <!--*****************************************controls*********************************-->
+
+        <div class="clearfix"></div>
+    </form>
+</div>
+
+
+
+<div #wizard class="wizard">
+    <div class="wizard-item">
+        <div class="form-group">
+            <p class="default">{{defaultLabel}}</p>
+            <label for="header" class="form-label">{{ "shared.setPrintType" | translate }}</label>
+            <select [(ngModel)]="printOptions.printTypes" id="printTypes" class="form-control">
+                <option value="0">{{ "shared.normalPrintOption" | translate }}</option>
+                <option value="1">{{ "shared.thermalprintOption" | translate }}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="footer" class="form-label">{{ "shared.setAsDefault" | translate }}"</label>
+            <input id="default" type="checkbox" (ngModelChange)="defaultChanged($event)" [(ngModel)]="printOptions.setCurrentAsDefault">
+        </div>
+        <button (click)="print($event)" class="btn btn-info">{{ "shared.print" | translate }}</button>
+        <button (click)="closeWizard($event)" class="btn btn-danger">{{ "shared.Close" | translate }}</button>
+    </div>
+</div>

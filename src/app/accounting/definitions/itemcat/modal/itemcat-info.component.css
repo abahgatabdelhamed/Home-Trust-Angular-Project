@@ -1,0 +1,74 @@
+/*.row:not(:last-child) {
+    //border-bottom: 1px solid #ccc;
+}*/
+
+.separator-hr {
+    margin: 0 5px;
+    border-top-style: dashed;
+}
+
+.edit-separator-hr {
+    margin: 10px 5px;
+    border-top-style: dashed;
+}
+input[type=file] {
+    display: none;
+}
+
+.file label {
+    border: 1px solid var(--user-theme);
+    padding: 5px 10px;
+    color: var(--user-theme-background);
+    background: var(--user-theme);
+    border-radius: 10px;
+    box-shadow: 0px 0px 3px var(--user-theme-secoundary);
+  }
+.control-label{
+    padding-bottom: 10px;
+}
+.last-separator-hr {
+    margin-top: 5px;
+}
+.flexy{
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 45px;
+}
+.edit-last-separator-hr {
+    margin-top: 15px;
+}
+
+.show-number {
+    font-family: monospace;
+    font-weight: bolder;
+    font-size: 1.2rem;
+}
+.password-separator-hr {
+    margin: 5px;
+    border-style: none;
+}
+
+
+.form-group {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+input.form-control {
+    border-left-width: 5px;
+}
+
+
+.password-well {
+    margin-bottom: 0;
+}
+
+.hint-sm {
+    display: block;
+}
+@media screen and (max-width:992px) {
+    .flexy{
+        display: block;
+    }
+    
+}

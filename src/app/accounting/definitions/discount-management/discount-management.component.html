@@ -1,0 +1,128 @@
+<div class="flexy">
+    <div class="col-md-3">
+        <div style="padding: 20px 0px;" class="col-md-12 col-12">
+            <label class="control-label col-md-12  col-12">
+                {{discountStatus?('shared.DisableDiscount'|translate):('shared.EnableDiscount'|translate)}}
+            </label>
+            
+            <div class="col-md-12 col-12">
+            <label class="switch " >
+                <input type="checkbox" [(ngModel)]="discountStatus" name="percentage" (change)="changeDiscountStatus()">
+                <span class="slider round"></span>
+            </label>
+        </div>
+        </div>
+    </div>
+    <div  class="row col-md-12 flexy">
+
+
+        <form #f="ngForm">
+            <div class="form-group row col-md-12 flexy">
+                <div class="col-md-6 ">
+
+                    <div class="search-box">
+                        <label for="cat-selected-id" class="my-2">
+                            <!--   itemCategoryName-->
+                            {{'shared.ItemCat'|translate}}
+                        </label>
+                        <ng-select [items]=" Categories " bindLabel="nameAr" [multiple]="true" bindValue="id"
+                            [hideSelected]="true" [loading]="itemSearchLoading" [(ngModel)]="discountModel.ItemCategoriesId"
+                            name="itemCategory" [disabled]="discountModel.AllItemsAndServices"  (change)="SelectedCategoriesChange()">
+                        </ng-select>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- * Search for items  -->
+                    <div class="form-group search-box">
+                        <label for="search-item" class="my-2"> {{'shared.itemName'|translate}}</label>
+
+                        <ng-select [items]="items$ | async" bindLabel="name" bindValue="id" [multiple]="true"
+                            [hideSelected]="true" [loading]="itemSearchLoading" [typeahead]="itemsInput$"
+                            name="itemName" [disabled]="discountModel.AllItemsAndServices"   [(ngModel)]="discountModel.ItemsId" (change)="SelectedItemChange($event)">
+                        </ng-select>
+                    </div>
+                   
+                </div>
+                <div class="col-md-6">
+                    <input class="" type="checkbox" [(ngModel)]="discountModel.AllItemsAndServices" name="All">
+            
+                <label class="control-label">
+                    {{'shared.allItemeAndServices'|translate}}
+                </label>
+                 </div>
+            </div>
+
+             
+            <div class="form-group row col-md-12 flexy">
+                <div class="col-md-3">
+                    <div class="col-md-12 col-12">
+                        <label class="control-label col-md-12  col-12">
+                            {{'shared.discountPercentage'|translate}}
+                        </label>
+                        <div class="col-md-12 col-12">
+                        <label class="switch " >
+                            <input type="checkbox" [(ngModel)]="percentage" name="percentage"checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    </div>
+                </div>
+            <div class="col-md-3">
+                <label class="control-label">
+                    {{'shared.discount'|translate}}
+                </label>
+                <div class="form-control">
+                <input style="border: 0px;
+                width: 90%;"  [(ngModel)]="discountModel.DiscountedValue" name="discount" type="number">
+                <span *ngIf="percentage==true">%</span>
+            </div>
+            </div>
+     
+        
+
+
+            <div class="col-md-2">
+                <!--  -->
+                <br />
+                <button class="btn btn-success my-4" type="submit" [disabled]="!f.form.valid"
+                    (click)="onSubmit(false)">{{'shared.submitDiscount'|translate}}</button>
+
+
+
+            </div>
+            
+            <div class="col-md-2">
+                <!--  -->
+                <br />
+                <button class="btn btn-success my-4" type="submit" [disabled]="!f.form.valid"
+                    (click)="onSubmit(true)">{{'shared.SaveAndPrint'|translate}}</button>
+
+
+
+            </div>
+            <div class="col-md-2">
+                <!--  -->
+                <br />
+                <button class="btn btn-success my-4"  
+                    (click)="reset()">{{'shared.reset'|translate}}</button>
+
+
+
+            </div>
+
+
+
+            </div>
+        </form>
+
+
+
+    </div>
+
+
+
+
+
+
+</div>

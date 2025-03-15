@@ -1,0 +1,245 @@
+<div>
+    <form
+        *ngIf="formResetToggle"
+        class="form-horizontal"
+        name="dailyDocInfoForm"
+        #f="ngForm"
+        novalidate
+        (ngSubmit)="save()"
+    >
+        <div class="form-group has-feedback">
+            <label class="control-label col-md-2" for="code-{{ uniqueId }}">
+                {{ "shared.name" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-10">
+                <p class="form-control-static">{{ accounting.name }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-10">
+                <input
+                    type="text"
+                    attr.id="name-{{ uniqueId }}"
+                    name="name"
+                    class="form-control"
+                    [(ngModel)]="accountingEdit.name"
+                    #name="ngModel"
+                />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+        <!--<div class="form-group has-feedback">
+            <label class="control-label col-md-2" for="code-{{ uniqueId }}">
+                {{ "shared.code" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-10">
+                <p class="form-control-static">{{ accounting.code }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-10">
+                <input
+                    type="text"
+                    attr.id="code-{{ uniqueId }}"
+                    name="code"
+                    class="form-control"
+                    [(ngModel)]="accountingEdit.code"
+                    #name="ngModel"
+                />
+            </div>
+        </div>-->
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label
+                class="control-label col-md-2"
+                for="isDefault-{{ uniqueId }}"
+            >
+                {{ "shared.isDefault" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-10">
+                <p class="form-control-static">
+                    {{ accounting.defaultDisplay }}
+                </p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-1">
+                <input
+                    type="checkbox"
+                    attr.id="isDefault-{{ uniqueId }}"
+                    name="isDefault"
+                    class="form-control"
+                    [(ngModel)]="accountingEdit.isDefault"
+                />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label
+                class="control-label col-md-2"
+                for="initialBalance-{{ uniqueId }}"
+            >
+                {{ "shared.initialBalance" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-10">
+                <p class=" show-number form-control-static">
+                    {{ accounting.initialBalance }}
+                </p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-10 show-number">
+                <input
+                    type="text"
+                    attr.id="initialBalance-{{ uniqueId }}"
+                    name="initialBalance"
+                    class="form-control"
+                    [(ngModel)]="accountingEdit.initialBalance"
+                />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label
+                class="control-label col-md-2"
+                for="personName-{{ uniqueId }}"
+            >
+                {{ "shared.personName" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-10">
+                <p class="form-control-static">{{ accounting.personName }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-10">
+                <select
+                    type="text"
+                    attr.id="personName-{{ uniqueId }}"
+                    name="personName"
+                    class="form-control"
+                    [(ngModel)]="accountingEdit.personId"
+                >
+                    <option value="{{ item.id }}" *ngFor="let item of initial['people']">{{
+                        item.nameAr
+                    }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label
+                class="control-label col-md-2"
+                for="vatTypeId-{{ uniqueId }}"
+            >
+                {{ "shared.accountCategoryName" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-10">
+                <p class="form-control-static">
+                    {{ accounting.accountCategoryName }}
+                </p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-10">
+                <select
+                    attr.id="accountCategoryName-{{ uniqueId }}"
+                    name="accountCategoryName"
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="accountingEdit.accountCategoryId"
+                >
+                    <option *ngFor="let c of initial['accountCategories']" [value]="c.id">{{c.name}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-7">
+                <div class="pull-right">
+                    <button
+                        *ngIf="!isEditMode"
+                        type="button"
+                        (click)="close()"
+                        class="btn btn-default"
+                    >
+                        <i class="fa fa-close"></i>
+                        {{ "shared.Close" | translate }}
+                    </button>
+                    <button
+                        *ngIf="!isEditMode && !isAdvanced"
+                        type="button"
+                        (click)="edit()"
+                        class="btn btn-default"
+                    >
+                        <i class="fa fa-edit"></i>
+                        {{ "shared.Edit" | translate }}
+                    </button>
+                    <button
+                        *ngIf="isEditMode"
+                        type="button"
+                        (click)="cancel()"
+                        class="btn btn-danger"
+                        [disabled]="isSaving"
+                    >
+                        <i class="fa fa-times"></i>
+                        {{ "shared.Cancel" | translate }}
+                    </button>
+                    <button
+                        *ngIf="isEditMode"
+                        type="submit"
+                        class="btn btn-primary"
+                        [disabled]="isSaving"
+                    >
+                        <i *ngIf="!isSaving" class="fa fa-save"></i
+                        ><i
+                            *ngIf="isSaving"
+                            class="fa fa-circle-o-notch fa-spin"
+                        ></i>
+                        {{
+                            isSaving
+                                ? ("shared.Saving" | translate)
+                                : ("shared.Save" | translate)
+                        }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </form>
+</div>

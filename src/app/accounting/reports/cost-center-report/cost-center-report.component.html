@@ -1,0 +1,84 @@
+<div class="header">
+
+  <div class="row flexy col-md-12">
+      <div class="col-md-10">
+          <app-branch-cc-filter (filter)="filter($event)" (exportAsXLSXEvent)="exportAsXLSX()"
+               [withSearch]="false" [withExpensesLables]="false"
+               [withBillTypeFilter]="false"  [validBranch]="isBranch" [validDate]="isProfit" [validCC]="isCC" [withAddNew]="false" [withBranch]='isBranch || isCC'  [withCC]='isCC' [withExportAsXLSX]="showExcelButton"></app-branch-cc-filter>
+     
+  </div>
+ 
+</div>
+<div class="row ">
+    <label class="col-md-4" *ngIf="showExcelButton">{{("shared.itemName"|translate) +' : ' + row3[0].itemUnitDetails[0].itemNameAr}}</label>
+
+    <label class="col-md-4" *ngIf="showExcelButton">{{("shared.itemUnitName"|translate) +' : ' + row3[0].itemUnitDetails[0].unitNameAr}}</label>
+    
+</div>
+<table *ngIf="row3" style="direction: rtl;">
+    <tr class="annotation">
+        <th colspan="8">{{ "shared.storageReport" | translate }}</th>
+    </tr>
+  <tr class="titles">
+
+    <th>{{ "shared.title" | translate }}</th>
+    <th>{{ "shared.income" | translate }}</th>
+    <th>{{ "shared.outcome" | translate }}</th>
+    <th>{{ "shared.net" | translate }}</th>
+
+</tr>
+
+<tr *ngFor="let report of row3" class="data">
+   
+    <td>{{ report.key}}</td>
+    <td>{{ report.in}}</td>
+    <td>{{ report.out }}</td>
+    <td>{{ report.net }}</td>
+</tr>
+</table>
+<table *ngIf="row2" style="direction: rtl;">
+    <tr class="annotation">
+        <th colspan="8">{{ "shared.expensesReport" | translate }}</th>
+    </tr>
+  <tr class="titles">
+   
+      <th  class="right-raduis">{{ "shared.nameAr" | translate }}</th>
+      <th>{{ "shared.nameEn" | translate }}</th>
+      <th  class="left-raduis">{{ "shared.amount" | translate }}</th>
+
+   
+  </tr>
+
+  <tr *ngFor="let report of row2" class="data">
+     
+      <td>{{ report.expenseNameAr}}</td>
+      <td>{{ report.expenseNameEn}}</td>
+      <td>{{ report.amount}}</td>
+
+  </tr>
+</table>
+
+<table *ngIf="row1" style="direction: rtl;">
+
+<tr class="annotation">
+    <th colspan="8">{{ "shared.abstractCostCenterReport" | translate }}</th>
+
+</tr>
+<tr class="annotation">
+  <tr class="titles">
+
+    <th>{{ "shared.name" | translate }}</th>
+    <th>{{ "shared.quantity" | translate }}</th>
+    <th>{{ "shared.value" | translate }}</th>
+   
+
+  
+</tr>
+<tr *ngFor="let report of row1" class="data">
+  
+    <td>{{ report.name }}</td>
+    <td>{{ report.quantity }}</td>
+    <td>{{ report.amount }}</td>
+  
+</tr>
+</table>

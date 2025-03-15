@@ -1,0 +1,308 @@
+<link rel="stylesheet" href="https://unpkg.com/ng2-toasty@4.0.0/style.css">
+<div>
+    <form *ngIf="formResetToggle" class="form-horizontal" name="dailyDocInfoForm" #f="ngForm" (ngSubmit)="save()">
+        <div class="flexy">
+        <div class="form-group col-md-6 has-feedback required">
+            <label *ngIf="isSales" class="control-label col-md-12" for="fromAccount">
+                {{router.url.includes('payment-documents')?("shared.supplierName" | translate):("shared.customerName" | translate) }}
+            </label>
+            <label *ngIf="!isSales" class="control-label col-md-12" for="fromAccount">
+                {{ "shared.fromAccount" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">
+                    {{ ispayment?(dailyDoc.toAccount ? dailyDoc.toAccount.name : "no name"):(dailyDoc.fromAccount ? dailyDoc.fromAccount.name : "no name") }}
+                </p>
+            </div>
+            
+            <div *ngIf="isEditMode" class="col-md-12">
+            
+                <ng-select [items]="account$ | async" [placeholder]=' "shared.fromAccountId" | translate ' name="fromAccountId" bindLabel="name"  (change)="accountSearchSelected($event,ispayment?'toAccount':'fromAccount')" 
+                [addTag]="false" [multiple]="false" required [hideSelected]="true" [loading]="accountLoading" [typeahead]="accountinput$"
+                id="fromAccount"    [(ngModel)]="ispayment?toAccount:fromAccount" required  #membershipID="ngModel" >
+                </ng-select>
+            
+                <!-- <select id="fromAccount" name="fromAccount" [(ngModel)]="ispayment&&!isNewDailyDocument?dailyDocEdit.toAccountId:dailyDocEdit.fromAccountId" (change)="handleFromAccChange($event)" (ngModelChange)="handleFromAccountChange($event)"
+                 #fromAccount="ngModel"
+                 required
+                 #fromAccountSelector="bootstrap-select" class="selectpicker form-control"
+                    bootstrapSelect data-live-search="true" data-actions-box="false" data-live-search-placeholder="Search...">
+                <option *ngIf="newDailyDocument"></option>
+                    <option *ngFor="let f of accounts" value="{{ f.id }}">
+                        {{ f.name }}
+                    </option>
+                </select> -->
+            </div>
+        </div>
+
+        <div class="form-group has-feedback required col-md-6">
+            <label *ngIf="isSales" class="control-label col-md-12" for="toAccount">
+                {{ "shared.paymentMethodelogy" | translate }}
+            </label>
+            <label *ngIf="!isSales" class="control-label col-md-12" for="toAccount">
+                {{ "shared.toAccount" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">
+                    {{ispayment?(dailyDoc.fromAccount ? dailyDoc.fromAccount.name : "no name"):(dailyDoc.toAccount ? dailyDoc.toAccount.name : "no name") }}
+                </p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <ng-select *ngIf="!isSales" [items]="accountto$ | async" [placeholder]=' "shared.toAccountId" | translate ' name="toAccountId" bindLabel="name"  (change)="accountSearchSelected($event,'toAccount')" 
+                [addTag]="false" [multiple]="false" required [hideSelected]="true" [loading]="accountLoadingto" [typeahead]="accountinputto$"
+                id="toAccount"    [(ngModel)]="toAccount" required  #membershipID="ngModel" >
+                </ng-select>
+
+                <!-- <select *ngIf="!isSales" id="toAccount" name="toAccount" [(ngModel)]="dailyDocEdit.toAccountId" class="form-control" (ngModelChange)="handleToAccountChange($event)" (change)="handleAccChange($event)" #toAccountId="ngModel"
+                required
+                #toAccountIdSelector="bootstrap-select"
+                    class="selectpicker form-control" bootstrapSelect data-live-search="true" data-actions-box="false" data-live-search-placeholder="Search...">
+                <option *ngIf="newDailyDocument"></option>
+
+                    <option [defaultSelected]="true" *ngFor="let f of accounts" value="{{ f.id }}">
+                        {{ f.name }}
+                    </option>
+                </select> -->
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <!-- <ng-select *ngIf="isSales" [items]="account$ | async" [placeholder]=' "shared.toAccountId" | translate ' name="toAccountId" bindLabel="name"  (change)="accountSearchSelected($event,ispayment&&!isNewDailyDocument?'fromAccount':'toAccount')" 
+                [addTag]="false" [multiple]="false" required [hideSelected]="true" [loading]="accountLoading" [typeahead]="accountinput$"
+                id="toAccount"    [(ngModel)]="ispayment&&!isNewDailyDocument?fromAccount:toAccount" required  #membershipID="ngModel" >
+                </ng-select> -->
+             
+                <select *ngIf="isSales" #toAccountP
+                required
+                id="toAccountP" name="toAccountP" [(ngModel)]="ispayment?dailyDocEdit.fromAccountId:dailyDocEdit.toAccountId" class="form-control" (ngModelChange)="handleToAccountChange($event)" (change)="handleAccChange($event)"
+                (change)="accountSelected($event,ispayment?'fromAccount':'toAccount')"  #toAccountId="ngModel" #toAccountIdSelector="bootstrap-select"
+                    class="selectpicker form-control" bootstrapSelect data-live-search="true" data-actions-box="false" data-live-search-placeholder="Search...">
+        <option *ngIf="newDailyDocument"></option>
+
+        <option [defaultSelected]="true" *ngFor="let f of accountsSales" value="{{ f.id }}">
+            {{ f.name }}
+        </option>
+    </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode" [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div>
+        <!-- <div *ngIf="(isSales && isEditMode)" class="form-group has-feedback">
+            <label class="control-label col-md-12" for="code-{{ uniqueId }}">
+                {{ "shared.personDebt" | translate }}
+            </label>
+            <div *ngIf="isEditMode && showPersonDebt" class="col-md-12">
+                <p class="form-control-static">{{ personDebt }}</p>
+            </div>
+        </div>
+        <div *ngIf="(isSales && isEditMode)" class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode" [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div> -->
+
+
+        <div *ngIf="!isEditMode && isSales" class="form-group col-md-6">
+            <label class="control-label col-md-12" for="itemCategoryParentId">
+                {{ispayment?("shared.supplierDebt"|translate):("shared.personDebt" | translate)}}</label>
+
+            <div *ngIf="!isEditMode && isSales" class="col-md-12">
+                <p class="form-control-static">
+                    <span class="badge">{{ dailyDoc.dueAmount? dailyDoc.dueAmount: 0 }}</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- <div *ngIf="(isSales && isEditMode)" class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode" [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div> -->
+
+        <div *ngIf="!isEditMode" class="form-group col-md-6">
+            <label class="control-label col-md-12" for="itemCategoryParentId">{{
+                "shared.code" | translate
+            }}</label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">
+                    <span class="badge">{{ dailyDoc.code }}</span>
+                </p>
+            </div>
+        </div>
+        <div *ngIf="!isEditMode" class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode" [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div>
+
+        <div class="form-group required col-md-6">
+            <label class="control-label col-md-12" for="amount-{{ uniqueId }}">
+                {{ "shared.amount" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ dailyDoc.amount }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <input type="text" (change)="handleAmountChange($event)" attr.id="amount-{{ uniqueId }}" name="amount"
+                #amount
+                required
+                class="form-control" [(ngModel)]="dailyDocEdit.amount" />
+            </div>
+        </div>
+        <!-- <div class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode" [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div> -->
+        <div class="form-group col-md-6">
+            <label class="control-label col-md-12" for="defaultCost-{{ uniqueId }}">
+                {{ "shared.notes" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ dailyDoc.notes }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <textarea type="text" attr.id="notes-{{ uniqueId }}" name="notes" class="form-control" [(ngModel)]="dailyDocEdit.notes"></textarea>
+            </div>
+        </div>
+
+        <!-- <div class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode" [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div> -->
+
+        <div class="form-group required col-md-6">
+            <label class="control-label col-md-12" for="vatTypeId-{{ uniqueId }}">
+                {{ "shared.date" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">
+                    {{ dailyDoc.date | date: "dd/MM/yyyy" }}
+                </p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <input attr.id="date-{{ uniqueId }}" name="date" #date
+                placement="top"
+                required
+                type="text" class="form-control" (ngModelChange)="handleDateChanging($event)" [(ngModel)]="dailyDocEdit.date" bsDatepicker />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode" [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div>
+    </div>
+        <section *ngIf="isAdvanced && isEditMode">
+            <button type="button" (click)="handleAdd($event)" class="btn btn-primary" [disabled]="!dailyDocEdit.toAccountId || !dailyDocEdit.fromAccountId || !dailyDocEdit.amount || !dailyDocEdit.date">
+                {{ "shared.add" | translate }}
+            </button>
+            <button type="button" (click)="saveEdited($event)" class="btn btn-primary" *ngIf="hasClickedEdit" [disabled]="!dailyDocEdit.toAccountId || !dailyDocEdit.fromAccountId || !dailyDocEdit.amount || !dailyDocEdit.date">
+                {{ "shared.saveEdited" | translate }}
+            </button>
+            <div class="tbl-header">
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <thead>
+                        <tr>
+                            <th>{{ "shared.fromAccount" | translate }}</th>
+                            <th>{{ "shared.to" | translate }}</th>
+                            <th>{{ "shared.amount" | translate }}</th>
+                            <th>{{ "shared.code" | translate }}</th>
+                            <th>{{ "shared.Edit" | translate }}</th>
+                            <th>{{ "shared.delete" | translate }}</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="tbl-content">
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tbody>
+                        <tr *ngFor="let adv of dailyDocAdvanced">
+                            <td>{{ adv.fromAccount.name }}</td>
+                            <td>{{ adv.toAccount.name }}</td>
+                            <td>{{ adv.amount }}</td>
+                            <td>{{ adv.code }}</td>
+                            <td>
+                                <button (click)="editDoc(adv)" type="button" class="btn btn-info">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <button type="button" (click)="deleteDocAdvanced(adv)" class="btn btn-danger">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <div class="pull-right">
+                    <button *ngIf="!isEditMode" type="button" (click)="close()" class="btn btn-default">
+                        <i class="fa fa-close"></i>
+                        {{ "shared.Close" | translate }}
+                    </button>
+                    <button *ngIf="!isEditMode && !isAdvanced" type="button" (click)="edit()" class="btn btn-default">
+                        <i class="fa fa-edit"></i>
+                        {{ "shared.Edit" | translate }}
+                    </button>
+
+                    <button *ngIf="!isEditMode" type="button" (click)="printDocumnent()" class="btn btn-default">
+                        <i class="fa fa-printer"></i>
+                        {{ "shared.print" | translate }}
+                    </button>
+                     <!-- <button *ngIf="!isEditMode" type="button" (click)="exportAsPDFDocumnent()" class="btn btn-default">
+                    <i
+                    class="fa fa-file-pdf-o"
+                    style="font-size:20px;color:red"
+                ></i>
+                    <span dir="rtl">{{ "shared.exportAsPDF" | translate }}</span>
+                    </button>  -->
+                    <button *ngIf="isEditMode" type="button" (click)="cancel()" class="btn btn-danger" [disabled]="isSaving">
+                        <i class="fa fa-times"></i>
+                        {{ "shared.Cancel" | translate }}
+                    </button>
+                    <button *ngIf="isEditMode" type="button" (click)="saveWithoutPrint($event)" class="btn btn-primary"
+                    [disabled]="isSaving||
+                    (!isAdvanced && (!dailyDocEdit.toAccountId || !dailyDocEdit.fromAccountId || !dailyDocEdit.amount || !dailyDocEdit.date)) || (isAdvanced && !dailyDocAdvanced.length)" >
+                    <i *ngIf="!isSaving" class="fa fa-save"></i
+                    ><i
+                        *ngIf="isSaving"
+                        class="fa fa-circle-o-notch fa-spin"
+                    ></i>
+                    {{
+                        isSaving
+                            ? ("shared.Saving" | translate)
+                            : ("shared.Save" | translate)
+                    }}
+                </button>
+
+
+
+                    <button *ngIf="canPrint()" type="button" (click)="printDocumnent()" class="btn btn-primary">
+                   {{"shared.print" | translate}}
+                    </button>
+                    <button *ngIf="canPrint()" type="submit" class="btn btn-primary" [disabled]="isSaving || !dailyDocEdit.toAccountId || !dailyDocEdit.fromAccountId || !dailyDocEdit.amount || !dailyDocEdit.date">
+                        <i *ngIf="!isSaving" class="fa fa-save"></i
+                        ><i
+                            *ngIf="isSaving"
+                            class="fa fa-circle-o-notch fa-spin"
+                        ></i>
+                        {{
+                            isSaving
+                                ? ("shared.Saving" | translate)
+                                : ("shared.SaveAndPrint" | translate)
+                        }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </form>
+</div>

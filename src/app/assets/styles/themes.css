@@ -1,0 +1,391 @@
+
+/**********************************************************************************************************
+***********************************************************************************************************
+NOTE: SASS is already configured in this project template. To use SASS change your css file extension from
+    *.css to *.scss and you're good to go.
+
+    Example: To use SASS for this file instead of regular CSS follow the below steps
+    1. Uncomment the below SASS and comment out the CSS version of this document
+    2. Change file extension from css to scss
+    3. Change references to this file to use the sass extension
+        i.e. This file is being referenced from "app.component.ts". So replace references to
+            "../themes.css" with "../themes.scss"
+***********************************************************************************************************
+**********************************************************************************************************/
+
+
+
+
+/*//*********** SASS VERSION ***********
+        
+    @mixin app-theme($theme, $color, $footer:#f5f5f5) {
+    .#{$theme}-theme .navbar-inner.app-component {
+        background-color: $color; //#027FF4;
+    }
+             
+    .#{$theme}-theme .panel-primary > .panel-heading {
+        background-color: $color;
+        border-color: $color;
+    }
+
+    .#{$theme}-theme .panel-primary {
+        border-color: $color;
+    }
+
+    .#{$theme}-theme .navbar-inner.footer.app-component {
+        background-color: $footer;
+    }
+
+
+    .#{$theme}-theme .icon-addon .form-control:focus + .glyphicon,
+    .#{$theme}-theme .icon-addon:hover .glyphicon,
+    .#{$theme}-theme .icon-addon .form-control:focus + .fa,
+    .#{$theme}-theme .icon-addon:hover .fa {
+        color: $color; //#2580db;
+    }
+
+    .#{$theme}-theme .clear-input:hover {
+        color: $color !important; //#2580db !important;
+    }
+
+    .#{$theme}-theme .ngx-datatable.material.colored-header .datatable-header {
+        background-color: $color; //#027FF4;
+    }
+              
+
+    .#{$theme}-theme-option {
+        background: $color;        
+        color:white;
+        font-weight:bold;
+        display:inline-block;
+        width:100%;
+        height:100%;
+        text-align:center;
+    }
+}
+
+
+.default-theme-option {
+    background: #027FF4;
+    color:white;
+    font-weight:bold;
+    display:inline-block;
+    width:100%;
+    height:100%;
+    text-align:center;
+}
+
+
+//----------- black theme -----------
+@include app-theme('black', black);
+
+
+//----------- red theme -----------
+@include app-theme('red', red);
+
+
+//----------- orange theme -----------
+@include app-theme('orange', orange);
+
+
+//----------- green theme -----------
+@include app-theme('green', green);
+
+
+//----------- gray theme -----------
+@include app-theme('gray', gray);
+
+
+*/
+
+
+
+
+
+
+/*********** CSS VERSION ***********/
+
+.default-theme-option {
+    background: gray;
+    color: white;
+    font-weight: bold;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+
+/*----------- black theme -----------*/
+
+/*----------- red theme -----------*/
+.pink-theme .navbar-inner.app-component {
+
+  background-color: rgb(255 255 255 / 20%);
+  box-shadow: 0px 3px 3px #00000059;
+
+
+/*#027FF4;*/
+}
+
+.pink-theme .panel-primary > .panel-heading {
+  background-color: rgb(227, 22, 111);
+  border-color: rgb(227, 22, 111);
+}
+
+.pink-theme .panel-primary {
+  border-color: rgb(227, 22, 111);
+}
+.pink-theme .modal-content {
+  position: relative;
+  background-color: rgb(251 243 243) !important;
+}
+.pink-theme .navbar-inner.footer.app-component {
+  background-color: #f5f5f5;
+}
+
+.pink-theme .icon-addon .form-control:focus + .glyphicon,
+.pink-theme .icon-addon:hover .glyphicon,
+.pink-theme .icon-addon .form-control:focus + .fa,
+.pink-theme .icon-addon:hover .fa {
+  color: rgb(227, 22, 111,0.2);  /*#2580db;*/
+}
+
+.pink-theme .clear-input:hover {
+  color: rgb(227, 22, 111,0.2) !important;  /*#2580db !important;*/
+}
+
+.pink-theme .ngx-datatable.material.colored-header .datatable-header {
+  background-color: rgb(227, 22, 111);  /*#027FF4;*/
+}
+
+.pink-theme-option {
+  background: rgb(227, 22, 111);
+  color: white;
+  font-weight: bold;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  border-radius: 20px;
+}
+.pink-theme  .side-menu{
+  background-color: rgb(227, 22, 111);
+}
+
+
+
+/*----------- gray theme -----------*/
+.gray-theme .navbar-inner.app-component {
+  background-color: #e9e9e959;
+    box-shadow: 0px 3px 3px #00000059;
+}
+
+.gray-theme .panel-primary > .panel-heading {
+  background-color: #525252;
+  border-color: #525252;
+}
+
+.gray-theme .panel-primary {
+  border-color: #525252;
+}
+
+.gray-theme .navbar-inner.footer.app-component {
+  background-color: #f5f5f5;
+}
+.gray-theme .navbar.app-component .nav > li > a {
+/*color: white;*/
+}
+.gray-theme .side-menu{
+  background-color: var(--user-theme-secoundary);
+}
+.gray-theme .icon-addon .form-control:focus + .glyphicon,
+.gray-theme .icon-addon:hover .glyphicon,
+.gray-theme .icon-addon .form-control:focus + .fa,
+.gray-theme .icon-addon:hover .fa {
+  color: #525252;  /*#2580db;*/
+}
+
+.gray-theme .clear-input:hover {
+  color: #525252 !important;  /*#2580db !important;*/
+}
+
+.gray-theme .ngx-datatable.material.colored-header .datatable-header {
+  background-color: #525252;  /*#027FF4;*/
+}
+
+.gray-theme-option {
+  background: #525252;
+  color: white;
+  font-weight: bold;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  border-radius: 20px;
+}
+
+
+/*----------- gray theme -----------*/
+.blue-theme .navbar-inner.app-component {
+    background-color: #143367; /*#027FF4;*/
+}
+
+.blue-theme .panel-primary > .panel-heading {
+    background-color: #143367 !important;
+    border-color: #143367 !important;
+}
+
+.blue-theme .panel-primary {
+    border-color: #143367 !important;
+}
+
+.blue-theme .navbar-inner.footer.app-component {
+  background-color: #f5f5f5;
+}
+
+.blue-theme .icon-addon .form-control:focus + .glyphicon,
+.blue-theme .icon-addon:hover .glyphicon,
+.blue-theme .icon-addon .form-control:focus + .fa,
+.blue-theme .icon-addon:hover .fa {
+    color: #143367; /*#2580db;*/
+}
+.blue-theme .navbar-inner.app-component {
+  background-color: rgb(204 204 204 / 10%);
+  box-shadow: 0px 3px 3px #00000059;
+/*#027FF4;*/
+}
+
+.blue-theme .clear-input:hover {
+    color: #143367 !important; /*#2580db !important;*/
+}
+
+.blue-theme .ngx-datatable.material.colored-header .datatable-header {
+    background-color: rgb(20, 51, 103,0.5); /*#027FF4;*/
+}
+
+.blue-theme-option {
+    background: #143367;
+    color: white;
+    font-weight: bold;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    text-align: center;
+}
+
+
+
+/*----------- purple theme -----------*/
+.purple-theme .navbar-inner.app-component {
+
+  background-color: rgb(255 255 255 / 20%);
+  box-shadow: 0px 3px 3px #00000059;
+
+
+/*#027FF4;*/
+}
+
+.purple-theme .panel-primary > .panel-heading {
+  background-color: rgb(122 4 77);
+  border-color: rgb(122 4 77);
+}
+
+.purple-theme .panel-primary {
+  border-color: rgb(122 4 77);
+}
+.purple-theme .modal-content {
+  position: relative;
+  background-color: rgb(251 243 243) !important;
+}
+.purple-theme .navbar-inner.footer.app-component {
+  background-color: #f5f5f5;
+}
+
+.purple-theme .icon-addon .form-control:focus + .glyphicon,
+.purple-theme .icon-addon:hover .glyphicon,
+.purple-theme .icon-addon .form-control:focus + .fa,
+.purple-theme .icon-addon:hover .fa {
+  color: rgb(227, 22, 111,0.2);  /*#2580db;*/
+}
+
+.purple-theme .clear-input:hover {
+  color: rgb(227, 22, 111,0.2) !important;  /*#2580db !important;*/
+}
+
+.purple-theme .ngx-datatable.material.colored-header .datatable-header {
+  background-color: rgb(122 4 77)  /*#027FF4;*/
+}
+
+.purple-theme-option {
+  background: rgb(122 4 77);
+  color: white;
+  font-weight: bold;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  border-radius: 20px;
+}
+.purple-theme  .side-menu{
+  background-color: rgb(122 4 77);
+}
+
+
+
+
+/*----------- red theme -----------*/
+.red-theme .navbar-inner.app-component {
+
+  background-color: rgb(255 255 255 / 20%);
+  box-shadow: 0px 3px 3px #00000059;
+
+
+/*#027FF4;*/
+}
+
+.red-theme .panel-primary > .panel-heading {
+  background-color: #731313;
+  border-color: #731313;
+}
+
+.red-theme .panel-primary {
+  border-color: #731313;
+}
+.red-theme .modal-content {
+  position: relative;
+  background-color: rgb(251 243 243) !important;
+}
+.red-theme .navbar-inner.footer.app-component {
+  background-color: #f5f5f5;
+}
+
+.red-theme .icon-addon .form-control:focus + .glyphicon,
+.red-theme .icon-addon:hover .glyphicon,
+.red-theme .icon-addon .form-control:focus + .fa,
+.red-theme .icon-addon:hover .fa {
+  color: rgb(227, 22, 111,0.2);  /*#2580db;*/
+}
+
+.red-theme .clear-input:hover {
+  color: rgb(227, 22, 111,0.2) !important;  /*#2580db !important;*/
+}
+
+.red-theme .ngx-datatable.material.colored-header .datatable-header {
+  background-color: #731313  /*#027FF4;*/
+}
+
+.red-theme-option {
+  background: #731313;
+  color: white;
+  font-weight: bold;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  border-radius: 20px;
+}
+.red-theme  .side-menu{
+  background-color: #731313;
+}

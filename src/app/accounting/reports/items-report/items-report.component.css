@@ -1,0 +1,20 @@
+.th .td{
+text-align: center !important;
+}
+.btn{
+    margin-top: 26px;
+    height: fit-content;
+}
+.flexy {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+.flexy .bottom-align-text {
+    display: flex;
+    align-items: flex-end;
+  
+  }
+.flex-container{
+  display: inline-flex
+}

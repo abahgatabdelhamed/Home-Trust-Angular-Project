@@ -1,0 +1,100 @@
+<div class="container">
+    <header class="pageHeader">
+        <!-- <h3><i class="fa fa-info-circle fa-lg page-caption" aria-hidden="true"></i> {{'pageHeader.About' | translate}}</h3> -->
+    </header>
+<h3>{{'Client Id:'+clientId}}</h3>
+    <div [@fadeInOut]>
+        <div style="text-align: center;">
+            <p style=" font-size: 24px;">
+{{"settings.tab.Tomorrow'sSolutionsTrading"|translate}}
+                <br />
+                {{"settings.tab.Address"|translate}}
+                            <br />
+            </p>
+        
+        <div class="row" >
+            <div class="col-md-4"></div>
+            <div class="col-md-2" >
+                <a href="tel:014 641 7644" style="font-size: 24px;">
+                    014 641 7644
+                </a>
+            </div>
+            <div class="col-md-2">
+                <label style="font-size: 24px;">
+                  {{"users.management.PhoneNumber"|translate}}
+                </label>
+            </div>   
+        </div>
+        <div class="row" >
+            <div class="col-md-4"></div>
+            <div class="col-md-2" >
+                <a href="tel:9200 12635" style="font-size: 24px;">
+                    9200 12635
+                </a>
+            </div>
+            <div class="col-md-2">
+                <label style="font-size: 24px;">
+                    :{{"shared.UnifiedNumber"|translate}}
+                </label>
+            </div>   
+        </div>
+        <div class="row" >
+            <div class="col-md-4"></div>
+            <div class="col-md-2" >
+                <a href="tel:+966 55 053 5715" style="font-size: 24px;">
+                    +966 55 053 5715
+                </a>
+            </div>
+            <div class="col-md-2">
+                <label style="font-size: 24px;">
+                    :{{"shared.mobile"|translate}}                </label>
+            </div>   
+        </div>
+        
+        <div class="row" >
+            <div class="col-md-4"></div>
+            <div class="col-md-2" >
+                <a href="mailto:info@ts-tc.com" style="font-size: 24px;">
+                    info@ts-tc.com
+                </a>
+            </div>
+            <div class="col-md-2">
+                <label style="font-size: 24px;">
+                    :{{"users.editor.Email"|translate}}
+                </label>
+            </div>   
+        </div>
+        <div class="row" >
+            <div class="col-md-4"></div>
+            <div class="col-md-2"  >
+                <a href="https://www.ts-tc.com/" target="_blank" style="font-size: 24px;">
+                    www.ts-tc.com
+                </a>
+            </div>
+            <div class="col-md-2">
+                <label style="font-size: 24px;">
+                    :{{"users.editor.Website"|translate}}
+                </label>
+            </div>   
+        </div>
+        <br/>
+        <img style="height: 300px;" [src]="appLogo" alt="logo" /> <br />
+    </div>
+       
+        <div *ngIf="isRegistered != null">
+            <div style="padding: 0% 26%;"  *ngIf="!isRegistered || isButtonClicked">
+                {{"settings.tab.registertheproduct"|translate}} <br />
+                <input class="form-control" type="text" [(ngModel)]="serial" /> <button class="btn btn-success" (click)="Register()">{{"settings.tab.registertheproduct"|translate}}</button>
+            </div>
+            <div style="text-align:center; color:green; font-size: 24px;" *ngIf="isRegistered > 0">
+                <span>{{"settings.tab.Theproductisregistered"|translate}}</span>
+                <span *ngIf="(isRegistered < 10000)">- {{"shared.Remaining"|translate}} {{isRegistered}} {{"shared.day"|translate}}</span>
+                <span *ngIf="(isRegistered > 10000)">- {{"shared.wholelife"|translate}}</span>
+
+                <br />
+                <button *ngIf="(isRegistered < 10000)" class="btn btn-success" (click)="ReRegister()">{{"settings.tab.Re-registertheproduct"|translate}}</button>
+            </div>
+        </div>
+
+    </div>
+</div>

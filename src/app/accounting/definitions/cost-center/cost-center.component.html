@@ -1,0 +1,239 @@
+<div>
+    <div class="row">
+        <h2>{{"shared.costCenterbranch"|translate}} {{branchname}}</h2>
+        <br><br>
+        <div class="row control-box">
+            <div class="col-md-6">
+                <div class="form-group search-box">
+                    <search-box (searchChange)="onSearchChanged($event)"
+                        placeholder="{{'shared.SearchItem' | translate}}">></search-box>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-success" (click)="openEditModal()">
+                    <i class="fa fa-plus-circle"></i>
+                    {{ "shared.NewItem" | translate }}
+                </button>
+            </div>
+        </div>
+        <ngx-datatable class="material colored-header sm table table-striped table-hover"
+            [loadingIndicator]="loadingIndicator" [rows]="rows" [rowHeight]="35" [headerHeight]="35" [footerHeight]="35"
+            [columns]="columns" [scrollbarV]="true" [columnMode]="'force'">
+        </ngx-datatable>
+
+        <ng-template #indexTemplate let-value="value">
+            <strong>{{ value }}</strong>
+        </ng-template>
+
+        <ng-template #date let-value="value">
+            {{value | date:'yyyy/MM/dd'}}
+        </ng-template>
+
+
+        <ng-template #status let-value="value">
+            {{value?("shared.closedStatus"|translate):("shared.openStatus"|translate)}}
+        </ng-template>
+
+
+
+        <ng-template #actionsTemplate let-row="row" let-value="value" let-i="index">
+            <div>
+                <a class="btn btn-link btn-xs" href="javascript:;"
+                    [routerLink]="['/definitions/expenses-template/', 'expenses-tree', row.expensesTreeHeadId]">
+                    <i class="fa fa-sitemap" aria-hidden="true"></i>
+                    {{ "shared.Show" | translate }}
+                </a>
+                <a class="btn btn-link btn-xs" href="javascript:;" (click)="edit(row)">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    {{ "shared.Edit" | translate }}
+                </a>
+                <a *ngIf='!row.closedDate'class="btn btn-link btn-xs" href="javascript:;" (click)="openCloseModal(row, dateClosedTemplate)">
+                    <i class="fa fa-close" aria-hidden="true"></i>
+                    {{ "shared.Close" | translate }}
+                </a>
+                <a class="btn btn-link btn-xs" href="javascript:;" (click)="delete(row)">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    {{ "shared.Delete" | translate }}
+                </a>
+            </div>
+        </ng-template>
+
+        <ng-template #dateClosedTemplate let-startDate="startDate">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">{{"shared.edit" | translate}}</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row flexy">
+                    <div class="col-md-9">
+                        <label for="date-closed">{{'shared.closedDate'|translate}}</label>
+                        <input type="text" name="date-closed" date="date" class="form-control" bsDatepicker
+                            [minDate]="minDate" [maxDate]="maxDate" required #dateClosed="ngModel" ngModel
+                            [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" />
+                    </div>
+                    <div class="col-md-3 bottom-align-text">
+                        <button type="button" class="btn btn-success" (click)="closeCostCenter(dateClosed.value)"
+                            [disabled]="!dateClosed.valid">
+                            {{"shared.submit" | translate}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </ng-template>
+
+
+        <ng-template #editTemplate class="modal-dialog modal-lg">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">{{selectedCostCenter?.id ?
+                    ("shared.edit" | translate):
+                    ("shared.add" | translate)}}</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form #f="ngForm" (ngSubmit)="f.form.valid ? save() : showErrorAlert('يوجد حقول مطلوبة', '')">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label class="control-label" for="nameAr">
+                                {{"shared.NameAr" | translate }}
+                            </label>
+                            <input id="nameAr" name="nameArInput" #nameArInput="ngModel" class="form-control"
+                                [(ngModel)]="selectedCostCenter.nameAr" required />
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label class="control-label" for="nameEn">
+                                {{"shared.nameEn" | translate }}
+                            </label>
+                            <input id="nameEn" name="nameEnInput" #nameEnInput="ngModel" class="form-control"
+                                [(ngModel)]="selectedCostCenter.nameEn" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="date-from">{{'shared.startDate'|translate}}</label>
+                            <input type="text" name="date-from" date="date" class="form-control"
+                                [(ngModel)]="selectedCostCenter.startDate"
+                                [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" required bsDatepicker
+                                [disabled]="selectedCostCenter.status == 1 && selectedCostCenter.id" />
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5 form-group">
+                                <label for="item-id">{{'shared.item'|translate}}</label>
+                                <ng-select name="item-id" [items]="items" bindLabel="nameAr" bindValue="id"
+                                    [multiple]="false" [disabled]="selectedCostCenter.id"
+                                    [(ngModel)]="selectedCostCenter.itemId" required>
+                                </ng-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="!selectedCostCenter.id">
+                        <div class="col-md-6 form-group">
+                            <label for="expenses-template-id">{{'shared.expenses-template'|translate}}</label>
+                            <ng-select name="expenses-template-id" [items]="expensesTemplates" bindLabel="nameAr"
+                                bindValue="id" [multiple]="false" [(ngModel)]="selectedExpensesTemplate">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="pull-right">
+                                <button type="submit" class="btn btn-success" style="width:75px;"
+                                    [disabled]="!f.form.valid">{{selectedCostCenter?.id ?
+                                    ("shared.edit" | translate):
+                                    ("shared.add" | translate)}}</button>
+                                
+                                <button type="button" class="btn btn-primary" *ngIf="!selectedCostCenter.id" (click)="closeModal()" style="width:75px;">
+                                        <i class="fa fa-close"></i>
+                                        {{ "shared.Close" | translate }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <hr *ngIf="selectedCostCenter.id">
+                <section *ngIf="selectedCostCenter.id">
+                    <h3 class="section-title col-md-12 text-center">{{"shared.Costcenteritemunits" | translate}}</h3>
+                    <div class="row flexy">
+                        <div class="form-group col-md-4">
+                            <label for="initialQuantity">
+                                {{ "shared.initialQuantity" | translate }}
+                            </label>
+                            <input id="initialQuantity" [(ngModel)]="selectedItemUnitBrach.initialQuantity" type="number"
+                                name="initialQuantity" class="form-control" />
+                        </div>
+
+                        <div class="col-md-4 form-group">
+                            <label for="expireDate">
+                                {{ "shared.expireDate" | translate }}
+                            </label>
+                            <input id="expireDate" [(ngModel)]="selectedItemUnitBrach.expireDate" type="text"
+                                name="expireDate" class="form-control" bsDatepicker
+                                [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" />
+                        </div>
+
+                        <div class="form-group col-md-4 bottom-align-text">
+                            <button type="submit" (click)="saveItemUnit()" class="btn btn-success table-button" [disabled]="!selectedItemUnitBrach.id">
+                                {{ "shared.saveEdited" | translate }}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tbl-header">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>{{ "shared.itemNameOffer" | translate }}</th>
+                                    <th>{{ "shared.itemUnitName" | translate }}</th>
+                                    <th>{{ "shared.expirationDate" | translate }}</th>
+                                    <th>{{ "shared.initialQuantity" | translate }}</th>
+                                    <th>{{"shared.realQuantity" | translate}}</th>
+                                    <th>{{ "shared.Edit" | translate }}</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="tbl-content">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tbody>
+                                <tr *ngFor="let i of selectedCostCenter?.itemUnitBranches; let idx=index;">
+                                    <td>{{idx + 1}}</td>
+                                    <td>{{ i.itemName }}</td>
+                                    <td>{{ i.itemUnitName }}</td>
+                                    <td>{{ i.expireDate | date: "dd/MM/yyyy" }}</td>
+                                    <td>{{ i.initialQuantity }}</td>
+                                    <td>{{ i.realQuantity }}</td>
+                                    <td>
+                                        <button (click)="editUnitBranch(i)" type="button" class="btn btn-info">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <hr *ngIf="selectedCostCenter.id">
+                <div class="row">
+                    <div class="pull-right">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary" *ngIf="selectedCostCenter.id" (click)="closeModal()" style="width:75px;">
+                                <i class="fa fa-close"></i>
+                                {{ "shared.Close" | translate }}</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </ng-template>

@@ -1,0 +1,307 @@
+<div>
+    <form
+        *ngIf="formResetToggle"
+        class="form-horizontal"
+        name="dailyDocInfoForm"
+        #f="ngForm"
+        novalidate
+        (ngSubmit)="save()"
+    >
+        <div class="form-group has-feedback required">
+            <label class="control-label col-md-12" for="fromAccount">
+                {{ "shared.paymentMethodelogy" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">
+                    {{
+                        dailyDoc.fromAccount
+                            ? dailyDoc.fromAccount.name
+                            : "no name"
+                    }} ****
+                </p>
+
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <select
+                    id="fromAccount"
+                    name="fromAccount"
+                    [(ngModel)]="dailyDocEdit.fromAccountId"
+                    #itemCategoryParentId=""
+                    #fromAccount="ngModel"
+                    required
+                    #itemCategoryParentIdSelector="bootstrap-select"
+                    class="selectpicker form-control"
+                    bootstrapSelect
+                    data-live-search="true"
+                    data-actions-box="false"
+                    data-live-search-placeholder="Search..."
+                >
+                    <option attr.value="0"> </option>
+                    <option *ngFor="let f of accounts" attr.value="{{ f.id }}">
+                        {{ f.name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+        <div class="form-group has-feedback required">
+            <label class="control-label col-md-12" for="toAccount">
+                {{ "shared.personName" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">
+                    {{
+                        dailyDoc.toAccount ? dailyDoc.toAccount.name : "no name"
+                    }}
+                </p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <select
+                    id="toAccount"
+                    name="toAccount"
+                    #toAccount="ngModel"
+                    required
+
+                    [(ngModel)]="dailyDocEdit.toAccountId"
+                    #itemCategoryParentId=""
+                    #itemCategoryParentIdSelector="bootstrap-select"
+                    class="selectpicker form-control"
+                    bootstrapSelect
+                    data-live-search="true"
+                    data-actions-box="false"
+                    data-live-search-placeholder="Search..."
+                >
+                    <option attr.value="0"> </option>
+                    <option *ngFor="let f of accounts" attr.value="{{ f.id }}">
+                        {{ f.name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+        <div class="form-group has-feedback">
+            <label class="control-label col-md-12" for="personDebt-{{ uniqueId }}">
+                {{ "shared.personDebt" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ dailyDoc.code }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <input
+                    type="text"
+                    attr.id="name-{{ uniqueId }}"
+                    name="name"
+                    class="form-control"
+                    [(ngModel)]="dailyDocEdit.code"
+                    #name="ngModel"
+                    required
+                />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <div class="form-group required">
+            <label class="control-label col-md-12" for="amount-{{ uniqueId }}">
+                {{ "shared.amount" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ dailyDoc.amount }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <input
+                    type="text"
+                    attr.id="amount-{{ uniqueId }}"
+                    name="amount"
+                    #amount="ngModel"
+                    required
+                    class="form-control"
+                    [(ngModel)]="dailyDocEdit.amount"
+                />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+        <div class="form-group required">
+            <label
+                class="control-label col-md-12"
+                for="defaultCost-{{ uniqueId }}"
+            >
+                {{ "shared.notes" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ dailyDoc.notes }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <textarea
+                    type="text"
+                    attr.id="notes-{{ uniqueId }}"
+                    name="notes"
+                    class="form-control"
+                    [(ngModel)]="dailyDocEdit.notes"
+                ></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <div class="form-group required">
+            <label
+                class="control-label col-md-12"
+                for="vatTypeId-{{ uniqueId }}"
+            >
+                {{ "shared.date" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ dailyDoc.date }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <input
+                    attr.id="date-{{ uniqueId }}"
+                    name="date"
+                    type="text"
+                    #date="ngModel"
+                    required
+                    class="form-control"
+                    [(ngModel)]="dailyDocEdit.date"
+                    bsDatepicker
+                />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+        <section *ngIf="isAdvanced && isEditMode">
+            <button (click)="handleAdd($event)" class="btn btn-primary">
+                Add
+            </button>
+            <div class="tbl-header">
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <thead>
+                        <tr>
+                            <th>{{ "shared.fromAccount" | translate }}</th>
+                            <th>{{ "shared.to" | translate }}</th>
+                            <th>{{ "shared.amount" | translate }}</th>
+                            <th>{{ "shared.code" | translate }}</th>
+                            <th>{{ "shared.delete" | translate }}</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="tbl-content">
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tbody>
+                        <tr *ngFor="let adv of dailyDocAdvanced">
+                            <td>{{ adv.fromAccount.name }}</td>
+                            <td>{{ adv.toAccount.name }}</td>
+                            <td>{{ adv.amount }}</td>
+                            <td>{{ adv.code }}</td>
+                            <td>
+                                <button
+                                    (click)="deleteDocAdvanced(adv)"
+                                    class="btn btn-danger"
+                                >
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <div class="form-group">
+            <div class="col-sm-7">
+                <div class="pull-right">
+                    <button
+                        *ngIf="!isEditMode"
+                        type="button"
+                        (click)="close()"
+                        class="btn btn-default"
+                    >
+                        <i class="fa fa-close"></i>
+                        {{ "shared.Close" | translate }}
+                    </button>
+                    <button
+                        *ngIf="!isEditMode && !isAdvanced"
+                        type="button"
+                        (click)="edit()"
+                        class="btn btn-default"
+                    >
+                        <i class="fa fa-edit"></i>
+                        {{ "shared.Edit" | translate }}
+                    </button>
+                    <button
+                        *ngIf="isEditMode"
+                        type="button"
+                        (click)="cancel()"
+                        class="btn btn-danger"
+                        [disabled]="isSaving"
+                    >
+                        <i class="fa fa-times"></i>
+                        {{ "shared.Cancel" | translate }}
+                    </button>
+                    <button
+                        *ngIf="isEditMode"
+                        type="submit"
+                        class="btn btn-primary"
+                        [disabled]="isSaving"
+                    >
+                        <i *ngIf="!isSaving" class="fa fa-save"></i
+                        ><i
+                            *ngIf="isSaving"
+                            class="fa fa-circle-o-notch fa-spin"
+                        ></i>
+                        {{
+                            isSaving
+                                ? ("shared.Saving" | translate)
+                                : ("shared.Save" | translate)
+                        }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </form>
+</div>

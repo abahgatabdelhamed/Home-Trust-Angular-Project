@@ -1,0 +1,107 @@
+<div class="flexy">
+    <form #f="ngForm">
+    <div class="row col-md-12 flexy">
+        <!-- select branch  maxSelectedItems="1"-->
+
+ 
+            <div class="col-md-3 ">
+
+                <div class="search-box">
+                    <label for="cat-selected-id" class="my-2">
+                        <!--   itemCategoryName-->
+                        {{'shared.ItemCat'|translate}}
+                    </label>
+                    <ng-select [items]=" Categories " bindLabel="nameAr" [multiple]="true" bindValue="id"
+                        [hideSelected]="true" name="category" [loading]="itemSearchLoading" [(ngModel)]="selectedItemCategory"
+                        (change)="SelectedCategoriesChange()">
+                    </ng-select>
+    
+                </div>
+            </div>
+            <div class="col-md-3">
+                <!-- * Search for items  -->
+                <div class="form-group search-box">
+                    <label for="search-item" class="my-2"> {{'shared.itemName'|translate}}/
+                        {{'shared.Service'|translate}}</label>
+    
+                    <ng-select [items]="items$ | async" bindLabel="name" bindValue="id" [multiple]="true"
+                        [hideSelected]="true" [loading]="itemSearchLoading" [typeahead]="itemsInput$"
+                        [(ngModel)]="selectdItem" name="item" (change)="SelectedItemChange($event)">
+                    </ng-select>
+                </div>
+            </div>
+    
+        <div class="col-md-3">
+            <label for="branch-selected-id" class="my-2">{{'shared.branch'|translate}}</label>
+            <ng-select [items]="AllBranchData" bindLabel="name" bindValue="id" [multiple]="false"
+                [(ngModel)]="selectedBranch" name="branch" (change)="SearchSelectedBranch()">
+            </ng-select>
+        </div>
+        <div class="col-md-3">
+            <label for="used-labels-id">{{'shared.users'|translate}}</label>
+            <ng-select name="used-labels-id" [items]="Users" name="user" bindLabel="fullName" bindValue="id" [multiple]="false"
+                [(ngModel)]="userSelected">
+            </ng-select>
+        </div>
+       
+
+           
+            <div class="col-md-3 form-group">
+                <label class="control-label" for="from">
+                    {{ "shared.from" | translate }}
+                </label>
+                <input type="text" attr.id="from" required name="from" class="form-control" [(ngModel)]="fromDate"
+                    #name="ngModel" bsDatepicker />
+                <timepicker name="fromTime" [(ngModel)]="fromTime"></timepicker>
+
+            </div>
+            <div class="col-md-3 form-group">
+                <label class="control-label" for="itemCategoryParentId">
+                    {{ "shared.to" | translate }}
+                </label>
+                <input type="text" attr.id="code" required name="code" class="form-control" [(ngModel)]="toDate"
+                    #name="ngModel" bsDatepicker />
+                <timepicker [(ngModel)]="toTime" name="toTime"></timepicker>
+            </div>
+            <div class="col-md-1">
+                <!--  -->
+                <br />
+                <button class="btn btn-success my-4" type="submit" [disabled]="!f.form.valid"
+                    (click)="onSubmit()">{{'shared.submit'|translate}}</button>
+        
+        
+        
+            </div>
+        
+            <div *ngIf="view" class="col-md-1 export-btn">
+                <br />
+                <div class="btn" style="padding: 0px;" (click)="exportAsXLSX()"><img src="../../../../assets/Excel.png"
+                        width="35px" height="35px"></div>
+        
+        
+            </div>
+   
+
+
+    </div>
+
+</form>
+
+
+
+
+
+  
+</div>
+
+<!-- table report solid item -->
+<div class="row my-2">
+
+    <div class="table-design-css" *ngIf="rows">
+        <ngx-datatable id="data" class="material colored-header sm table table-striped    table-hover"
+            [loadingIndicator]="loadingIndicator" [rows]="rows" [columns]="columns" [rowHeight]="35" [headerHeight]="35"
+            [externalPaging]="false" [footerHeight]="35" [scrollbarV]="false" [columnMode]="'force'"
+            [count]="page.count" [offset]="page.offset" [limit]="page.size">
+        </ngx-datatable>
+    </div>
+</div>

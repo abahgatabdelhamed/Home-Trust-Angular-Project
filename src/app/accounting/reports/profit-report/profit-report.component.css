@@ -1,0 +1,126 @@
+.itemcat-role {
+    font-size: 0.8em !important;
+    margin-right: 1px;
+}
+
+.control-box {
+    margin-bottom: 5px;
+}
+.panel{
+    border: none;
+    box-shadow:none
+}
+.panel-group .panel-heading {
+    padding: 0%;
+    margin-top: 10px;
+}
+.search-box {
+    margin: 0;
+}
+.flex{
+    display: flex;
+    justify-content: flex-end;
+}
+.action-box {
+    margin: 0 50px 0 0;
+    min-height: 0;
+}
+
+
+.results {
+    background: var(--user-theme);
+    color: white;
+}
+
+.action-box .toolbaritem a {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    min-width: 100px;
+}
+
+@media (max-width: 768px) {
+    .action-box {
+        margin: 0 14px;
+    }
+}
+
+.custom-loader {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    border: 10px solid var(--user-theme);
+    border-top: 10px solid white;
+    background: white;
+    animation: rotating 700ms linear infinite 400ms;
+}
+
+
+table,
+th,
+td {
+    /* border: 1px solid rgb(145, 141, 141); */
+    padding: 10px;
+    text-align: center;
+    color: var(--user-theme-secoundary);
+    /* box-shadow: 0px 0px 3px #00000059; */
+    border: 0px;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+    color: var(--user-theme-secoundary);
+    box-shadow: 0px 0px 3px #00000059;
+    border: 0px;
+}
+.titles {
+    color: var(--user-theme-secoundary);
+    box-shadow: 0px 0px 3px #00000059;
+    border: 0px;
+}
+.annotation {
+    color: var(--user-theme-secoundary);
+    box-shadow: 0px 0px 3px #00000059;
+    border: 0px;
+}
+
+.nav {
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.nav ul li {
+    height: 100%;
+    cursor: pointer;
+    text-align: center;
+}
+
+.nav ul {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    background: #222;
+    color: white;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav li {
+    list-style-type: none;
+    flex-basis: 30%;
+    padding: 10px;
+    height: 100%;
+}
+
+.current {
+    background: var(--user-theme);
+}
+
+.flexy {
+    display: flex;
+  }
+
+.flexy .bottom-align-text {
+    display: flex;
+    align-items: flex-end;
+  
+  }

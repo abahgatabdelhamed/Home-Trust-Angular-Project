@@ -1,0 +1,61 @@
+<div *ngIf="stistics&&stistics.length>0" class="col-md-10 " style="padding: 0px 47px;">
+    <div [@fadeInOut] style="margin-top:7%;text-align: center;" class="row">
+      <div class="" style="display: flex;justify-content: center;    padding-bottom: 75px ;">  <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio0" name="optradio" value="d"  (change)="getResult($event.target.value)">{{'shared.dailyReport'|translate}}
+            <label class="form-check-label" for="radio0"></label>
+          </div>
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio1" name="optradio" value="w" checked   (change)="getResult($event.target.value)">{{'shared.weekly'|translate}}
+            <label class="form-check-label" for="radio1"></label>
+          </div>
+          <div class="form-check">
+            <input type="radio" class="form-check-input" id="radio2" name="optradio" value="m"   (change)="getResult($event.target.value)">{{'shared.monthly'|translate}}
+            <label class="form-check-label" for="radio2"></label>
+          </div>
+          <div class="form-check">
+            <input type="radio"class="form-check-input" id="radio3" name="optradio" value="y"   (change)="getResult($event.target.value)">{{'shared.yearly'|translate}}
+            <label class="form-check-label" for="radio3"></label>
+          </div>
+        </div>
+        <div  *ngIf="stistics" class="statistics">
+                <div class="report" *ngFor="let r of stistics">
+                      <div class="title">{{r.name|translate}}</div>
+                      <div class="content">
+                        <div class="w-100">
+                            <div>{{'shared.amount'|translate}}</div>
+                            <div>{{r.amount}}</div>
+                        </div>
+                        <div class="w-100">
+                            
+                            <div>{{'shared.billCount'|translate}}</div>
+                            <div>{{r.count}}</div>
+                        </div>
+                      </div>
+
+                </div>
+                <div *ngIf="stistics&&stistics.length>0" class="report">
+                    <div class="title">{{profit.name|translate}}</div>
+                    <div class="content">
+                        <div class="w-100">
+                          
+                            <div>{{'shared.sales'|translate}}</div>
+                            <div>{{profit.sales}}</div>
+                        </div>
+                      <div class="w-100">
+                          <div>{{'shared.cost'|translate}}</div>
+                          <div>{{profit.cost}}</div>
+                      </div>
+                      <div class="w-100">
+                          
+                          <div>{{'shared.total'|translate}}</div>
+                          <div>{{profit.total}}</div>
+                      </div>
+                      
+                    </div>
+
+              </div>
+        </div>
+  
+          <div *ngIf="configurations.language=='ar'" class="col-md-2"></div>
+    </div>
+</div>

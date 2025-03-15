@@ -1,0 +1,323 @@
+<div id="app_container" class="{{configurations.theme | lowercase}}-theme">
+    <ng2-toasty [position]="configurations.language=='ar'?'top-left':'top-right'"></ng2-toasty>
+    <div class='containe'>
+        <nav *ngIf="isUserLoggedIn&& configurations.language=='ar'" id="header"
+            class="app-component navbar navbar-inner navbar-fixed-top">
+            <nav class="container nav1 row" style="">
+                <div class="col-md-2 col-sm-2"></div>
+                <div class="col-md-10 col-sm-9" style="width: auto;">
+                    <div class="navbar-header" [ngStyle]="{'padding-left':configurations.language=='en'?'20%':'0%'}">
+
+                    </div>
+
+                    <div *ngIf="isUserLoggedIn && router.isActive('/login', false) || false"
+                        class="app-component collapse navbar-collapse menuItemsContainer rtl">
+                        <ul class="app-component nav navbar-nav nav-pills navBarPadding">
+                            <li routerLinkActive="active"><a routerLink="/about"><span
+                                        class="glyphicon glyphicon-info-sign"></span></a></li>
+                        </ul>
+                    </div>
+                    <div *ngIf="isUserLoggedIn  && configurations.language=='ar'"
+                        class="app-component collapse navbar-collapse menuItemsContainer col-md-10">
+                        <ul style="    position: fixed;
+                    left: 4px;" class="app-component nav navbar-nav nav-pills navBarPadding ">
+                            <li (click)="logout()">
+                                <a href="javascript:;">
+                                    <span class="glyphicon glyphicon-log-out"></span>
+                                    {{'mainMenu.Logout' | translate}}
+                                </a>
+                            </li>
+                            <p class="app-component navbar-text navbar-right notifications-popup ltr">
+                                <!-- {{'app.Welcome' | translate}} -->
+                                {{userName}}
+                            </p>
+                        </ul>
+
+                        <ul *ngIf="isThereIsUpdate" class="app-component nav navbar-nav nav-pills navBarPadding ">
+                            <li routerLinkActive="active"><a routerLink="/settings"
+                                    fragment="updates"><span>{{'mainMenu.Update' | translate}}</span></a></li>
+                        </ul>
+                        <ul class="app-component nav navbar-nav nav-pills navBarPadding ">
+                            <li routerLinkActive="active"><a routerLink="/settings"><span
+                                        class="glyphicon glyphicon-cog"></span></a></li>
+                        </ul>
+                        <ul class="app-component nav navbar-nav nav-pills navBarPadding">
+
+                            <li routerLinkActive="active"><a routerLink="/about">{{'mainMenu.About' | translate}}</a>
+                            </li>
+
+                            <li *ngIf="mainTaps[7].active" routerLinkActive="active"><a
+                                    routerLink="/tools">{{'mainMenu.Tools' |
+                                    translate}}</a></li>
+
+                            <li *ngIf="mainTaps[5].active" routerLinkActive="active"><a
+                                    routerLink="/definitions">{{'mainMenu.Definitions' |
+                                    translate}}</a></li>
+
+                            <li *ngIf="mainTaps[4].active" routerLinkActive="active">
+                                <a routerLink="/reports">{{'mainMenu.Reports' | translate}}</a>
+                            </li>
+                            <!-- ************************* -->
+
+                            <li *ngIf="mainTaps[3].active" routerLinkActive="active"><a
+                                    routerLink="/permissions">{{'mainMenu.permissions' | translate}}</a></li>
+                            <!-- ********* here reports link -->
+
+                            <li *ngIf="mainTaps[2].active" routerLinkActive="active"><a
+                                    routerLink="/accounting">{{'mainMenu.Accounting' |
+                                    translate}}</a></li>
+
+                            <li *ngIf="mainTaps[1].active" routerLinkActive="active"><a
+                                    routerLink="/purch">{{'mainMenu.Purch' | translate}}</a></li>
+
+                            <li *ngIf="mainTaps[0].active" routerLinkActive="active"><a
+                                    routerLink="/sales">{{'mainMenu.Sales' | translate}}</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </nav>
+        <nav *ngIf="isUserLoggedIn&&configurations.language=='en'" id="header"
+            class="app-component navbar navbar-inner navbar-fixed-top">
+            <nav *ngIf="isUserLoggedIn && configurations.language=='en'" class="container row">
+                <div class="col-md-2 col-sm-3"></div>
+                <div *ngIf="isUserLoggedIn && configurations.language=='en'"
+                    class="app-component collapse navbar-collapse menuItemsContainer">
+                    <ul style="padding-left: 13px;" class="app-component nav navbar-nav nav-pills navBarPadding">
+                        <!-- <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                            <a routerLink="">
+                                <span class="glyphicon glyphicon-home"></span>
+                            </a>
+                        </li> -->
+                        <li *ngIf="mainTaps[0].active" routerLinkActive="active"><a
+                                routerLink="/sales">{{'mainMenu.Sales' | translate}}</a></li>
+                        <li *ngIf="mainTaps[1].active" routerLinkActive="active"><a
+                                routerLink="/purch">{{'mainMenu.Purch' | translate}}</a></li>
+                        <li *ngIf="mainTaps[2].active" routerLinkActive="active"><a
+                                routerLink="/accounting">{{'mainMenu.Accounting' |
+                                translate}}</a></li>
+                        <li *ngIf="mainTaps[3].active" routerLinkActive="active"><a
+                                routerLink="/permissions">{{'mainMenu.permissions' | translate}}</a></li>
+                        <!-- ********* here reports link -->
+                        <li *ngIf="mainTaps[4].active" routerLinkActive="active">
+                            <a routerLink="/reports">{{'mainMenu.Reports' | translate}}</a>
+                        </li>
+                        <!-- ************************* -->
+
+                        <li *ngIf="mainTaps[5].active" routerLinkActive="active"><a
+                                routerLink="/definitions">{{'mainMenu.Definitions' |
+                                translate}}</a></li>
+
+
+                        <li *ngIf="mainTaps[7].active" routerLinkActive="active"><a
+                                routerLink="/tools">{{'mainMenu.Tools' |
+                                translate}}</a></li>
+
+                        <li routerLinkActive="active"><a routerLink="/about">{{'mainMenu.About' | translate}}</a></li>
+                    </ul>
+                    <ul class="app-component nav navbar-nav nav-pills navBarPadding navbar-right">
+                        <li (click)="logout()">
+                            <a href="javascript:;">
+                                <span class="glyphicon glyphicon-log-out"></span>
+                                {{'mainMenu.Logout' | translate}}
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="app-component navbar-text navbar-right notifications-popup ltr">
+                        <!-- {{'app.Welcome' | translate}} -->
+                        {{userName}}
+                    </p>
+                    <ul *ngIf="isThereIsUpdate"
+                        class="app-component nav navbar-nav nav-pills navBarPadding navbar-right ltr">
+                        <li routerLinkActive="active"><a routerLink="/settings"
+                                fragment="updates"><span>{{'mainMenu.Update' | translate}}</span></a></li>
+                    </ul>
+                    <ul class="app-component nav navbar-nav nav-pills navBarPadding navbar-right ltr">
+                        <li routerLinkActive="active"><a routerLink="/settings"><span
+                                    class="glyphicon glyphicon-cog"></span></a></li>
+                    </ul>
+                </div>
+                <div *ngIf="!isUserLoggedIn && router.isActive('/about', false)"
+                    class="app-component collapse navbar-collapse menuItemsContainer ltr">
+                    <ul class="app-component nav navbar-nav nav-pills navBarPadding navbar-right">
+                        <li routerLinkActive="active"><a routerLink="/login"><span
+                                    class="glyphicon glyphicon-log-in"></span></a></li>
+                    </ul>
+                </div>
+                <div *ngIf="!isUserLoggedIn && router.isActive('/login', false) || false"
+                    class="app-component collapse navbar-collapse menuItemsContainer ltr">
+                    <ul class="app-component nav navbar-nav nav-pills navBarPadding navbar-right">
+                        <li routerLinkActive="active"><a routerLink="/about"><span
+                                    class="glyphicon glyphicon-info-sign"></span></a></li>
+                    </ul>
+                </div>
+            </nav>
+        </nav>
+
+
+        <!------ Include the above in your HEAD tag ---------->
+
+        <div *ngIf="!isAppLoaded" class="container main-wrap">
+
+            <div class="row">
+
+                <div class="col-md-12 bg">
+                    <div class="loader" id="loader-4">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    جاري تحميل البرنامج
+                </div>
+            </div>
+        </div>
+        <div id="mainContent"  class="app-component" [ngStyle]="{'direction':configurations.language=='ar'?'rtl':'ltr'}">
+            <div>
+                <router-outlet></router-outlet>
+            </div>
+            <div *ngIf="isUserLoggedIn" class="col-sm-2 side-menu s2" [ngStyle]="{'width':sideMenuService.openMenu.value?'200px':'0px'}">
+                <button type="button" (click)="sideMenuService.openMenu.value?closeMenu() :openMenu()" class="app-component navbar-toggle collapsed"
+                    data-toggle="collapse" data-target=".menuItemsContainer.app-component" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="app-component navbar-brand" routerLink="/" [ngStyle]="{'display':!sideMenuService.openMenu.value?'none':''}">
+                    <!-- <img [src]="whiteLogo" alt="logo">
+
+                        <span class="app-component appTitle">{{appTitle}}</span> -->
+                    <p class="trustEn">Trust</p>
+                    <p class="trust">الثقة</p>
+                </a>
+                <div class="mini-side-menu"  [ngStyle]="{'display':!sideMenuService.openMenu.value?'':'','width':'200px'}">
+                    <div *ngFor="let c of mainTaps let i=index">
+                        <a *ngIf="c.active" class="collaps-header" data-bs-toggle="collapse"
+                            href="#collapse{{sideMenu.pageHeader}}" [routerLink]="[c.router]">
+                            <h3><i class={{c.icon}} id="header-icon" aria-hidden="true"></i> {{c.name | translate}}</h3>
+                        </a>
+                        <div *ngIf="pageHeader==c.name">
+                            <ul id="#collapse{{sideMenu.pageHeader}}" class="collapse show"
+                                *ngIf="pageHeader!='pageHeader.Settings'"
+                                class="nav nav-tabs tabs-left">
+                                <li *ngFor="let s of sideMenu" routerLinkActive="active">
+                                    <a *ngIf="s.isActive" (click)="closeMenu()" id="newbill" [routerLink]="[s.routerLink]"
+                                        data-toggle="tab"><i class={{s.icon}} style="color:white;font-size:20px ;"
+                                            aria-hidden="true"></i> {{s.name | translate}}</a>
+
+                                </li>
+
+                            </ul>
+                            <ul id="#collapse{{sideMenu.pageHeader}}" class="collapse show"
+                                *ngIf="pageHeader=='pageHeader.Settings'" class="nav nav-tabs tabs-left">
+                                <li *ngFor="let s of sideMenu">
+                                    <a *ngIf="s.isActive" id={{s.id}} [routerLink]="[s.routerLink ]"
+                                        fragment={{s.fragment}} data-toggle="tab"><i class={{s.icon}}
+                                            style="color:white;font-size:20px ;padding-left: 0px !important;padding-right: 0px !important;"
+                                            aria-hidden="true"></i> {{s.name | translate}}</a>
+
+                                </li>
+
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div *ngIf="isUserLoggedIn && router.isActive('/login', false) || false">
+                        <a class="collaps-header" data-bs-toggle="collapse" [routerLink]="['/about']">
+                            <li routerLinkActive="active"><a style="color: white;" routerLink="/about"><span
+                                        class="glyphicon glyphicon-info-sign"></span></a></li>
+                        </a>
+
+                    </div>
+                    <div>
+                        <div>
+                            <a class="collaps-header" data-bs-toggle="collapse" href="#collapse{{sideMenu.pageHeader}}">
+                                <h3>
+                                    <li (click)="logout()">
+                                        <a style="color: white;" href="javascript:;">
+                                            <span class="glyphicon glyphicon-log-out"></span>
+                                            {{'mainMenu.Logout' | translate}}
+                                        </a>
+                                    </li>
+                                </h3>
+                            </a>
+                        </div>
+                        <div *ngIf="isThereIsUpdate">
+                            <a class="collaps-header" data-bs-toggle="collapse" href="#collapse{{sideMenu.pageHeader}}">
+                                <h3>
+                                    <li routerLinkActive="active"><a style="color:white" routerLink="/settings"
+                                            fragment="updates"><span>{{'mainMenu.Update' | translate}}</span></a></li>
+                                </h3>
+                            </a>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+                <div class="big-menu">
+                    <header  class="pageHeader">
+                        <h3><i class={{iconHeader}} id="header-icon" aria-hidden="true"></i> {{pageHeader | translate}}
+                        </h3>
+                    </header>
+                    <ul  *ngIf="pageHeader!='pageHeader.Settings'"
+                        class="nav nav-tabs tabs-left">
+                        <li *ngFor="let s of sideMenu" routerLinkActive="active">
+                            <a *ngIf="s.isActive" id="newbill" [routerLink]="[s.routerLink]" data-toggle="tab"><i
+                                    class={{s.icon}} style="color:white;font-size:20px ;" aria-hidden="true"></i>
+                                {{s.name | translate}}</a>
+
+                        </li>
+
+                    </ul>
+                    <ul *ngIf="pageHeader=='pageHeader.Settings'" class="nav nav-tabs tabs-left">
+                        <li *ngFor="let s of sideMenu">
+                            <a *ngIf="s.isActive" id={{s.id}} [routerLink]="[s.routerLink ]" fragment={{s.fragment}}
+                                data-toggle="tab"><i class={{s.icon}}
+                                    style="color:white;font-size:20px ;padding-left: 0px !important;padding-right: 0px !important;"
+                                    aria-hidden="true"></i> {{s.name | translate}}</a>
+
+                        </li>
+
+                    </ul>
+                    <div *ngIf="!pageHeader" class="logo-container">
+                        <img style="border-radius: 16px;
+                        height: 100px;
+                        width: 100px;" [src]="appLogo" alt="logo" />
+                        <img style="border-radius: 16px;
+                        height: 100px;
+                        width: 100px;" [src]="baseUrl +'/' + logo" alt="logo" />
+                    
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="footer">
+            <div class="app-component navbar-fixed-bottom navbar-inner footer">
+                <div class="container">
+                    <footer>
+                        <div class="app-component vcenter_text center-block">
+                            <p class="text-center text-muted" style="
+                            background: rgba(20, 51, 103, 0.2);
+                        ">
+                                <span class="appName" style="font-style:italic;">trust</span><span
+                                    class="appName">Accounting</span>
+                                &copy; {{getYear()}}
+                            </p>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="shouldShowLoginModal" class="modal fade" bsModal #loginModal="bs-modal" (onShown)="onLoginModalShown()"
+        (onHidden)="onLoginModalHidden()" (onHide)="onLoginModalHide()" [config]="{backdrop: 'static'}" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <app-login #loginControl isModal="true"></app-login>
+        </div>
+    </div>
+</div>

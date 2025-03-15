@@ -1,0 +1,52 @@
+<div *ngIf="features[0]" class="text-right">
+  <h1>
+    {{'Sales.Tabs.CreateRechargeBill'|translate}}
+  </h1>
+  <hr>
+  <p>{{'Sales.description.CreateRechargeBill'|translate}}
+  </p>
+</div>
+<div *ngIf="features[0]">
+  <ng-select [items]="bill3$ | async" [placeholder]="placeholder" name="membershipID" bindLabel="receiptCode" bindValue="id"
+    (change)="sbillSearchSelected($event)" [addTag]="false" [multiple]="false" [hideSelected]="true"
+    [(ngModel)]="selectedSbill"   [loading]="bill3Loading" [typeahead]="bill3input$" loadingText="جار تحميل فواتير المبيعات">
+  </ng-select>
+
+  
+</div>
+
+<div *ngIf="features[1]" class="text-right">
+  <h1>
+    {{'shared.CreateERechargeBill'|translate}}
+  </h1>
+  <hr>
+  <p>{{'Sales.description.CreateRechargeBill'|translate}}
+  </p>
+</div>
+<div *ngIf="features[1]">
+  <ng-select  [items]="billEx3$ | async" [placeholder]="placeholder" name="membershipID" bindLabel="receiptCode" bindValue="id"
+  (change)="ebillSearchSelected($event)" [addTag]="false" [multiple]="false" [hideSelected]="true"
+    [(ngModel)]="selectedEbill" [loading]="billEx3Loading" [typeahead]="billEx3input$" loadingText="جار تحميل فواتير الصرفيات">
+  </ng-select>
+
+  <div class="row flexy" *ngIf="selectedEbill" style="margin-top: 10px;">
+    <div class="col-md-3">
+      <label>
+        {{ "shared.ReceiptDocumentCode" | translate }}
+      </label>
+      <input type="text" name="receiptCode" class="form-control" 
+      [(ngModel)]="selectedEbill.receiptCode" #receiptCode="ngModel" [disabled]="true" />
+    </div>
+    <div class="col-md-6">
+      <label for="dateRefund">{{'shared.refundDate'|translate}}</label>
+      <input type="text" name="dateRefund" date="date" class="form-control" bsDatepicker [minDate]="minDate"
+        [maxDate]="maxDate" required #dateRefund="ngModel" ngModel [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" />
+    </div>
+    <div class="col-md-3 bottom-align-text">
+      <button type="button" class="btn btn-success" (click)="refund(selectedEbill.id, dateRefund.value)"
+        [disabled]="!dateRefund.valid">
+        {{"shared.submit" | translate}}
+      </button>
+    </div>
+  </div>
+</div>

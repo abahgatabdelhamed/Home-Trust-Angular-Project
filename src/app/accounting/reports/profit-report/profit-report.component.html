@@ -1,0 +1,86 @@
+<div class="header">
+
+    <div class="row flexy col-md-12">
+        <div class="col-md-10">
+            <app-branch-cc-filter (filter)="filter($event)" (exportAsXLSXEvent)="exportAsXLSX()"
+                 [withSearch]="false" [withExpensesLables]="false"
+                 [withBillTypeFilter]="false"  [validBranch]="isBranch" [validDate]="isProfit" [validCC]="isCC" [withAddNew]="false" [withBranch]='isBranch || isCC'  [withCC]='isCC' [withExportAsXLSX]="showExcelButton"></app-branch-cc-filter>
+        </div>
+        <div class="col-md-2 form-group bottom-align-text">
+            <button class="btn btn-success " (click)="collectCost()">{{"shared.collectcost"|translate}}</button>
+        </div>
+    </div>
+   
+</div>
+<div class="custom-loader" *ngIf="isLoading">
+</div>
+
+
+<table *ngIf="profitReports" style="direction: rtl;">
+    <tr class="titles">
+        <th>{{ "shared.indexx" | translate }}</th>
+        <th>{{ "shared.type" | translate }}</th>
+        <th>{{ "shared.category" | translate }}</th>
+        <th>{{ "shared.account" | translate }}</th>
+        <td>{{ "shared.initialQuantity" | translate }}</td>
+        <th>{{ "shared.income" | translate }}</th>
+        <th>{{ "shared.outcome" | translate }}</th>
+        <th>{{ "shared.balance" | translate }}</th>
+    </tr>
+    <tr class="annotation">
+        <th colspan="8">{{ "shared.profitLabel" | translate }}</th>
+    </tr>
+    <tr *ngFor="let report of profitReports.rows" class="data">
+        <th>{{ report.index}}</th>
+        <td>{{ report.type }}</td>
+        <td>{{ report.category }}</td>
+        <td>{{ report.account }}</td>
+        <td>{{ report.initialBalance }}</td>
+        <td>{{ report.income}}</td>
+        <td>{{ report.outcome }}</td>
+        <td>{{ report.balance }}</td>
+    </tr>
+</table>
+<table *ngIf="profitReports" style="direction: rtl;">
+    <tr class="annotation">
+        <th colspan="2">{{ "shared.profitLabel2" | translate }}</th>
+    </tr>
+    <tr *ngFor="let report of profitReports.abstractRows" class="data">
+        <td *ngIf="report.category!='0' || isBranch">{{ report.type }}</td>
+      
+        <td *ngIf="report.category!='0' || isBranch">{{ report.balance }}</td>
+        <!-- <td *ngIf="report.category=='0'" data-toggle="collapse" href="#collapse1">{{ report.type }}</td> -->
+        
+        <div *ngIf="report.category=='0'&& isCC " class="panel-group" >
+            <div class="panel">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a  data-toggle="collapse" href="#collapse1">{{ report.type }}</a>
+                </h4>
+              </div>
+              <div id="collapse1" class="panel-collapse collapse">
+                <table style="direction: rtl;">
+                    <tr class="titles">
+                        <th>{{ "shared.category" | translate }}</th>
+                        <th>{{ "shared.account" | translate }}</th>
+                        <th>{{ "shared.balance" | translate }}</th>
+                    </tr>
+                    <tr class="annotation">
+                        <th colspan="8">{{ "shared.expensesDetails" | translate }}</th>
+                    </tr>
+                    <tr *ngFor="let report of profitReports.expensesDetails" class="data">
+                        
+                        <td>{{ report.category }}</td>
+                        <td>{{ report.account }}</td>
+                        <td>{{ report.balance }}</td>
+                    </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        
+        
+          <td *ngIf="report.category=='0' && isCC">{{ report.balance }}</td>
+    </tr>
+    
+</table>

@@ -1,0 +1,45 @@
+<div>
+    <div class="row">
+        <div class="navbar action-box col-md-4">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="toolbaritem">
+                    <a href="javascript:;" (click)="newBackup()">
+                        <i class="fa fa-plus-circle"></i> {{'roles.management.NewBackup' | translate}}
+                    </a>
+                 
+                </li>
+                
+            </ul>
+          
+        </div>
+        <div class="file col--md-8">
+            <label for="file-input">{{ "shared.chooseFile" | translate }}</label>
+            <input (change)="handleFileChange($event)" id="file-input" type="file">
+            <span *ngIf="uploadDone">تم رفع الملف بنجاح</span>
+            <!-- <span *ngIf="deleteLogoDone">تم حذف الشعار بنجاح</span> -->
+            <div class="btn btn-primary " href="javascript:;" (click)="uploadFile()">
+                {{'shared.Save' | translate}}
+              </div>
+        </div>
+       
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{"settings.tab.BackupName"|translate}}</th>
+                <th>{{"settings.tab.options"|translate}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of backups">
+                <td>{{item}}</td>
+                <td><input class="btn btn-default" type="button" (click)="restoreBackup(item)" value="Restore" /></td>
+                <td>
+
+                        <i class="fa fa-download" style="cursor: pointer;" (click)="download(item)"></i> 
+                    
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

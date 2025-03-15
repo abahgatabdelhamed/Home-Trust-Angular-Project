@@ -1,0 +1,60 @@
+<div class="row control-box">
+  <div class="col-md-12"  style="text-align: center;">
+    <a style="padding-left: 77%;" href="javascript:;" (click)="newApp()">
+      <i class="fa fa-plus-circle"></i>
+      {{ "shared.NewItem" | translate }}
+    </a>
+  </div>
+  <!-- <div class="col-md-12">
+    <app-branch-cc-filter (filter)="filterData($event)" [withSearch]="false" [withAddNew]="true" (addNewEvent)="newApp()"
+      [withExpensesLables]="false" [validBranch]="false" [validCC]="false" [withBranch]='false' [withUser]="false" [withCC]='false'  [withExportAsXLSX]="false"></app-branch-cc-filter>
+  </div> -->
+</div>
+
+<ngx-datatable class="material colored-header sm table table-striped table-hover" [loadingIndicator]="loadingIndicator"
+  [rows]="rows" [rowHeight]="35" [headerHeight]="35" [footerHeight]="35" [columns]="columns" [scrollbarV]="false"
+  [columnMode]="'force'" [externalPaging]="false" [count]="page.count"  [offset]="page.offset" 
+  (page)="setPage($event)">
+</ngx-datatable>
+
+<ng-template #indexTemplate let-value="value" >
+  <strong>{{ value }}</strong>
+</ng-template>
+
+<ng-template #dateTemplate let-value="value" >
+  
+  {{value | date:'yyyy/MM/dd'}}
+</ng-template>
+
+<ng-template #actionsTemplate let-row="row" let-value="value" let-i="index">
+  <div>
+    <a class="btn btn-link btn-xs" href="javascript:;" (click)="info(row)">
+      <i class="fa fa-eye" aria-hidden="true"></i>
+      {{ "shared.Edit" | translate }}
+    </a>
+  </div>
+</ng-template>
+
+<div class="modal fade " bsModal #editorModal="bs-modal" 
+[config]="{ backdrop: 'static' }" tabindex="-1">
+<div class="modal-dialog modal-lg">
+    <div class="modal-content col-md-10">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">
+                <i class="fa fa-itemcat-circle-o"></i>
+                {{
+              
+                 ("shared.deliveryAppinfo" | translate)
+                }}
+            </h4>
+            <button type="button" class="close pull-right" title="Close" (click)="editorModal.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <app-add-delivery-app #viewApp ></app-add-delivery-app> 
+        </div>
+        
+    </div>
+</div>
+</div>

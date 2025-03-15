@@ -1,0 +1,194 @@
+
+<div class="row">
+  <div class="col-md-12">
+      <app-branch-cc-filter (filter)="filter($event)"  (exportAsXLSXEvent)="exportAsXLSX()" [withUser]="true"
+           [withSearch]="false" [withExpensesLables]="false"
+           [withBillTypeFilter]="false" [withTime]="true" [validDate]="true" [validBranch]="false" [validCC]="false" [withAddNew]="false" [withBranch]='true'  [withCC]='CCPermissions' [withExportAsXLSX]="view"></app-branch-cc-filter>
+  </div>
+</div>
+
+<table *ngIf="billSummary.isThereDeliveryAppsValues">
+  <tr >
+    <th colspan="7" class="main-header">{{ "shared.abstractHeader" | translate }}</th>
+  </tr>
+
+  <tr class="table2">
+   
+    <th  style="width:20%;"class="row-type">{{ "shared.net" | translate }}</th>
+  <th  style="width:20%;" class="row-type">{{ "shared.refund" | translate }}</th>
+   <th  style="width:20%;"class="row-type">{{ "shared.sales" | translate }}</th>
+    
+  </tr>
+  
+
+  <tr>  <td style="width:20%;" *ngIf="NetResult.ntotal">{{NetResult.ntotal.toFixed(2)}}</td>
+        <td style="width:20%;" *ngIf="!NetResult.ntotal">{{NetResult.ntotal}}</td>
+        <td style="width:20%;" *ngIf="billSummary.rsWithoutVAt">{{billSummary.rsWithoutVAt.toFixed(2)}}</td>
+        <td style="width:20%;" *ngIf="!billSummary.rsWithoutVAt">{{billSummary.rsWithoutVAt}}</td>
+       
+    <td *ngIf="billSummary.sWithoutVAt">{{billSummary.sWithoutVAt.toFixed(2)}}</td>
+        <td *ngIf="!billSummary.sWithoutVAt">{{billSummary.sWithoutVAt}}</td>
+       
+        
+        <th  style="width:20%;" >{{ "shared.withoutVat" | translate }}</th>
+  </tr>
+  
+  <tr *ngIf="checkPermissions.checkGroup(5,17)"> 
+        <td>{{NetResult.ntobaccovat?NetResult.ntobaccovat:0}}</td>
+    <td>{{billSummary.rTobaccoVat?billSummary.rTobaccoVat:0}}</td>
+
+    <td>{{billSummary.sTobaccoVat?billSummary.sTobaccoVat:0}}</td>
+   
+    <th>{{ "shared.ValueOfTobacco" | translate }}</th>
+  </tr>
+  
+  <tr> 
+    <td >{{NetResult.nvat?NetResult.nvat.toFixed(2):NetResult.nvat}}</td> 
+      <td>{{billSummary.rVat}}</td>
+    <td>{{billSummary.sVat}}</td>
+
+    <th>{{ "shared.Vat" | translate }}</th>
+  </tr>
+  <tr>
+    <td *ngIf="NetResult.ntotalWithVat">{{NetResult.ntotalWithVat.toFixed(2)}}</td>
+    <td *ngIf="billSummary.rsWithVAt">{{billSummary.rsWithVAt.toFixed(2)}}</td>
+    <td *ngIf="!billSummary.rsWithVAt">{{billSummary.rsWithVAt}}</td>
+
+    <td *ngIf="billSummary.sWithVAt">{{billSummary.sWithVAt.toFixed(2)}}</td>
+    <td *ngIf="!billSummary.sWithVAt">{{billSummary.sWithVAt}}</td>
+   
+     
+        <td *ngIf="!NetResult.ntotalWithVat">{{NetResult.ntotalWithVat}}</td>
+       
+    <th >{{ "shared.withVat" | translate }}</th> 
+  </tr>
+ <tr >
+  <th style="border: none;"></th>
+  <th style="border: none;">{{'shared.withVatDependingonthepaymentmethod'|translate}}</th>
+  <th style="border: none;"></th>
+ </tr>
+<tr>
+  <td>{{NetResult.ndebt}}</td>
+  <td>{{billSummary.rDept}}</td>
+  <td>{{billSummary.sDept}}</td>  
+  <th>{{ "shared.debt" | translate }}</th>
+</tr>
+<tr>
+  <td>{{NetResult.nbank}}</td>
+  <td>{{billSummary.rBank}}</td>
+  <td>{{billSummary.sBank}}</td>
+
+  
+  <th>{{ "shared.bank" | translate }}</th>
+
+</tr>
+<tr>
+
+
+  <td>{{NetResult.nnetwork}}</td>
+  <td>{{billSummary.rNetwork}}</td>
+  <td>{{billSummary.sNetwork}}</td>
+  <th>{{ "shared.network" | translate }}</th>
+</tr>
+  <tr> 
+     <td>{{NetResult.ncash}}</td>
+  <td>{{billSummary.rCash}}</td>
+  
+    <td>{{billSummary.sCash}}</td>
+  
+    <th>{{ "shared.cash" | translate }}</th>
+</tr>
+
+<tr *ngFor="let app of billSummary.sDeliveryApps;let j=index">
+  <td >{{app.amount -billSummary.rDeliveryApps[j].amount}}</td> 
+  <td >{{billSummary.rDeliveryApps[j].amount}}</td>
+ <td >{{app.amount}}</td>
+  <th>{{ app.name}}</th>
+</tr>
+
+</table> 
+<table *ngIf="!billSummary.isThereDeliveryAppsValues">
+  <tr >
+    <th colspan="7" class="main-header">{{ "shared.abstractHeader" | translate }}</th>
+  </tr>
+
+  <tr>
+    <th>{{ "shared.cash" | translate }}</th>
+    <th>{{ "shared.network" | translate }}</th>
+    <th>{{ "shared.bank" | translate }}</th>
+    <th>{{ "shared.debt" | translate }}</th>
+    <th >{{ "shared.withoutVat" | translate }}</th>
+    <th *ngIf="checkPermissions.checkGroup(5,17)">{{ "shared.ValueOfTobacco" | translate }}</th>
+    <th>{{ "shared.Vat" | translate }}</th>
+    <th >{{ "shared.withVat" | translate }}</th>
+  </tr>
+
+  <tr>
+      <td>{{billSummary.sCash}}</td>
+      <td>{{billSummary.sNetwork}}</td>
+      <td>{{billSummary.sBank}}</td>
+      <td>{{billSummary.sDept}}</td>
+      <td *ngIf="billSummary.sWithoutVAt">{{billSummary.sWithoutVAt.toFixed(2)}}</td>
+      <td *ngIf="!billSummary.sWithoutVAt">{{billSummary.sWithoutVAt}}</td>
+      <td *ngIf="checkPermissions.checkGroup(5,17)">{{billSummary.sTobaccoVat?billSummary.sTobaccoVat:0}}</td>
+      <td>{{billSummary.sVat}}</td>
+      <td *ngIf="billSummary.sWithVAt">{{billSummary.sWithVAt.toFixed(2)}}</td>
+      <td *ngIf="!billSummary.sWithVAt">{{billSummary.sWithVAt}}</td>
+         <th class="row-type">{{ "shared.sales" | translate }}</th>
+  </tr>
+
+  <tr>
+      <td>{{billSummary.rCash}}</td>
+      <td>{{billSummary.rNetwork}}</td>
+      <td>{{billSummary.rBank}}</td>
+      <td>{{billSummary.rDept}}</td>
+      <td *ngIf="billSummary.rsWithoutVAt">{{billSummary.rsWithoutVAt.toFixed(2)}}</td>
+      <td *ngIf="!billSummary.rsWithoutVAt">{{billSummary.rsWithoutVAt}}</td>
+      <td *ngIf="checkPermissions.checkGroup(5,17)" >{{billSummary.rTobaccoVat?billSummary.rTobaccoVat:0}}</td>
+      <td>{{billSummary.rVat}}</td>
+      <td *ngIf="billSummary.rsWithVAt">{{billSummary.rsWithVAt.toFixed(2)}}</td>
+      <td *ngIf="!billSummary.rsWithVAt">{{billSummary.rsWithVAt}}</td>
+      <th class="row-type">{{ "shared.refund" | translate }}</th>
+   </tr> 
+
+  <tr>
+      <td>{{NetResult.ncash}}</td>
+      <td>{{NetResult.nnetwork}}</td>
+      <td>{{NetResult.nbank}}</td>
+      <td>{{NetResult.ndebt}}</td>
+    
+      <td *ngIf="NetResult.ntotal">{{NetResult.ntotal.toFixed(2)}}</td>
+      <td *ngIf="!NetResult.ntotal">{{NetResult.ntotal}}</td>
+      <td *ngIf="checkPermissions.checkGroup(5,17)" >{{NetResult.ntobaccovat?NetResult.ntobaccovat:0}}</td>
+      <td >{{NetResult.nvat?NetResult.nvat.toFixed(2):NetResult.nvat}}</td>
+      <td *ngIf="NetResult.ntotalWithVat">{{NetResult.ntotalWithVat.toFixed(2)}}</td>
+   
+      <td *ngIf="!NetResult.ntotalWithVat">{{NetResult.ntotalWithVat}}</td>
+      <th class="row-type">{{ "shared.net" | translate }}</th>
+  </tr> 
+
+</table>
+
+<div class="form-group">
+  <div class="col-sm-7">
+      <div class="pull-right">
+       
+         
+          <button
+          type="button"
+          (click)="printDocumnent()"
+          class="btn btn-primary"
+      >
+     {{"shared.printThermal" | translate}}
+      </button>
+      <button 
+      type="button"
+      (click)="print()"
+      class="btn btn-primary">
+ 
+  {{ "shared.print" | translate }}
+</button>
+
+      </div>
+  </div>
+</div>

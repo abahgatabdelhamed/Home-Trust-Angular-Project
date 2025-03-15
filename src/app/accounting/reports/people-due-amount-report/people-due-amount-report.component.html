@@ -1,0 +1,59 @@
+<div class="container">
+    <div class="flexy">
+    <div class="row my-bt col-md-6 ">
+        <!-- search people id  -->
+        <div class="col-md-10 form-group">
+            <label >{{'shared.people'|translate}}</label>
+            <ng-select
+        [items]=" items$ | async"
+         bindLabel="nameAr"
+         bindValue="id"
+         [multiple]="true"
+           [typeahead]="itemsInput$"
+            [hideSelected]="true"
+            [loading]="itemSearchLoading"
+            [(ngModel)]="selectedPeople"
+            (change)="SelectedPeopleChange($event)"
+            placeholder="{{'shared.people'|translate}}">
+        </ng-select>
+        </div>
+        
+      
+
+    </div>
+    <div class=" col-md-1 form-group">
+        <br/>
+        <button class="btn btn-md btn-success" (click)="getAmountReport()">{{'shared.submit'|translate}}</button>
+    </div>
+    
+    <div class="col-md-1 export-btn">
+        <br/>
+        <div *ngIf="view" style="padding: 0px;" class="btn" (click)="exportAsXLSX()"><img src="../../../../assets/Excel.png" width="35px" height="35px"></div>
+
+        </div>
+</div>
+    <div class="row">
+        <div class=" my-2">
+
+            <div class="table-design-css" *ngIf="rows">
+                <ngx-datatable
+                id="data"
+                class="material colored-header sm table table-striped    table-hover"
+                [loadingIndicator]="loadingIndicator"
+                [rows]="rows"
+                [columns]="columns"
+                [rowHeight]="35"
+                [headerHeight]="35"
+                [externalPaging]="false"
+                [footerHeight]="35"
+                [scrollbarV]="false"
+                [columnMode]="'force'"
+                [count]="page.count"
+                [offset]="page.offset"
+                [limit]="page.size"
+            >
+            </ngx-datatable>
+            </div>
+        </div>
+    </div>
+</div>

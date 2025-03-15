@@ -1,0 +1,216 @@
+<form class="main-form" #f="ngForm" novalidate >
+  <section>
+
+      <h3 class="section-title">
+          {{isExit || isShowExit?("permissions.addexitstatment" | translate): ("permissions.addentrystatment" | translate) }}
+      </h3>
+      
+<br>
+      <div class="flexy">
+          <div  class="col-md-6 d-inline-block flexy h-5">
+              <label class="control-label col-md-4" for="careNumber" >
+                  {{ "shared.careNumber" | translate }}
+              </label>
+              <div class="col-md-8" [ngClass]="{
+                  'has-success': f.submitted && name.valid,
+                  'has-error': f.submitted && !name.valid
+              }">
+                 <div class="d-flex justify-content-between"> <input [disabled]="isShow" type="text" attr.id="careNumber" name="careNumber" class="form-control" [(ngModel)]="item.careNumber"
+                      required  /> </div>
+    
+              </div>
+           
+          </div>
+
+
+          <div class="col-md-6 d-inline-block flexy h-5">
+              <label class="control-label col-md-4" for="driverName" >
+                  {{ "shared.driverName" | translate }}
+              </label>
+              <div class="col-md-8">
+                  <input [disabled]="isShow" required type="text"  attr.id="driverName" name="driverName" class="form-control" [(ngModel)]="item.driverName" />
+                
+              </div>
+              <!-- <label class="control-label col-md-2" for="driverName" [ngStyle]="{'display':config.language=='en'?'none':''}">
+                {{ "shared.driverName" | translate }}
+            </label> -->
+          </div>
+
+          <div class="row">
+              <div class="col-md-12">
+                  <hr [class.edit-separator-hr]="true" />
+              </div>
+          </div>
+
+
+
+          <!-- القيمة -->
+          <div  class="col-md-6 d-inline-block flexy h-5">
+              <label class="control-label col-md-4" for="driverId" >
+                  {{ "shared.driverId" | translate }}
+              </label>
+              <div class="col-md-8">
+                  <input [disabled]="isShow" required  attr.id="driverId" name="driverId" class="form-control" [(ngModel)]="item.driverId"
+                      #name="ngModel" type="text"   />
+              </div>
+              <!-- <label class="control-label col-md-2" for="driverId" [ngStyle]="{'display':config.language=='en'?'none':''}">
+                {{ "shared.driverId" | translate }}
+            </label> -->
+          </div>
+
+         
+          <div  class="col-md-6 d-inline-block flexy h-5">
+            <label class="control-label col-md-4" for="driverPhoneNumber" >
+              {{"shared.driverPhoneNumber"|translate}}
+            </label>
+            <div class="col-md-8">
+                <input  required  [disabled]="isShow" attr.id="driverPhoneNumber" name="driverPhoneNumber" class="form-control"
+                    [(ngModel)]="item.driverPhoneNumber"   type="text" [min]="1"  #name="ngModel" />
+            </div>
+            <!-- <label class="control-label col-md-2" for="driverPhoneNumber" [ngStyle]="{'display':config.language=='en'?'none':''}">
+                {{"shared.driverPhoneNumber"|translate}}
+              </label> -->
+        </div>
+<!--            ///////////////////////////////////////////////////////////////       -->
+
+<div class="row">
+  <div class="col-md-12">
+      <hr [class.edit-separator-hr]="true" />
+  </div>
+</div>
+
+
+
+<!-- <div class="col-md-6 d-inline-block flexy"></div> -->
+<div  class="col-md-6 d-inline-block flexy h-5">
+  <label class="control-label col-md-4 " for="billId" >
+    {{"shared.billCode"|translate}}
+  </label>
+  <div *ngIf="!isExit" class="col-md-8">
+    <!-- <ng-select  name="billId" [disabled]="isShow" [items]="bills" bindLabel="receiptCode" bindValue="id"
+        [(ngModel)]="item.billId" [loading] = "loadingIndicator" required placeholder='{{"shared.billCode"|translate}}'>
+    </ng-select> -->
+
+    <ng-select [items]="bill3$ | async" placeholder='{{"shared.billCode"|translate}}' name="billId" bindLabel="receiptCode"  bindValue="id" 
+    [addTag]="false" [multiple]="false"  [hideSelected]="true" [loading]="bill3Loading" [typeahead]="bill3input$"
+        [(ngModel)]="item.billId" required #billCode="ngModel">
+    </ng-select>
+  </div>
+  <!-- <label class="control-label col-md-2" for="billId" [ngStyle]="{'display':config.language=='en'?'none':''}">
+    {{"shared.billCode"|translate}}
+  </label> -->
+  <div *ngIf="isExit" class="col-md-4">
+    <input  required  disabled attr.id="billcode" name="billcode" class="form-control"
+    [(ngModel)]="billcode"   type="text"  #name="ngModel" />
+
+  </div>
+</div>
+ 
+<div *ngIf="isShow"  class="col-md-6 d-inline-block flexy h-5">
+    <label class="control-label col-md-4" for="code" >
+      {{"shared.code"|translate}}
+    </label>
+    <div class="col-md-8">
+        <input  required  [disabled]="isShow" attr.id="code" name="code" class="form-control"
+            [(ngModel)]="item.code"   type="text" [min]="1"  #name="ngModel" />
+    </div>
+    <!-- <label class="control-label col-md-2" for="code" [ngStyle]="{'display':config.language=='en'?'none':''}">
+        {{"shared.code"|translate}}
+      </label> -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <hr [class.edit-separator-hr]="true" />
+    </div>
+  </div>
+
+      </div> 
+
+  </section>
+
+  
+ 
+  <div  class="btn flexy  col-md-12" >
+    <div class="col-md-3"></div>
+    <button *ngIf="!isShow && !isExit && submit==false" class="btn btn-success col-md-2" type="button" [disabled]="!(f.form.valid)" (click)="
+         handleSubmit() 
+      " >
+           {{isEdit?( "shared.Save" | translate):("shared.add" | translate) }}
+      </button>
+      <div class="col-md-2"></div>
+      <button class="btn btn-primary col-md-2" type="button" [disabled]="!isShow" (click)="
+             print() 
+          " >
+               {{ "shared.print" | translate }}
+          </button>
+          <div class="col-md-3"></div>
+  </div>
+
+</form>
+
+<h3 *ngIf="isShow" class="section-title">
+   {{"shared.billinfo"|translate}}
+</h3>
+ 
+    <div *ngIf="isShow" class="tbl-header">
+        
+        <table cellpadding="0" cellspacing="0" border="0">
+            <thead>
+                <tr>
+                    <th>{{ "shared.nameAr" | translate }}</th>
+                    <th>{{ "shared.nameEn" | translate }}</th>
+                    <th>{{"shared.itemUnit"|translate}}</th>
+                    <th>{{isExit||isShowExit?("shared.transferedAmount"|translate):("shared.Remainingquantity"|translate)}}</th>
+                    <th *ngIf="isExit||isShowExit">{{"shared.Remainingquantity"|translate}}</th>
+                   
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <form #f1="ngForm"> <div *ngIf="billsInfo.length>0  " class="tbl-content">
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tbody>
+
+                <tr *ngFor="let i of billsInfo ; let j = index">
+                    <td>{{ i.billItem.itemUnit.item.nameAr }}</td>
+                    <td>{{ i.billItem.itemUnit.item.nameEn }}</td>
+                    <td>{{ i.billItem.itemUnit.name }}</td>
+                    <td *ngIf="submit==true || !isExit">{{ i.quantity}}</td>
+                    <td  *ngIf="isExit &&submit==false"><input required  attr.id="quantity" name="quantity" class="form-control quantity"
+                        [(ngModel)]="i.quantity" customMin="1" customMax="{{statementsBillItemsQuantity[j]}}"  type="number"   #name="ngModel" /></td>
+                        <td *ngIf="isExit&&!isShowExit"   >{{statementsBillItemsQuantity[j]-i.quantity}}</td>
+                        <td *ngIf="isShowExit">{{i.remainderQuantity}}</td>
+                   
+
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+    </form>
+    <div *ngIf="isExit" class="row">
+        <div class="col-md-12">
+            <hr [class.edit-separator-hr]="true" />
+        </div>
+      </div>
+      
+      <div *ngIf="isExit &&submit==false"  class="btn col-md-12" >
+        <button class="btn btn-primary col-md-12" type="button" [disabled]="!(f1.form.valid)" (click)="
+           handleSubmit() 
+        " >
+             {{isEdit?( "shared.Save" | translate):("shared.add" | translate) }}
+        </button>
+      
+    </div> 
+      <!-- <div class="btn col-md-4" >
+          <button class="btn btn-primary col-md-12" type="button" [disabled]="!isShow" (click)="
+             print() 
+          " >
+               {{ "shared.print" | translate }}
+          </button>
+          
+      </div> -->
+      <div  *ngIf='alert'class="alert alert-warning" role="alert">
+        {{message}}
+      </div>
+      

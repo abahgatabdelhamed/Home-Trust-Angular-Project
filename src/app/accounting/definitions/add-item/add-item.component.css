@@ -1,0 +1,150 @@
+h1 {
+    font-size: 30px;
+    color: #222;
+    text-transform: uppercase;
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 15px;
+}
+table {
+    width: 100%;
+    table-layout: fixed;
+}
+.tbl-header {
+    margin-top: 45px;
+    background: var(--user-theme);
+}
+.tbl-content {
+    height: 300px;
+    overflow-x: auto;
+    margin-top: 0px;
+    border: 1px solid var(--user-theme);
+}
+
+.table-buttons {
+    /* margin-top: 50px; */
+}
+
+.file input {
+    display: none;
+  }
+
+
+  .show-number {
+    font-family: monospace;
+    font-weight: bolder;
+    font-size: 1.2rem;
+}
+.tobacco-vat{
+    padding-top: 30px;
+}
+.file{
+    
+    padding-top: 30px;
+
+}
+  .file label {
+    border: 1px solid var(--user-theme);
+    padding: 5px 10px;
+    color: var(--user-theme-background);
+    background: var(--user-theme);
+    border-radius: 10px;
+    box-shadow: 0px 0px 3px var(--user-theme-secoundary);
+  }
+
+.btns {
+    display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  grid-gap: 10px;
+    
+}
+.btns>.btn{
+    width: 250px;
+}
+th {
+    padding: 20px 15px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 12px;
+    color: #fff;
+    text-transform: uppercase;
+}
+td {
+    padding: 15px;
+    text-align: left;
+    vertical-align: middle;
+    font-weight: 300;
+    font-size: 12px;
+    color: #222;
+    border-bottom: solid 1px rgba(24, 0, 112, 0.425);
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(224, 48, 4, 0.3);
+}
+::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(224, 48, 4, 0.3);
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+}
+
+.main-form {
+    display: grid;
+    grid-gap: 10px;
+}
+
+section > button {
+    margin-bottom: 10px;
+}
+
+.group {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.group-checkbox {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.form-input-group {
+    display: flex;
+    flex-direction: column;
+}
+.flexy {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+.flexy .bottom-align-text {
+    display: flex;
+    align-items: flex-end;
+  
+  }
+.flex-container{
+  display: inline-flex
+}
+
+@media screen and (max-width:1090px){
+    form{
+        /* width: 100vw; */
+    }
+    section{
+        width: 80vw;
+    }
+    .group-checkbox {
+        display: block;
+       
+    }
+    .group{
+        display: block;
+    }
+}

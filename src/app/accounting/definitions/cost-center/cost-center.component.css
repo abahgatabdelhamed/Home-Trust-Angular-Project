@@ -1,0 +1,46 @@
+.flexy {
+    display: flex;
+  }
+
+  .flexy .bottom-align-text {
+    display: flex;
+    align-items: flex-end;
+  
+  }
+
+  table {
+    width: 100%;
+    table-layout: fixed;
+}
+.tbl-header {
+    background: var(--user-theme);
+}
+.tbl-content {
+    overflow-x: auto;
+    margin-top: 0px;
+    border: 1px solid var(--user-theme);
+}
+th {
+    padding: 20px 15px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 12px;
+    color: #fff;
+    text-transform: uppercase;
+}
+td {
+    padding: 15px;
+    text-align: left;
+    vertical-align: middle;
+    font-weight: 300;
+    font-size: 12px;
+    color: #222;
+    border-bottom: solid 1px rgba(24, 0, 112, 0.425);
+}
+
+.modal-dialog{
+  width: 700px !important;
+}
+h2{
+  text-align: center;
+}

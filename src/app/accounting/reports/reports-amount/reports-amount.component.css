@@ -1,0 +1,34 @@
+.margin-selected-branch{
+    width: fit-content;
+ 
+}
+/* ng-select{
+    margin: 100px !important;
+} */
+
+.margin{
+    margin-top: 0.4%;
+}
+
+.export-btn{
+
+}
+
+.flexy {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+.flexy .bottom-align-text {
+    display: flex;
+    align-items: flex-end;
+  
+  }
+.flex-container{
+  display: inline-flex
+}
+@media screen and (max-width:1000px) {
+  .flexy{
+    display: block;
+  }
+}

@@ -1,0 +1,29 @@
+<div class="row control-box">
+  <div class="col-md-12">
+    <app-branch-cc-filter (filter)="filterData($event)" (searchChanged)="onSearchChanged($event)" [withSearch]="true"
+      [withExpensesLables]="false" [validBranch]="false" [validCC]="false" [withBranch]='true'  [withCC]='true' (exportAsXLSXEvent)="exportAsXLSX()" [withExportAsXLSX]="view"></app-branch-cc-filter>
+  </div>
+</div>
+
+<ngx-datatable class="material colored-header sm table table-striped table-hover" [loadingIndicator]="loadingIndicator"
+  [rows]="rows" [rowHeight]="35" [headerHeight]="35" [footerHeight]="35" [columns]="columns" [scrollbarV]="false"
+  [columnMode]="'force'" [externalPaging]="true" [count]="page.count" [offset]="page.offset" [limit]="page.size"
+  (page)="setPage($event)">
+</ngx-datatable>
+
+<ng-template #indexTemplate let-value="value">
+  <strong>{{ value }}</strong>
+</ng-template>
+
+<ng-template #dateTemplate let-value="value">
+  {{value | date:'yyyy/MM/dd'}}
+</ng-template>
+
+<ng-template #actionsTemplate let-row="row" let-value="value" let-i="index">
+  <div>
+    <a class="btn btn-link btn-xs" href="javascript:;" [routerLink]="['/purch', 'add-production-bill', row.id]">
+      <i class="fa fa-eye" aria-hidden="true"></i>
+      {{ "shared.Show" | translate }}
+    </a>
+  </div>
+</ng-template>

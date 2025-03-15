@@ -1,0 +1,258 @@
+
+<div class="row">
+    <div class="col-md-12">
+        <app-branch-cc-filter (filter)="filter($event)" [withCC]="isVatSummary &&CCPermissions" [withBranch]="isVatSummary" (exportAsXLSXEvent)="exportAsXLSX()"
+             [withSearch]="false" [withExpensesLables]="false"
+             [withBillTypeFilter]="false" [validBranch]="false" [validDate]="true" [validCC]="false" [withAddNew]="false" [withBranch]='true' [withExportAsXLSX]="view" ></app-branch-cc-filter>
+    </div>
+</div>
+<!-- <nav class="nav">
+    <ul>
+        <li class="sales current" (click)="switchToSales()" name="sales">
+            {{ "shared.vatSummaryTab" | translate }}
+        </li>
+        <li class="purch" (click)="switchToPurch($event)" name="purch">
+            {{ "shared.purchAddedVatTab" | translate }}
+        </li>
+        <li class="bill" (click)="switchToCurrentBills($event)">
+            {{ "shared.recieptAddedVatTab" | translate }}
+        </li>
+    </ul>
+</nav> -->
+<div class="custom-loader" *ngIf="isLoading">
+</div>
+<table *ngIf="isVatSummary && abstractReports">
+    <tr class="titles">
+        <th class="right-raduis" [ngClass]="{
+            'right-raduis':config.language=='ar'
+           ,'left-raduis':config.language=='en'}">
+        {{ "shared.index" | translate }}</th>
+        <th>{{ "shared.report" | translate }}</th>
+        <th>{{ "shared.priceBeforeVat" | translate }}</th>
+        <th class=""[ngClass]="{
+            'right-raduis':config.language=='en'
+           ,'left-raduis':config.language=='ar'}">{{ "shared.vat" | translate }}</th>
+    </tr>
+    <tr class="annotation">
+        <th  ch colspan="4">{{isTobaccoReport?( "shared.salesReportsLabel1" | translate): ( "shared.salesReportsLabel" | translate)}}</th>
+    </tr>
+    <tr *ngFor="let report of abstractReports[0].bills" class="data">
+        <td>{{ report.index }}</td>
+        <td>{{ report.receiptCode }}</td>
+        <td class=" show-number">{{ report.priceBeforeVat }}</td>
+        <td class=" show-number">{{ report.vat }}</td>
+    </tr>
+    <tr class="annotation">
+        <th colspan="4">{{isTobaccoReport? ("shared.purchReportsLabel1" | translate):("shared.purchReportsLabel" | translate) }}</th>
+    </tr>
+    <tr *ngFor="let report of abstractReports[1].bills" class="data">
+        <td>{{ report.index }}</td>
+        <td>{{ report.receiptCode }}</td>
+        <td class=" show-number">{{ report.priceBeforeVat }}</td>
+        <td class=" show-number">{{ report.vat }}</td>
+    </tr>
+    <tr class="annotation">
+        <th colspan="4">{{isTobaccoReport? ("shared.currentReportLabel1" | translate):("shared.currentReportLabel" | translate)}}</th>
+    </tr>
+    <tr *ngFor="let report of abstractReports[2].bills" class="data">
+        <td>{{ report.index }}</td>
+        <td>{{ report.receiptCode }}</td>
+        <td class=" show-number">{{ report.priceBeforeVat }}</td>
+        <td class=" show-number">{{ report.vat }}</td>
+    </tr>
+</table>
+
+<table *ngIf="isPurch && purchReports">
+    <tr class="titles">
+        <th class="" [ngClass]="{
+            'right-raduis':config.language=='ar'
+           ,'left-raduis':config.language=='en'}">{{ "shared.index" | translate }}</th>
+        <th>{{ "shared.billCode" | translate }}</th>
+        <th>{{ "shared.vatCat" | translate }}</th>
+        <th>{{ "shared.date" | translate }}</th>
+        <th>{{ "shared.supplierCode" | translate }}</th>
+        <th>{{ "shared.supplierName" | translate }}</th>
+        <th>{{ "shared.vatNumber" | translate }}</th>
+        <th>{{ "shared.accountNumber" | translate }}</th>
+        <th>{{ "shared.account" | translate }}</th>
+        <th>{{ "shared.totalNotSubject" | translate }}</th>
+        <th>{{ "shared.totalStandard" | translate }}</th>
+        <th>{{ "shared.priceBeforeVat" | translate }}</th>
+        <th>{{ "shared.vat" | translate }}</th>
+        <th class=""[ngClass]="{
+            'right-raduis':config.language=='en'
+           ,'left-raduis':config.language=='ar'}">{{ "shared.priceAfterVat" | translate }}</th>
+
+    </tr>
+    <tr class="annotation">
+        <th colspan="14">{{ "shared.purchTagLabel" | translate }}</th>
+    </tr>
+    <tr *ngFor="let report of purchReports[0].bills" class="data">
+        <th>{{ report.index }}</th>
+        <th>{{ report.receiptCode }}</th>
+
+        <td>{{ report.vatType }}</td>
+        <td>{{ report.date | date: "dd/MM/yyyy" }}</td>
+        <td>{{ report.personCode }}</td>
+
+        <td>{{ report.personName }}</td>
+        <td>{{ report.vatNumber }}</td>
+        <td>{{ report.accountNumber }}</td>
+        <td>{{ report.accountName }}</td>
+        <td class="show-number">{{ report.notSubjectToVatTaxableAmount }}</td>
+        <td class="show-number">{{ report.standardVatTaxableAmount }}</td>
+        <td class="show-number">{{ report.priceBeforeVat }}</td>
+        <td class="show-number">{{ report.vat }}</td>
+        <td class="show-number">{{ report.priceAfterVat }}</td>
+    </tr>
+    <tr class="results">
+        <td class="show-number" colspan="9"></td>
+        <td class="show-number">{{ purchReports[0].totalNotSubjectToVatTaxableAmount }}</td>
+        <td class="show-number">{{ purchReports[0].totalStandardVatTaxableAmount }}</td>
+        <td>{{purchReports[0].total}}</td>
+        <td class="show-number">{{purchReports[0].vat}}</td>
+        <td class="show-number">{{purchReports[0].totalAfterVat}}</td>
+    </tr>
+    <tr class="annotation">
+        <th colspan="14">{{ "shared.RpurchRefunds" | translate }}</th>
+    </tr>
+    <tr *ngFor="let report of purchReports[1].bills" class="data">
+        <th>{{ report.index }}</th>
+        <th>{{ report.receiptCode }}</th>
+
+        <td class="show-number">{{ report.vatType }}</td>
+        <td>{{ report.date | date: "dd/MM/yyyy" }}</td>
+        <td>{{ report.personCode }}</td>
+        <td>{{ report.personName }}</td>
+        <td>{{ report.vatNumber }}</td>
+        <td>{{ report.accountNumber }}</td>
+        <td>{{ report.accountName }}</td>
+        <td >{{ report.notSubjectToVatTaxableAmount }}</td>
+        <td >{{ report.standardVatTaxableAmount }}</td>
+        <td class="show-number">{{ report.priceBeforeVat }}</td>
+        <td class="show-number">{{ report.vat }}</td>
+        <td class="show-number">{{ report.priceAfterVat }}</td>
+    </tr>
+    <tr class="results">
+        <td class="show-number" colspan="9"></td>
+        <td class="show-number">{{ purchReports[1].totalNotSubjectToVatTaxableAmount }}</td>
+        <td class="show-number">{{ purchReports[1].totalStandardVatTaxableAmount }}</td>
+        <td>{{purchReports[1].total}}</td>
+        <td class="show-number">{{purchReports[1].vat}}</td>
+        <td class="show-number">{{purchReports[1].totalAfterVat}}</td>
+    </tr>
+    
+    <tr class="annotation">
+        <th colspan="14">{{ "shared.purchConsumeLabel" | translate }}</th>
+    </tr>
+    <tr *ngFor="let report of purchReports[2].bills" class="data">
+        <th>{{ report.index }}</th>
+        <th>{{ report.receiptCode }}</th>
+
+        <td class="show-number">{{ report.vatType }}</td>
+        <td>{{ report.date | date: "dd/MM/yyyy" }}</td>
+        <td>{{ report.personCode }}</td>
+        <td>{{ report.personName }}</td>
+        <td>{{ report.vatNumber }}</td>
+        <td>{{ report.accountNumber }}</td>
+        <td>{{ report.accountName }}</td>
+        <td class="show-number">{{ report.notSubjectToVatTaxableAmount }}</td>
+        <td class="show-number">{{ report.standardVatTaxableAmount }}</td>
+        <td class="show-number">{{ report.priceBeforeVat }}</td>
+        <td class="show-number">{{ report.vat }}</td>
+        <td class="show-number">{{ report.priceAfterVat }}</td>
+    </tr>
+    <tr class="results">
+        <td class="show-number" colspan="9"></td>
+        
+        <td class="show-number">{{ purchReports[2].totalNotSubjectToVatTaxableAmount }}</td>
+        <td class="show-number">{{ purchReports[2].totalStandardVatTaxableAmount }}</td>
+        <td>{{purchReports[2].total}}</td>
+        <td class="show-number">{{purchReports[2].vat}}</td>
+        <td class="show-number">{{purchReports[2].totalAfterVat}}</td>
+    </tr>
+</table>
+
+<table *ngIf="isRecieptBills && salesReports">
+    <tr class="titles">
+        <th class=""[ngClass]="{
+            'right-raduis':config.language=='ar'
+           ,'left-raduis':config.language=='en'}">{{ "shared.indexx" | translate }}</th>
+
+        <th>{{ "shared.billCode" | translate }}</th>
+        <th>{{ "shared.customerName" | translate }}</th>
+        <th>{{ "shared.vatNumber" | translate }}</th>
+        <td>{{ "shared.vatCat" | translate }}</td>
+
+
+        <th>{{ "shared.date" | translate }}</th>
+        <th>{{ "shared.totalNotSubject" | translate }}</th>
+        <th>{{ "shared.totalStandard" | translate }}</th>
+        <th>{{ "shared.salesValue" | translate }}</th>
+        
+        <th>{{ "shared.vat" | translate }}</th>
+
+        <th class=""[ngClass]="{
+            'right-raduis':config.language=='en'
+           ,'left-raduis':config.language=='ar'}">{{ "shared.priceAfterVat" | translate }}</th>
+    </tr>
+    <tr class="annotation">
+        <th colspan="11">{{ "shared.salesLabel" | translate }}</th>
+    </tr>
+    <tr *ngFor="let report of salesReports[0].bills" class="data">
+        <th>{{ report.index}}</th>
+
+        <td>{{ report.receiptCode }}</td>
+        <td>{{ report.personName }}</td>
+        <td>{{ report.vatNumber }}</td>
+        <td>{{ report.vatType }}</td>
+
+
+        <td>{{ report.date | date: "dd/MM/yyyy" }}</td>
+        <td class="show-number">{{ report.notSubjectToVatTaxableAmount }}</td>
+        <td class="show-number">{{ report.standardVatTaxableAmount }}</td>
+      
+        <td>{{ report.priceBeforeVat }}</td>
+        <td>{{ report.vat }}</td>
+
+        <td>{{ report.priceAfterVat }}</td>
+
+    </tr>
+    <tr class="results">
+        <td colspan="6"></td>
+        <td >{{ salesReports[0].totalNotSubjectToVatTaxableAmount }}</td>
+        <td >{{ salesReports[0].totalStandardVatTaxableAmount }}</td>
+        <td>{{salesReports[0].total}}</td>
+        <td>{{salesReports[0].vat}}</td>
+        <td>{{salesReports[0].totalAfterVat}}</td>
+    </tr>
+    <tr class="annotation">
+        <th colspan="11">{{ "shared.purchRefunds" | translate }}</th>
+    </tr>
+    <tr *ngFor="let report of salesReports[1].bills" class="data">
+        <td>{{ report.index}}</td>
+
+        <td>{{ report.receiptCode }}</td>
+        <td>{{ report.personName }}</td>
+        <td>{{ report.vatNumber }}</td>
+        <td>{{ report.vatType }}</td>
+
+        <td>{{ report.date | date: "dd/MM/yyyy" }}</td>
+        <td class="show-number">{{ report.notSubjectToVatTaxableAmount }}</td>
+        <td class="show-number">{{ report.standardVatTaxableAmount }}</td>
+      
+        <td>{{ report.priceBeforeVat }}</td>
+        <td>{{ report.vat }}</td>
+
+        <td>{{ report.priceAfterVat }}</td>
+    </tr>
+    <tr class="results">
+        <td colspan="6"></td>
+        <td >{{ salesReports[1].totalNotSubjectToVatTaxableAmount }}</td>
+        <td >{{ salesReports[1].totalStandardVatTaxableAmount }}</td>
+      
+        <td>{{salesReports[1].total}}</td>
+        <td>{{salesReports[1].vat}}</td>
+        <td>{{salesReports[1].totalAfterVat}}</td>
+    </tr>
+</table>

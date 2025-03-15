@@ -1,0 +1,174 @@
+
+<div class="row col-md-12">
+ 
+  
+  <div class="col-md-12 form-group">
+    <div class="col-md-3">
+    <div class="search-box">
+      <label  >
+          <!--   itemCategoryName-->
+          {{'shared.shopName'|translate}}
+      </label>
+    </div>
+    <div  >
+      <input class="form-control " 
+      [value]="shopName" [(ngModel)]='shopName'/>
+     
+    </div>
+    <input class="form-check-input" checked  (change)="getval($event.target.checked)" type="checkbox" [value]="shopName">
+    </div>
+    <div class="col-md-3 form-group">
+      <div class="search-box ">
+        <label  >
+            <!--   itemCategoryName-->
+            {{'shared.item'|translate}}
+          
+        </label>
+      </div>
+      <!-- <ng-select [items]="items$ | async" bindLabel="item.nameAr" bindValue="item.id" 
+            [hideSelected]="true" [loading]="itemSearchLoading" [typeahead]="itemsInput$"
+            [(ngModel)]="selectedItem" (change)="SelectedItemsChange($event)">
+        </ng-select>
+      --> <ng-select  [items]=" items " bindLabel="nameAr"  bindValue="id" 
+            [hideSelected]="true" [loading]="itemSearchLoading" [(ngModel)]="selectedItem"
+            (change)="SelectedItemsChange($event)">
+        </ng-select> 
+        <input class="form-check-input" type="checkbox" (change)="gstcheckItem($event.target.checked)" [value]="selectedItem">
+    
+    </div>
+    <div class="col-md-2 form-group">
+      <div class="search-box ">
+        <label  >
+            <!--   itemCategoryName-->
+            {{'shared.itemUnit'|translate}}
+          
+        </label>
+      </div>
+        <input class="form-check-input" type="checkbox" (change)="gstcheckItemUnit($event.target.checked)" [value]="selectedItem">
+        <div class="search-box ">
+          <label  >
+              <!--   itemCategoryName-->
+              {{'shared.priceWithVat'|translate}}
+            
+          </label>
+        </div>
+        <input class="form-check-input" type="checkbox" (change)="getcheckvat($event.target.checked)"  [value]="selectedItem">
+  
+    </div>
+    
+    
+  <div class="col-md-4">
+    <div class=" col-md-6">
+      <label class="control-label ">{{"shared.tall"|translate}} </label>
+     
+     
+      <input class="form-control " type="number" [(ngModel)]="tall"/>
+    </div>
+       <div class="col-md-6">
+       <label class="control-label ">{{"shared.width"|translate}} </label>
+       <input class="form-control " type="number" [(ngModel)]="width"/>
+    </div>
+   </div>
+   <div class="row ">
+     <div class="col-md-8">
+       <div class="col-md-5">
+       <label class="control-label">{{'shared.fontselected'|translate}}</label>
+       <ng-select [items]="fontfamilys" 
+       [hideSelected]="true" [loading]="itemSearchLoading" [(ngModel)]="defaultfont"
+       >
+
+       </ng-select>
+      </div>
+     </div>
+     <form class="col-md-4">
+       <div class="form-check">
+         <div class="col-md-6">
+         <input type="radio" class="form-check-input" id="radio1" name="optradio" (change)="getunit($event.target.value)"  value="cm" checked>
+         <label class="form-check-label" for="radio1">cm</label>
+       </div>
+       <div class="col-md-6">
+         <input type="radio" class="form-check-input" id="radio2" name="optradio" (change)="getunit($event.target.value)" value="mm">
+         <label class="form-check-label" for="radio2">mm</label>
+       </div>
+       </div>
+      
+     </form>
+   </div>
+  </div>
+ 
+
+
+<div class="row col-md-12">
+ 
+<br/>
+<div class="row">
+<div class="col-md-12"></div>
+</div>
+<br/>
+
+<div *ngIf="selectedItem"  class="row col-md-12">
+<div class="col-md-7">
+  <div class="tbl-header">
+        
+    <table cellpadding="0" cellspacing="0" border="0">
+        <thead>
+            <tr>
+                <th>{{ "shared.nameAr" | translate }}</th>
+                <th>{{"shared.price"|translate}}</th>
+                <th>{{"shared.vat"|translate}}</th>
+                <th>{{"shared.priceWithVat"|translate}}</th>
+                 <th></th>
+                 <th></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+<form> 
+  <div   class="tbl-content">
+    <table cellpadding="0" cellspacing="0" border="0">
+        <tbody>
+
+            <tr *ngFor="let i of unitItem ; let j = index">
+                <td>{{ i.name }}</td>
+                <td>{{ i.price }}</td>
+                <td>{{ vatdefult }}</td>
+                <td>{{ (i.price*vatdefult)+i.price}}</td>
+                <td><div>
+                  <button type="button" (click)="view( (i.price*vatdefult)+i.price,i.name)"  class="btn btn-info">
+                {{"shared.view"|translate}}
+              </button>
+                </div> 
+              
+            </td>
+            <td>
+              <div>
+                <button type="button" [useExistingCss]="true" printSectionId="print-section" ngxPrint class="btn btn-info">
+                  {{"shared.print"|translate}}
+                </button>
+              </div></td>
+
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+</form>
+    
+</div>
+<div class="col-md-5 divbar" id="print-section"  *ngIf="checkedData.view">
+  <div class="flex-container"  [style.font-family]="defaultfont" [ngStyle]="{'width':(width * convert)+'px','height':(tall* convert)+'px'}">
+  <div class="barcode" >
+    <div class="content" [style.font-family]="defaultfont" [ngStyle]="{'font-size':(tall*3*changeunit)*(4/numberOfelement)+'px', 'padding-top':((tall*changeunit)*(4/numberOfelement))+'px'}" *ngIf="checkedData.name"> {{shopName}}</div>
+    <div class="content" *ngIf="checkedData.item" [style.font-family]="defaultfont" [ngStyle]="{'font-size':(tall*3*changeunit)*(4/numberOfelement)+'px','padding-top':((tall*changeunit)*(4/numberOfelement))+'px'}"> {{itemName}}</div>
+    <div class="content" *ngIf="checkedData.vat" [style.font-family]="defaultfont" [ngStyle]="{'font-size':(tall*3.5*changeunit)*(4/numberOfelement)+'px','padding-top':((tall*changeunit)*(4/numberOfelement))+'px'}">  {{+ pricewithvat+'ريال'}} </div>
+      <div class="content " [ngStyle]="{'padding-top':(tall*changeunit)+'px'}" >
+       <ngx-barcode [ngStyle]="{'width':(width * convert)+'px','height':((tall* convert))/numberOfelement+'px'}" [bc-background]="" [bc-width]="width" [bc-height]="unitCm?((tall*convert)*(4/numberOfelement))/2:((tall*fromCM)*(4/numberOfelement))/2" [bc-line-color]='000000' [bc-background]=none [bc-font-size]="tall*6" [bc-value]="barcode" [bc-display-value]="true"></ngx-barcode>
+      </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+
+
+<!--barcodelength.length<7?(width*changeunit)/2.5:(barcodelength.length<14?(width*changeunit)/(barcodelength.length/2.5):(width)*changeunit/(barcodelength.length/4))  barcodelength.length<5?(width/barcodelength.length):(barcodelength.length<15?(width)/(barcodelength.length/2):(width)/(barcodelength.length/4))-->

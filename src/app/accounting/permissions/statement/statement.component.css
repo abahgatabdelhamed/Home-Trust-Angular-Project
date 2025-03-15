@@ -1,0 +1,18 @@
+.flex-container{
+    display: flex;
+    justify-content: center;
+ 
+}
+.flexy {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+.flexy .bottom-align-text {
+    display: flex;
+    align-items: flex-end;
+  
+  }
+.flex-container{
+  display: inline-flex
+}

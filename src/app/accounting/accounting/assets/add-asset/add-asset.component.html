@@ -1,0 +1,383 @@
+<form class="main-form" #f="ngForm" novalidate >
+  <section>
+
+      <h3 class="section-title">
+          {{ "asset.infoasset" | translate }}
+      </h3>
+      
+
+      <div>
+          <div class="col-md-6 d-inline-block">
+              <label class="control-label col-md-12" for="namrAr">
+                  {{ "shared.nameAr" | translate }} (*)
+              </label>
+              <div class="col-md-12" [ngClass]="{
+                  'has-success': f.submitted && name.valid,
+                  'has-error': f.submitted && !name.valid
+              }">
+                 <div class="d-flex justify-content-between"> <input type="text" [disabled]="isShow" attr.id="namrAr" name="namrAr" class="form-control" [(ngModel)]="item.nameAr"
+                      required  /></div>
+                  <span *ngIf="f.submitted" class="glyphicon form-control-feedback" [ngClass]="{
+                      'glyphicon-ok ': name.valid,
+                      'glyphicon-remove': !name.valid
+                  }"></span>
+                  <span *ngIf="f.submitted && !name.valid" class="errorMessage">
+                      {{ "shared.NameRequired" | translate }}
+                  </span>
+              </div>
+          </div>
+
+   
+          <!-- ااسم الاصل بالانكليزية -->
+          <div class="col-md-6 d-inline-block">
+              <label class="control-label col-md-12" for="nameEn">
+                  {{ "shared.nameEn" | translate }}
+              </label>
+              <div class="col-md-12">
+                  <input required type="text" [disabled]="isShow" attr.id="nameEn" name="nameEn" class="form-control" [(ngModel)]="item.nameEn" />
+                  
+              </div>
+          </div>
+
+          <div class="row">
+              <div class="col-md-12">
+                  <hr [class.edit-separator-hr]="true" />
+              </div>
+          </div>
+
+
+
+          <!-- القيمة -->
+          <div *ngIf="isEdit==false" class="col-md-6 d-inline-block">
+              <label class="control-label col-md-12" for="value">
+                  {{ "asset.value" | translate }}
+              </label>
+              <div class="col-md-12">
+                  <input required pattern="[1-9][0-9]*" attr.id="value" name="value" class="form-control" [(ngModel)]="item.value"
+                      #name="ngModel" type="number" [min]="1"   [disabled]="isEdit"/>
+              </div>
+          </div>
+
+         
+          <div *ngIf="isEdit==false" class="col-md-6 d-inline-block">
+            <label class="control-label col-md-12" for="depreciationPerc">
+              {{"asset.depreciationPerc"|translate}}
+            </label>
+            <div class="col-md-12">
+                <input  required  min="1" pattern="[1-9][0-9]*" attr.id="depreciationPerc" name="depreciationPerc" class="form-control"
+                    [(ngModel)]="item.depreciationPerc"  type="number" [min]="1"  #name="ngModel" [disabled]="isEdit"/>
+            </div>
+        </div>
+<!--            ///////////////////////////////////////////////////////////////       -->
+
+
+          <!--  القيمة الحالية  -->
+          <div *ngIf="isEdit" class="col-md-6 d-inline-block">
+            <label class="control-label col-md-12" for="currentValue">
+                {{ "shared.currentValue" | translate }}
+            </label>
+            <div class="col-md-12">
+                <input required attr.id="currentValue" pattern="[1-9][0-9]*" name="currentValue" class="form-control" [(ngModel)]="item.currentValue"
+                    #name="ngModel" type="number" [min]="1"   [disabled]="isEdit"/>
+            </div>
+        </div>
+
+       
+        <div *ngIf="isEdit" class="col-md-6 d-inline-block">
+          <label class="control-label col-md-12" for="depreciationLastUpdateDate">
+         {{"asset.depreciationLastUpdateDate"|translate}}
+          </label>
+          <div class="col-md-12">
+              <input  required   attr.id="depreciationLastUpdateDate" pattern="[1-9]" name="depreciationLastUpdateDate" class="form-control"
+                  [(ngModel)]="item.depreciationLastUpdateDate"  type="text" [min]="1"  #name="ngModel" [disabled]="isEdit"/>
+          </div>
+      </div>
+
+
+
+    <!--------حساب الهتلاك & حساب المصدر -->
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.edit-separator-hr]="true" />
+            </div>
+        </div>
+        <div *ngIf="!isEdit" class="col-md-6 d-inline-block">
+          <label class="control-label col-md-12" for="increaseAccountId">
+            {{"asset.increaseAccountId"|translate}}
+          </label>
+          <div class="col-md-12">
+            <ng-select  name="increaseAccountId" [items]="accounts" bindLabel="name" bindValue="id"
+                [(ngModel)]="item.increaseAccountId"  required placeholder='{{"asset.increaseAccountId"|translate}}'[disabled]="isEdit">
+            </ng-select>
+          </div>
+      </div>
+         
+          <div *ngIf="!isEdit" class="col-md-6 d-inline-block" >
+              <label class="control-label col-md-12" for="depreciationAccountId">
+                 {{"asset.depreciationAccountId"|translate}}
+              </label>
+              <div class="col-md-12">
+                <ng-select  name="depreciationAccountId" required [items]="accounts" bindLabel="name" bindValue="id"
+                [(ngModel)]="item.depreciationAccountId"  placeholder='{{"asset.depreciationAccountId"|translate}}' [disabled]="isEdit">
+            </ng-select>
+</div>
+          </div>
+
+
+           
+           <div *ngIf="isEdit" class="col-md-6 d-inline-block">
+            <label class="control-label col-md-12" for="increaseAccount">
+                {{ "asset.increaseAccountId" | translate }}
+            </label>
+            <div class="col-md-12">
+                <input required disabled type="text" pattern="[1-9][0-9]*" attr.id="increaseAccount" name="increaseAccount" class="form-control" [(ngModel)]="item.increaseAccount" />
+            </div>
+        </div>
+            
+            <div *ngIf="isEdit" class="col-md-6 d-inline-block">
+                <label class="control-label col-md-12" for="depreciationAccount">
+                    {{ "asset.depreciationAccountId" | translate }}
+                </label>
+                <div class="col-md-12">
+                    <input required disabled type="text" pattern="[1-9][0-9]*" attr.id="depreciationAccount" name="depreciationAccount" class="form-control" [(ngModel)]="item.depreciationAccount" />
+                </div>
+            </div>
+  
+
+          <div  class="row">
+              <div class="col-md-12">
+                  <hr [class.edit-separator-hr]="true" />
+              </div>
+          </div>
+
+ 
+          <div class="col-md-6 d-inline-block">
+              <label class="control-label col-md-12" for="depreciationInterval">
+                {{"asset.depreciationInterval"|translate}}
+              </label>
+              <div class="col-md-12">
+                <ng-select *ngIf="!isEdit" type="number" name="depreciationInterval" placholder="item.depreciationInterval" [items]="Dinterval" bindLabel="name" bindValue="value"
+                [(ngModel)]="item.depreciationInterval" required  [disabled]="isEdit">
+            </ng-select>
+            <br *ngIf="!isEdit" >
+                   <input *ngIf="(item.depreciationInterval==0)||(isEdit)" class="col-md-12"   required type="text" attr.id="depreciationInterval" name="depreciationInterval" class="form-control"
+                   [(ngModel)]="isEdit?item.depreciationInterval:DepreciationInterval" pattern="[1-9][0-9]*"   type="number" [min]="1" [disabled]='isEdit'/> 
+              </div>
+          </div>
+
+        
+
+          <div class="col-md-6 d-inline-block">
+            <label class="control-label col-md-12" for="depreciationStartDate">
+                {{"asset.depreciationStartDate"|translate}}
+            </label>
+            <div class="col-md-12">
+                <input required type="text" attr.id="depreciationStartDate" name="depreciationStartDate" class="form-control"
+                    [(ngModel)]="item.depreciationStartDate" #name="ngModel" 
+                    bsDatepicker [disabled]="isEdit" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"  />
+            </div>
+        </div>
+
+        <div class="row"  *ngIf="!isShow">
+            <div class="col-md-12">
+                <hr [class.edit-separator-hr]="true" />
+            </div>
+        </div>
+
+<!--         <div class="row" *ngIf="!isShow">
+              <div class="col-md-12">
+                  <hr [class.edit-separator-hr]="true" />
+              </div>
+          </div> -->
+
+         
+      </div>
+
+  </section>
+
+ 
+  <div class="btns" *ngIf="!isShow">
+      <button class="btn btn-primary " type="button" [disabled]="!(f.form.valid &&item.increaseAccountId!=item.depreciationAccountId)&& !(isEdit&&item.nameAr&&item.nameEn) " (click)="
+         handleSubmit() 
+      " ><i *ngIf="isloading" class='fa fa-circle-o-notch fa-spin'></i> 
+           {{isEdit?( "shared.Save" | translate):("shared.add" | translate) }}
+      </button>
+    
+  </div>
+
+</form>
+<!--  الفرع  -->
+<br *ngIf="!isShow">
+<section>
+    <h3 *ngIf="section2" class="section-title">
+        {{ "asset.addassetintobranch" | translate }}
+    </h3>
+    <br  *ngIf="Cost" />
+
+    <div *ngIf="section2" class="d-inline-block">
+        <label class="control-label col-md-12" for="branchselected">
+          {{"shared.branch"|translate}}
+        </label>
+        <div class="col-md-12">
+          <ng-select name="branchselected" [items]="branches" bindLabel="name" bindValue="id"
+              [(ngModel)]="branchselected"  required placeholder="{{'shared.branch'|translate}}">
+          </ng-select>
+        </div>
+    </div>
+    <div *ngIf="section2 && !isbranch" class="d-inline-block">
+       
+        <div class="col-md-12">
+          <button [disabled]="!branchselected" class="btn btn-primary " type="button"  
+          (click)="Submitbranch()"
+       >{{"shared.branchselected"|translate}} </button>
+        </div>
+    </div>
+    <div *ngIf="section2 && isbranch " class="d-inline-block">
+       
+        <div class="col-md-12">
+          <button [disabled]="!branchselected" class="btn btn-primary " type="button"  
+          data-toggle="modal" data-target="#myModal"
+       >{{"shared.branchselected"|translate}} </button>
+        </div>
+    </div>
+    <div  *ngIf="section2 && isbranch" class="row">
+        <div class="col-md-12">
+            <hr [class.edit-separator-hr]="true" />
+        </div>
+    </div>
+    <form *ngIf="isCCPermission" class="form-group" #f1="ngForm" novalidate >
+    <div *ngIf="section2 && isbranch" class="">
+        <label class="control-label col-md-12" for="Costselected">
+        {{"shared.costCenter"|translate}}
+        </label>
+        <div class="col-md-12">
+          <ng-select  name="Costselected" [items]="Cost" bindLabel="nameAr" bindValue="id"
+              [(ngModel)]="Costselected"  required placeholder="{{'shared.costCenter'|translate}}">
+          </ng-select>
+        </div>
+    </div>
+    <br> <br> 
+    <div *ngIf="section2 && isbranch" class="">
+        <label class="control-label col-md-12" for="Perc">
+           {{"shared.percentage"|translate}}
+        </label>
+        <div class="col-md-12">
+            <input required  type="number" pattern="\b([1-9]|[1-9][0-9]|100)\b" max="100" min="1" attr.id="Perc" name="Perc" class="form-control" [(ngModel)]="Perc" />
+        </div>
+    </div>
+   
+    <!-- [disabled]="!(f1.form.valid && Perc<=MaxPerc) -->
+    <div *ngIf="section2 && isbranch " class="d-inline-block">
+       
+        <div class="col-md-12">
+          <button class="btn btn-primary " type="button"  [disabled]="!(f1.form.valid && Perc<=MaxPerc && !SelectedCost.includes(Costselected) )" (click)="
+          SubmitCost() 
+      " ><i *ngIf="isloading" class='fa fa-circle-o-notch fa-spin'></i> {{"shared.add"|translate}} </button>
+        </div>
+    </div>
+</form>
+<div *ngIf="(Cost && !isShow) &&isCCPermission" class="row">
+    <div class="col-md-12">
+        <hr [class.edit-separator-hr]="true" />
+    </div>
+</div>
+<!---         جدول مراكز التكلفة -->
+<h3 *ngIf="branchName" class="section-title">
+    {{branchName}}
+</h3>
+    <!-- <div *ngIf="Cost" class="row">
+        <div class="col-md-12">
+            <hr [class.edit-separator-hr]="true" />
+        </div>
+    </div> -->
+    
+    <div *ngIf="(costCenters || isShow)&&isCCPermission" class="tbl-header">
+        
+        <table cellpadding="0" cellspacing="0" border="0">
+            <thead>
+                <tr>
+                    <th>{{ "shared.nameAr" | translate }}</th>
+                    <th>{{ "shared.nameEn" | translate }}</th>
+                    <th>{{"shared.percentage"|translate}}</th>
+                  
+
+                </tr>
+            </thead>
+        </table>
+    </div>
+      <div *ngIf="(costCenters || isShow) && isCCPermission" class="tbl-content">
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tbody>
+
+                <tr *ngFor="let i of costCenters ; let j=index">
+                    <td *ngIf="i.costCenterId">{{ i.costCenter.nameAr }}</td>
+                    <td *ngIf="i.costCenterId">{{ i.costCenter.nameEn }}</td>
+                    <td *ngIf="isShow && i.costCenterId">{{ i.perc }}</td>
+                    <td *ngIf="!isShow && i.costCenterId"class="form-inline flex-element">  <input  required  type="number" pattern="\b([1-9]|[1-9][0-9]|100)\b" max="100" min="1" attr.id="Perc" name="Perc" class="form-control" [(ngModel)]="i.perc" />
+                        <button *ngIf="!isShow  && i.costCenterId" class="btn btn-primary " type="button" [disabled]="!(i.perc-Allperc[j]<=MaxPerc)" (click)="
+                        SubmitEditCost(i) 
+                    " ><i *ngIf="isloading" class='fa fa-circle-o-notch fa-spin'></i> {{"shared.Edit"|translate}} </button>
+                    <button *ngIf="!isShow && i.costCenterId" class="btn btn-danger "   type="button" (click)="DeleteCost(i.id,i.costCenter.nameAr)" ><i *ngIf="isloading" class='fa fa-circle-o-notch fa-spin'></i> {{"shared.Delete"|translate}} </button>
+                  
+                </tr>
+
+            </tbody>
+        </table>
+    </div>  
+
+</section>
+<div *ngIf="isShowTable" class="row">
+    <div class="col-md-12">
+        <hr [class.edit-separator-hr]="true" />
+    </div>
+</div>
+<h3 *ngIf="isShowTable" class="section-title">
+    {{"shared.depreciation"|translate}}
+</h3>
+<!-- <div *ngIf="isShowTable" class="row">
+    <div class="col-md-12">
+        <hr [class.edit-separator-hr]="true" />
+    </div>
+</div> -->
+<app-assets *ngIf="isShowTable " ></app-assets>
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content panel-warning">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{"shared.warning"|translate}}</h4>
+        </div>
+        <div class="modal-body">
+          <p>{{"asset.Warningchangebrach"|translate}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" (click)="Submitbranch()" data-dismiss="modal">{{"shared.Accept"|translate}}</button>
+          <button type="button" class="btn btn-primary"  data-dismiss="modal">{{"shared.Close"|translate}}</button>
+   
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <!-- <div class="modal fade" id="deleteModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{"shared.warning"|translate}}</h4>
+        </div>
+        <div class="modal-body">
+            <p>{{"asset.Warningdeletebranch"|translate}} {{Deletecost.name}} ؟</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="DeletedCost()" data-dismiss="modal">{{"shared.Accept"|translate}}</button>
+            <button type="button" class="btn btn-primary"  data-dismiss="modal">{{"shared.Close"|translate}}</button>
+     </div>
+      </div>
+    </div>
+  </div> -->

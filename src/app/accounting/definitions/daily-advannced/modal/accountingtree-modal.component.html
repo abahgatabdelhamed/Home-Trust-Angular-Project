@@ -1,0 +1,262 @@
+<div>
+    <form *ngIf="formResetToggle"
+          class="form-horizontal"
+          name="dailyDocInfoForm"
+          #f="ngForm"
+          novalidate
+          (ngSubmit)="save()">
+          <div class="flexy">
+        <div class="form-group col-md-6 required has-feedback">
+            <label class="control-label col-md-12" for="code-{{ uniqueId }}">
+                {{ "shared.name" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ accounting.name }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <input type="text"
+                       attr.id="name-{{ uniqueId }}"
+                       name="name"
+                       (change)="handleNameChange($event)"
+
+                       class="form-control"
+                       [(ngModel)]="accountingEdit.name"
+                       #name="ngModel" required />
+
+                       <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert-danger ">
+                        <div *ngIf="name.errors" class="required-filed">
+                           {{'shared.required-filed'|translate}}
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        <!-- <div class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div> -->
+        <!--<div class="form-group has-feedback">
+        <label class="control-label col-md-2" for="code-{{ uniqueId }}">
+            {{ "shared.code" | translate }}
+        </label>
+        <div *ngIf="!isEditMode" class="col-md-10">
+            <p class="form-control-static">{{ accounting.code }}</p>
+        </div>
+        <div *ngIf="isEditMode" class="col-md-10">
+            <input
+                type="text"
+                attr.id="code-{{ uniqueId }}"
+                name="code"
+                class="form-control"
+                [(ngModel)]="accountingEdit.code"
+                #name="ngModel"
+            />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <hr
+                [class.separator-hr]="!isEditMode"
+                [class.edit-separator-hr]="isEditMode"
+            />
+        </div>
+    </div>-->
+
+        <div class="form-group col-md-6">
+            <label class="control-label col-md-12"
+                   for="isDefault-{{ uniqueId }}">
+                {{ "shared.isDefault" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">
+                    {{ accounting.defaultDisplay }}
+                </p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <input type="checkbox"
+                       attr.id="isDefault-{{ uniqueId }}"
+                       (change)="handleDefaultChange($event)"
+
+                       name="isDefault"
+                       class="form-control"
+                       [(ngModel)]="accountingEdit.isDefault" />
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            <label class="control-label col-md-12"
+                   for="initialBalance-{{ uniqueId }}">
+                {{ "shared.initialBalance" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static  show-number">
+                    {{ accounting.initialBalance }}
+                </p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <input type="text"
+                       attr.id="initialBalance-{{ uniqueId }}"
+                       name="initialBalance"
+                       (change)="handleAmountChange($event)"
+
+                       class="form-control  show-number"
+                       [(ngModel)]="accountingEdit.initialBalance" />
+            </div>
+        </div>
+        <!-- <div class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div> -->
+        <div class="form-group col-md-6 required">
+            <label class="control-label col-md-12"
+                   for="personName-{{ uniqueId }}">
+                {{ "shared.personName" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ accounting.personName }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <ng-select [items]="people3$ | async" [placeholder]="clientPlaceholder" 
+                bindLabel="nameAr"    (change)="handlePersonChange($event)"
+                [(ngModel)]="person" [addTag]="false" [multiple]="false"
+                [hideSelected]="true" [loading]="people3Loading" [typeahead]="people3input$"
+                required  attr.id="personName-{{ uniqueId }}"
+                name="personName"
+                
+               
+                >
+            </ng-select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div>
+
+        <div class="form-group col-md-6 required">
+            <label class="control-label col-md-12"
+                   for="vatTypeId-{{ uniqueId }}">
+                {{ "shared.accountCategoryName" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">
+                    {{ accounting.accountCategoryName }}
+                </p>
+            </div>
+            <div *ngIf="isEditMode&&initial?.accountCategories" class="col-md-12">
+                <select attr.id="accountCategoryName-{{ uniqueId }}"
+                        name="accountCategoryName"
+                        type="text"
+                        class="form-control"
+                        #accountCategoryName="ngModel"
+                        required
+                        (change)="handleCategoryChange($event)"
+                        [(ngModel)]="accountingEdit.accountCategoryId">
+                        <div *ngIf="accountCategoryName.invalid && (accountCategoryName.dirty || accountCategoryName.touched)" class="alert-danger ">
+                            <div *ngIf="accountCategoryName.errors" class="required-filed">
+                               {{'shared.required-filed'|translate}}
+                            </div>
+                        </div>
+                    <option *ngFor="let c of initial['accountCategories']" [value]="c.id">{{c.name}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div>
+    </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <div class="pull-right">
+                    <button *ngIf="!isEditMode"
+                            type="button"
+                            (click)="close()"
+                            class="btn btn-default">
+                        <i class="fa fa-close"></i>
+                        {{ "shared.Close" | translate }}
+                    </button>
+                    <button *ngIf="!isEditMode && !isAdvanced"
+                            type="button"
+                            (click)="edit()"
+                            class="btn btn-default">
+                        <i class="fa fa-edit"></i>
+                        {{ "shared.Edit" | translate }}
+                    </button>
+                    <button
+                    type="button"
+                    (click)="printDocumnent()"
+                    class="btn btn-primary"
+                >
+               {{"shared.print" | translate}}
+                </button>
+                <button
+                *ngIf="isEditMode"
+                type="button"
+                (click)="saveAndPrint()"
+                class="btn btn-primary"
+                [disabled]="isSaving"
+            >
+                <i *ngIf="!isSaving" class="fa fa-save"></i
+                ><i
+                    *ngIf="isSaving"
+                    class="fa fa-circle-o-notch fa-spin"
+                ></i>
+                {{
+                    isSaving
+                        ? ("shared.Saving" | translate)
+                        : ("shared.SaveAndPrint" | translate)
+                }}
+            </button>
+                    <!-- <button
+                    *ngIf="!isEditMode"
+                    type="button"
+                    (click)="exportAsPDFDocumnent()"
+                    class="btn btn-default"
+                >
+                    <i class="fa fa-pdf"></i>
+                    {{ "shared.exportAsPdf" | translate }}
+                </button> -->
+                    <button *ngIf="isEditMode"
+                            type="button"
+                            (click)="cancel()"
+                            class="btn btn-danger"
+                            [disabled]="isSaving">
+                        <i class="fa fa-times"></i>
+                        {{ "shared.Cancel" | translate }}
+                    </button>
+                    <button *ngIf="isEditMode"
+                            type="submit"
+                            class="btn btn-primary"
+                            [disabled]="isSaving||f.invalid">
+                        <i *ngIf="!isSaving" class="fa fa-save"></i><i *ngIf="isSaving"
+                                                                       class="fa fa-circle-o-notch fa-spin"></i>
+                        {{
+                            isSaving
+                                ? ("shared.Saving" | translate)
+                                : ("shared.Save" | translate)
+                        }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        
+    </form>
+</div>

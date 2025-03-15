@@ -1,0 +1,306 @@
+<div>
+    <form
+        *ngIf="formResetToggle"
+        class="form-horizontal"
+        name="receiptInfoForm"
+        #f="ngForm"
+        novalidate
+        (ngSubmit)="
+            f.form.valid ? save() : showErrorAlert(gT('messages.requiredfields'), '')
+        "
+    >
+        <div class="form-group has-feedback">
+            <label class="control-label col-md-12" for="fromAccount">
+                {{ "shared.from" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">
+                    {{
+                        receipt.fromAccount
+                            ? receipt.fromAccount.name
+                            : "no name"
+                    }} 
+                </p>
+            </div>
+            <div *ngIf="isEditMode"
+                 class="col-md-12"
+                 [ngClass]="{
+                    'has-success': f.submitted && name.valid,
+                    'has-error': f.submitted && !name.valid
+                }">
+                <select id="fromAccount"
+                        name="fromAccount"
+                        #itemCategoryParentId=""
+                        #itemCategoryParentIdSelector="bootstrap-select"
+                        class="selectpicker form-control"
+                        bootstrapSelect
+                        data-live-search="true"
+                        data-actions-box="false"
+                        data-live-search-placeholder="Search..."
+                        required>
+                    <option attr.value="0"> </option>
+                    <option *ngFor="let f of [1, 2, 3]" attr.value="{{ f }}">
+                        <!-- {{ f.nameAr }} -->
+                        {{ f }}
+                    </option>
+                </select>
+                <span *ngIf="showValidationErrors && f.submitted"
+                      class="glyphicon form-control-feedback"
+                      [ngClass]="{
+                        'glyphicon-ok ': name.valid,
+                        'glyphicon-remove': !name.valid
+                    }"></span>
+                <span *ngIf="showValidationErrors && f.submitted && !name.valid"
+                      class="errorMessage">
+                    {{ "shared.fromAccountId" | translate  }}
+                </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+        <div class="form-group has-feedback">
+            <label class="control-label col-md-12" for="toAccount">
+                {{ "shared.to" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">
+                    {{ receipt.toAccount ? receipt.toAccount.name : "no name" }}
+                </p>
+            </div>
+            <div *ngIf="isEditMode"
+                 class="col-md-12"
+                 [ngClass]="{
+                    'has-success': f.submitted && name.valid,
+                    'has-error': f.submitted && !name.valid
+                }">
+                <select id="toAccount"
+                        name="toAccount"
+                        #itemCategoryParentId=""
+                        #itemCategoryParentIdSelector="bootstrap-select"
+                        class="selectpicker form-control"
+                        bootstrapSelect
+                        data-live-search="true"
+                        data-actions-box="false"
+                        data-live-search-placeholder="Search...">
+                    <option attr.value="0"> </option>
+                    <option *ngFor="let f of [1, 2, 3]" attr.value="{{ f }}">
+                        <!-- {{ f.nameAr }} -->
+                        {{ f }}
+                    </option>
+                </select>
+                <span *ngIf="showValidationErrors && f.submitted"
+                      class="glyphicon form-control-feedback"
+                      [ngClass]="{
+                        'glyphicon-ok ': name.valid,
+                        'glyphicon-remove': !name.valid
+                    }"></span>
+                <span *ngIf="showValidationErrors && f.submitted && !name.valid"
+                      class="errorMessage">
+                    {{ "shared.fromAccountId" | translate  }}
+                </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label
+                class="control-label col-md-12"
+                for="fromAccount-{{ uniqueId }}"
+            >
+                {{ "shared.amount" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ receipt.amount }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <input
+                    type="text"
+                    attr.id="amount-{{ uniqueId }}"
+                    name="amount"
+                    class="form-control"
+                    [(ngModel)]="receiptEdit.amount"
+                    required
+                />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-12" for="code-{{ uniqueId }}">
+                {{ "shared.code" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ receipt.code }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <input
+                    type="text"
+                    attr.id="code-{{ uniqueId }}"
+                    name="code"
+                    class="form-control"
+                    [(ngModel)]="receiptEdit.code"
+                />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <div class="form-group has-feedback">
+            <label class="control-label col-md-12" for="date-{{ uniqueId }}">
+                {{ "shared.date" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ receipt.date }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <input
+                    type="date"
+                    attr.id="date-{{ uniqueId }}"
+                    name="date"
+                    class="form-control"
+                    [(ngModel)]="receiptEdit.date"
+                    #name="ngModel"
+                />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <div class="form-group has-feedback">
+            <label class="control-label col-md-12" for="notes-{{ uniqueId }}">
+                {{ "shared.notes" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ receipt.notes }}</p>
+            </div>
+            <div
+                *ngIf="isEditMode"
+                class="col-md-12"
+                [ngClass]="{
+                    'has-success': f.submitted && name.valid,
+                    'has-error': f.submitted && !name.valid
+                }"
+            >
+                <textarea
+                    type="text"
+                    attr.id="notes-{{ uniqueId }}"
+                    name="notes"
+                    class="form-control"
+                    [(ngModel)]="receiptEdit.notes"
+                    #name="ngModel"
+                ></textarea>
+                <span
+                    *ngIf="showValidationErrors && f.submitted"
+                    class="glyphicon form-control-feedback"
+                    [ngClass]="{
+                        'glyphicon-ok ': name.valid,
+                        'glyphicon-remove': !name.valid
+                    }"
+                ></span>
+                <span
+                    *ngIf="showValidationErrors && f.submitted && !name.valid"
+                    class="errorMessage"
+                >
+                    {{ "shared.NameRequired" | translate }}
+                </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-7">
+                <div class="pull-right">
+                    <button
+                        *ngIf="!isEditMode"
+                        type="button"
+                        (click)="close()"
+                        class="btn btn-default"
+                    >
+                        <i class="fa fa-close"></i>
+                        {{ "shared.Close" | translate }}
+                    </button>
+                    <button
+                        *ngIf="!isEditMode"
+                        type="button"
+                        (click)="edit()"
+                        class="btn btn-default"
+                    >
+                        <i class="fa fa-edit"></i>
+                        {{ "shared.Edit" | translate }}
+                    </button>
+                    <button
+                        *ngIf="isEditMode"
+                        type="button"
+                        (click)="cancel()"
+                        class="btn btn-danger"
+                        [disabled]="isSaving"
+                    >
+                        <i class="fa fa-times"></i>
+                        {{ "shared.Cancel" | translate }}
+                    </button>
+                    <button
+                        *ngIf="isEditMode"
+                        type="submit"
+                        class="btn btn-primary"
+                        [disabled]="f.invalid"
+                    >
+                        <i *ngIf="!isSaving" class="fa fa-save"></i
+                        ><i
+                            *ngIf="isSaving"
+                            class="fa fa-circle-o-notch fa-spin"
+                        ></i>
+                        {{
+                            isSaving
+                                ? ("shared.Saving" | translate)
+                                : ("shared.Save" | translate)
+                        }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </form>
+</div>

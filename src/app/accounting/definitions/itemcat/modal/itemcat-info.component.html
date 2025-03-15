@@ -1,0 +1,431 @@
+<div>
+    <form
+        *ngIf="formResetToggle"
+        class="form-horizontal"
+        name="itemcatInfoForm"
+        #f="ngForm"
+        novalidate
+        (ngSubmit)="
+            f.form.valid ? save() : showErrorAlert(gT('messages.requiredfields'), '')"
+    >
+    <div class="flexy">
+        <div class="form-group col-md-6 has-feedback">
+            <label class="control-label col-md-12" for="nameAr-{{ uniqueId }}">
+                {{ "shared.NameAr" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ itemcat.nameAr }}</p>
+            </div>
+            <div
+                *ngIf="isEditMode"
+                class="col-md-12"
+                [ngClass]="{
+                    'has-success': f.submitted && name.valid,
+                    'has-error': f.submitted && !name.valid
+                }"
+            >
+                <input
+                    type="text"
+                    attr.id="nameAr-{{ uniqueId }}"
+                    name="nameAr"
+                    class="form-control"
+                    [(ngModel)]="itemcatEdit.nameAr"
+                    #name="ngModel"
+                    required
+                />
+                <span
+                    *ngIf="showValidationErrors && f.submitted"
+                    class="glyphicon form-control-feedback"
+                    [ngClass]="{
+                        'glyphicon-ok ': name.valid,
+                        'glyphicon-remove': !name.valid
+                    }"
+                ></span>
+                <span
+                    *ngIf="showValidationErrors && f.submitted && !name.valid"
+                    class="errorMessage"
+                >
+                    {{ "shared.NameRequired" | translate }}
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group col-md-6 has-feedback">
+            <label class="control-label col-md-12" for="nameEn-{{ uniqueId }}">
+                {{ "shared.nameEn" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ itemcat.nameEn }}</p>
+            </div>
+            <div
+                *ngIf="isEditMode"
+                class="col-md-12"
+                [ngClass]="{
+                    'has-success': f.submitted && name.valid,
+                    'has-error': f.submitted && !name.valid
+                }"
+            >
+                <input
+                    type="text"
+                    attr.id="nameEn-{{ uniqueId }}"
+                    name="nameEn"
+                    class="form-control"
+                    [(ngModel)]="itemcatEdit.nameEn"
+                    #name="ngModel"
+                />
+                <span
+                    *ngIf="showValidationErrors && f.submitted"
+                    class="glyphicon form-control-feedback"
+                    [ngClass]="{
+                        'glyphicon-ok ': name.valid,
+                        'glyphicon-remove': !name.valid
+                    }"
+                ></span>
+                <span
+                    *ngIf="showValidationErrors && f.submitted && !name.valid"
+                    class="errorMessage"
+                >
+                    {{ "shared.NameRequired" | translate }}
+                </span>
+            </div>
+        </div>
+        <!--
+            ******************************************************************************************************
+        -->
+        <!-- <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div> -->
+
+        <div class="form-group col-md-6">
+            <label class="control-label col-md-12" for="itemCategoryParentId">{{
+                "shared.ItemCategoryParentName" | translate
+            }}</label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">
+                    <span class="badge">{{
+                        itemcat.itemCategoryParentName
+                    }}</span>
+                </p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <select
+                    id="itemCategoryParentId"
+                    name="itemCategoryParentId"
+                    #itemCategoryParentId="ngModel"
+                    #itemCategoryParentIdSelector="bootstrap-select"
+                    [(ngModel)]="itemcatEdit.itemCategoryParentId"
+                    (change)="handleParentChange($event)"
+                    class="selectpicker form-control"
+                    bootstrapSelect
+                    data-live-search="true"
+                    data-actions-box="false"
+                    data-live-search-placeholder="Search..."
+                >
+                    <option attr.value="0"> </option>
+                    <option
+                        *ngFor="let itemCategoryParent of allItemCategoryParent"
+                        attr.value="{{ itemCategoryParent.id }}"
+                    >
+                        {{ itemCategoryParent.nameAr }}
+                    </option>
+                </select>
+                <span
+                    *ngIf="showValidationErrors && f.submitted"
+                    class="glyphicon form-control-feedback"
+                    [ngClass]="{
+                        'glyphicon-ok ': itemCategoryParentId.valid,
+                        'glyphicon-remove': !itemCategoryParentId.valid
+                    }"
+                ></span>
+                <span
+                    *ngIf="
+                        showValidationErrors &&
+                        f.submitted &&
+                        !itemCategoryParentId.valid
+                    "
+                    class="errorMessage"
+                >
+                    {{ "shared.ItemCategoryParentName" | translate }}
+                </span>
+            </div>
+        </div>
+        <div *ngIf="!isEditMode" class="form-group col-md-6">
+            <label class="control-label col-md-12" for="itemCategoryParentId">{{
+                "shared.code" | translate
+            }}</label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">
+                    <span class="badge">{{ itemcat.code }}</span>
+                </p>
+            </div>
+        </div>
+        <div *ngIf="!isEditMode" class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+       
+
+
+        <!--
+            ******************************************************************************************************
+        -->
+        <!-- <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div> -->
+
+        <div class="form-group col-md-6 has-feedback ">
+            <label class="control-label col-md-12" for="color-{{ uniqueId }}">
+                {{ "shared.color" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ itemcat.color |translate}}</p>
+            </div>
+            <div
+                *ngIf="isEditMode"
+                class="col-md-12"
+                [ngClass]="{
+                    'has-success': f.submitted && name.valid,
+                    'has-error': f.submitted && !name.valid
+                }"
+            >
+                <input
+                    type="color"
+                    attr.id="color-{{ uniqueId }}"
+                    name="color"
+                    class="form-control"
+                    [(ngModel)]="itemcatEdit.color"
+                    #name="ngModel"
+                />
+                <span
+                    *ngIf="showValidationErrors && f.submitted"
+                    class="glyphicon form-control-feedback"
+                    [ngClass]="{
+                        'glyphicon-ok ': name.valid,
+                        'glyphicon-remove': !name.valid
+                    }"
+                ></span>
+                <span
+                    *ngIf="showValidationErrors && f.submitted && !name.valid"
+                    class="errorMessage"
+                >
+                    {{ "shared.NameRequired" | translate }}
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+        <div class="form-group col-md-6 has-feedback ">
+            <label class="control-label col-md-12" for="color-{{ uniqueId }}">
+                {{ "shared.image" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+             <img *ngIf="logoPath && !imgURL" [src]='logoPath' style="height:100px">
+                <img [src]="imgURL" height="200" *ngIf="imgURL" style="height:100px">
+            </div>
+            <div
+                *ngIf="isEditMode"
+                class="col-md-12"
+             
+            >
+            <div class="file">
+                <img *ngIf="logoPath && !imgURL" [src]='logoPath' style="height:100px">
+                <img [src]="imgURL" height="200" *ngIf="imgURL" style="height:100px">
+                <label for="file-input">{{ "shared.chooseImage" | translate }}</label>
+                <input *ngIf="isEditMode"  (change)="handleFileChange($event)" id="file-input" type="file" name="'imageUrl" >
+                <span *ngIf="uploadDone">تم رفع الشعار بنجاح</span>
+                
+            </div>
+        
+        </div>
+        </div>
+        
+        <div class="form-group col-md-6 has-feedback">
+            <label class="control-label col-md-12" for="notes-{{ uniqueId }}">
+                {{ "shared.notes" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ itemcat.notes }}</p>
+            </div>
+            <div
+                *ngIf="isEditMode"
+                class="col-md-12"
+                [ngClass]="{
+                    'has-success': f.submitted && name.valid,
+                    'has-error': f.submitted && !name.valid
+                }"
+            >
+                <textarea
+                    type="text"
+                    attr.id="notes-{{ uniqueId }}"
+                    name="notes"
+                    class="form-control"
+                    [(ngModel)]="itemcatEdit.notes"
+                    #name="ngModel"
+                   
+                ></textarea>
+
+                <span
+                    *ngIf="showValidationErrors && f.submitted"
+                    class="glyphicon form-control-feedback"
+                    [ngClass]="{
+                        'glyphicon-ok ': name.valid,
+                        'glyphicon-remove': !name.valid
+                    }"
+                ></span>
+                <span
+                    *ngIf="showValidationErrors && f.submitted && !name.valid"
+                    class="errorMessage"
+                >
+                    {{ "shared.NameRequired" | translate }}
+                </span>
+            </div>
+        </div>
+<!--   
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div> -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+    </div>
+        <div class="form-group ">
+            <div class="col-sm-12">
+                <div class="">
+                    
+                     
+                    <button
+                    *ngIf="isEditMode"
+                    type="submit"
+                    class="btn btn-primary"
+                    [disabled]="f.invalid"
+                >
+                    <i *ngIf="!isSaving" class="fa fa-save"></i
+                    ><i
+                        *ngIf="isSaving"
+                        class="fa fa-circle-o-notch fa-spin"
+                    ></i>
+                    {{
+                        isSaving
+                            ? ("shared.Saving" | translate)
+                            : ("shared.Save" | translate)
+                    }}
+                </button>
+                    <button
+                *ngIf="isEditMode"
+                type="button"
+                (click)="saveAndPrint()"
+                class="btn btn-primary"
+                [disabled]="isSaving"
+            >
+                <i *ngIf="!isSaving" class="fa fa-save"></i
+                ><i
+                    *ngIf="isSaving"
+                    class="fa fa-circle-o-notch fa-spin"
+                ></i>
+                {{
+                    isSaving
+                        ? ("shared.Saving" | translate)
+                        : ("shared.SaveAndPrint" | translate)
+                }}
+            </button>
+                  
+                    <button
+                        *ngIf="!isEditMode"
+                        type="button"
+                        (click)="close()"
+                        class="btn btn-default"
+                    >
+                        <i class="fa fa-close"></i>
+                        {{ "shared.Close" | translate }}
+                    </button>
+                    <button
+                        *ngIf="!isEditMode"
+                        type="button"
+                        (click)="edit()"
+                        class="btn btn-default"
+                    >
+                        <i class="fa fa-edit"></i>
+                        {{ "shared.Edit" | translate }}
+                    </button>
+                    <button
+                    type="button"
+                    (click)="printDocumnent()"
+                    class="btn btn-primary"
+                >
+               {{"shared.print" | translate}}
+                </button>
+                <!-- <button
+                        type="button"
+                        (click)="exportAsPDFDocumnent()"
+                        *ngIf="!isEditMode"
+                        class="btn btn-default"
+                    >
+                        <i class="fa fa-pdf"></i>
+                        {{ "shared.exportAsPdf" | translate }}
+                    </button>  -->
+                    <button
+                        *ngIf="isEditMode"
+                        type="button"
+                        (click)="cancel()"
+                        class="btn btn-danger"
+                        [disabled]="isSaving"
+                    >
+                        <i class="fa fa-times"></i>
+                        {{ "shared.Cancel" | translate }}
+                    </button>
+
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </form>
+
+    <div class="row">
+        <div class="col-md-12">
+            <hr
+                [class.separator-hr]="!isEditMode"
+                [class.edit-separator-hr]="isEditMode"
+            />
+        </div>
+    </div>
+</div>

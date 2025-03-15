@@ -1,0 +1,63 @@
+<div>
+    <h2>{{'shared.expenses-template'|translate}}</h2>
+    <!-- <form  #f="ngForm" (ngSubmit)="f.form.valid ? save() :'' ">
+        <div class="row flexy">
+            <div class="col-md-4 form-group">
+                <label class="control-label" for="nameAr">
+                    {{"shared.NameAr" | translate }}
+                </label>
+                <input id="nameAr" name="nameArInput" #nameArInput="ngModel" class="form-control"
+                    [(ngModel)]="expensesTemplate.nameAr" required />
+            </div>
+
+            <div class="col-md-4 form-group">
+                <label class="control-label" for="nameEn">
+                    {{"shared.nameEn" | translate }}
+                </label>
+                <input id="nameEn" name="nameEnInput" #nameEnInput="ngModel" class="form-control"
+                    [(ngModel)]="expensesTemplate.nameEn" />
+            </div>
+
+            <div *ngIf="isSuperAdmin"  class="col-md-4 form-group bottom-align-text">
+                <button type="submit" class="btn btn-success" [disabled]="!f.form.valid">{{expensesTemplate?.id ?
+                    ("shared.edit" | translate):
+                    ("shared.add" | translate)}}</button>
+            </div>
+            <div *ngIf="expensesTemplate?.id&&!isSuperAdmin"  class="col-md-4 form-group bottom-align-text">
+                <button type="submit" class="btn btn-success" [disabled]="!f.form.valid">{{ 
+                    ("shared.edit" | translate)
+                    }}</button>
+            </div>
+        </div>
+    </form> -->
+
+
+    <ngx-datatable class="material colored-header sm table table-striped table-hover"
+        [loadingIndicator]="loadingIndicator" [rows]="rows" [rowHeight]="35" [headerHeight]="35" [footerHeight]="35"
+        [columns]="columns" [scrollbarV]="true" [columnMode]="'force'">
+    </ngx-datatable>
+
+    <ng-template #indexTemplate let-value="value">
+        <strong>{{ value }}</strong>
+    </ng-template>
+
+
+
+    <ng-template  #actionsTemplate let-row="row" let-value="value" let-i="index">
+        <div>
+            <a class="btn btn-link btn-xs" href="javascript:;" [routerLink]="['/definitions/expenses-template/', 'expenses-tree', row.treeHeadId]">
+                <i class="fa fa-sitemap" aria-hidden="true"></i>
+                {{ "shared.Show" | translate }}
+            </a>
+            <!-- <a  class="btn btn-link btn-xs" href="javascript:;" (click)="edit(row)">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                {{ "shared.Edit" | translate }}
+            </a> -->
+          <a *ngIf="isSuperAdmin" class="btn btn-link btn-xs"
+             href="javascript:;"
+             (click)="delete(row)">
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+              {{ "shared.Delete" | translate }}
+          </a>
+        </div>
+    </ng-template>

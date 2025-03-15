@@ -1,0 +1,54 @@
+<div>
+    <form *ngIf="formResetToggle" class="form-horizontal" name="billtypeInfoForm" #f="ngForm" novalidate
+          (ngSubmit)="f.form.valid ? save() :
+
+          (!name.valid && showErrorAlert('BillType name is required', 'Please enter a billtype name (minimum of 2 and maximum of 200 characters)'));">
+
+        <div class="form-group has-feedback">
+            <label class="control-label col-md-12" for="name-{{uniqueId}}">{{'billtypes.editor.Name' | translate}}</label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{billtype.name}}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12" [ngClass]="{'has-success': f.submitted && name.valid, 'has-error' : f.submitted && !name.valid}">
+                <input type="text" attr.id="name-{{uniqueId}}" name="name" 
+                       class="form-control" [(ngModel)]="billtypeEdit.name" #name="ngModel"/>
+                <span *ngIf="showValidationErrors && f.submitted" class="glyphicon form-control-feedback" [ngClass]="{'glyphicon-ok ': name.valid, 'glyphicon-remove' : !name.valid}"></span>
+                <span *ngIf="showValidationErrors && f.submitted && !name.valid" class="errorMessage">
+                    {{'billtypes.editor.NameRequired' | translate}}
+                </span>
+            </div>
+        </div>
+
+        <!--******************************************************************************************************-->
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode" [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-12" for="code-{{uniqueId}}">{{'shared.code' | translate}}</label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{billtype.code}}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <input type="text" attr.id="code-{{uniqueId}}" name="code" class="form-control" [(ngModel)]="billtypeEdit.code" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-7">
+                <div class="pull-right">
+                    <button *ngIf="!isEditMode" type="button" (click)="close()" class="btn btn-default"><i class='fa fa-close'></i> {{'billtypes.editor.Close' | translate}}</button>
+                    <button *ngIf="!isEditMode" type="button" (click)="edit()" class="btn btn-default"><i class='fa fa-edit'></i> {{'billtypes.editor.Edit' | translate}}</button>
+                    <button *ngIf="isEditMode" type="button" (click)="cancel()" class="btn btn-danger" [disabled]="isSaving"><i class='fa fa-times'></i> {{'billtypes.editor.Cancel' | translate}}</button>
+                    <button *ngIf="isEditMode" type="submit" class="btn btn-primary" [disabled]="isSaving">
+                        <i *ngIf="!isSaving" class='fa fa-save'></i><i *ngIf="isSaving" class='fa fa-circle-o-notch fa-spin'></i> {{isSaving ? ('billtypes.editor.Saving' | translate) : ('billtypes.editor.Save' | translate)}}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </form>
+</div>

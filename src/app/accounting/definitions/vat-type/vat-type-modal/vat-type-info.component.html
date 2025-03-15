@@ -1,0 +1,150 @@
+<div>
+    <form
+        *ngIf="formResetToggle"
+        (keydown.enter)="$event.preventDefault()"
+        class="form-horizontal"
+        name="vatTypeInfoForm"
+        #f="ngForm"
+        novalidate
+        (ngSubmit)="save()"
+    >
+        <!-- اسم الصنف بالعربية -->
+        <div class="form-group">
+            <label class="control-label col-md-12" for="code-{{uniqueId}}">
+                {{ "shared.name" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">
+                    {{ vatType.name ? vatType.name : "غير محدد" }}
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <!-- مواصفات الصنف -->
+        <div class="form-group">
+            <label class="control-label col-md-12" for="notes">{{
+                "shared.notes" | translate
+            }}</label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">
+                    <span>{{ vatType.notes }}</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+        <!-- مواصفات الصنف -->
+        <div class="form-group">
+            <label class="control-label col-md-12" for="defaultValue">{{
+                "shared.defaultValue" | translate
+            }}</label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">
+                    <span class="badge">{{ vatType.defaultValue }}</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <!-- نوع الضريبة -->
+        <div class="form-group has-feedback">
+            <label class="control-label col-md-12" for="isDefault-{{uniqueId}}">
+                {{ "shared.isDefault" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">
+                    <span class="badge">{{ vatType.isDefaultDisplay }}</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-7">
+                <div class="pull-right">
+                    <button
+                        *ngIf="!isEditMode"
+                        type="button"
+                        (click)="close()"
+                        class="btn btn-default"
+                    >
+                        <i class="fa fa-close"></i>
+                        {{ "shared.Close" | translate }}
+                    </button>
+                    <a
+                        *ngIf="!isEditMode"
+                        [routerLink]="[
+                            '/definitions/vat-type/add-vat-type',
+                            vatType['id']
+                        ]"
+                        type="button"
+                        class="btn btn-default"
+                    >
+                        <i class="fa fa-edit"></i>
+                        {{ "shared.Edit" | translate }}
+                    </a>
+                    <button
+                        *ngIf="isEditMode"
+                        type="button"
+                        (click)="cancel()"
+                        class="btn btn-danger"
+                        [disabled]="isSaving"
+                    >
+                        <i class="fa fa-times"></i>
+                        {{ "shared.Cancel" | translate }}
+                    </button>
+                    <button
+                        *ngIf="isEditMode"
+                        type="submit"
+                        class="btn btn-primary"
+                        [disabled]="isSaving"
+                    >
+                        <i *ngIf="!isSaving" class="fa fa-save"></i
+                        ><i
+                            *ngIf="isSaving"
+                            class="fa fa-circle-o-notch fa-spin"
+                        ></i>
+                        {{
+                            isSaving
+                                ? ("shared.Saving" | translate)
+                                : ("shared.Save" | translate)
+                        }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </form>
+</div>

@@ -1,0 +1,50 @@
+
+<br>
+<div class="flexy row">
+  <div class="col-md-6">
+    <!-- * Search for items  -->
+    <div class="form-group search-box">
+        <label for="search-item" class="my-2"> {{'shared.itemName'|translate}}/{{'shared.Service'|translate}}</label>
+
+        <ng-select [items]="items$ | async" bindLabel="name" bindValue="id" 
+            [hideSelected]="true" [loading]="itemSearchLoading" [typeahead]="itemsInput$"
+            [(ngModel)]="itemId" (change)="SelectedItemChange($event)">
+        </ng-select>
+    </div>
+</div>
+   <div class="col-md-6"> 
+    <button class="btn btn-primary " (click)="transaction()" [disabled]="!itemId">
+      {{ "shared.Movement" | translate }}
+  </button>
+  <button type="button " [disabled]="!report" (click)="printReport()" class="btn btn-primary">{{"shared.print"|translate}}</button>
+
+ 
+    <div class="btn" *ngIf="report" (click)="exportAsXLSX()"><img src="../../../../assets/Excel.png" width="35px" height="35px"></div>
+  
+</div>
+</div>
+<br><br>
+<div *ngIf="report">
+  <div id="printedArea">
+      <table class="table table-striped">
+          <tr>
+              <th style="text-align: center;">{{"shared.date"|translate}}</th>
+              <th style="text-align: center;">{{"shared.process"|translate}}</th>
+              <th style="text-align: center;">{{"shared.nameAr"|translate}}</th>
+              <th style="text-align: center;">{{"shared.nameEn"|translate}}</th>
+              <th style="text-align: center;">{{"shared.itemUnitName"|translate}}</th>
+              <th style="text-align: center;">{{"shared.quantity"|translate}}</th>
+              <th style="text-align: center;">{{ "shared.price" | translate }}</th>
+          </tr>
+          <tr style="text-align: center;" *ngFor="let itemReport of report">
+              <td>{{itemReport.date | date}}</td>
+              <td>{{itemReport.operation}}</td>
+              <td>{{itemReport.name}}</td>
+              <td>{{itemReport.nameEn}}</td>
+              <td>{{itemReport.unitName}}</td>
+              <td>{{itemReport.quantity}}</td>
+              <td>{{itemReport.price}}</td>
+          </tr>
+      </table>
+  </div>
+ </div>

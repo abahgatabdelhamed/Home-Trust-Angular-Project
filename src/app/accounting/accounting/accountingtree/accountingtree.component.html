@@ -1,0 +1,25 @@
+<div>
+    <nav class="nav">
+        <ul>
+            <li class="tree current" (click)="switchToTree()" name="tree">
+                {{ "shared.treeLabel" | translate }}
+            </li>
+         
+        </ul>
+    </nav>
+
+    <div class="tree-container">
+        <ay-treeTable [value]="data">
+            <ay-column field="name" header='{{ "shared.name" | translate }}'></ay-column>
+            <ay-column field="amount" header='{{ "shared.amount" | translate }}'></ay-column>
+        </ay-treeTable>
+        <div class="custom-loader" *ngIf="isLoading">
+        </div>
+    </div>
+
+</div>
+
+
+
+
+

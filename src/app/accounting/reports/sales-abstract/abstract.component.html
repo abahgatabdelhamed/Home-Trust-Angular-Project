@@ -1,0 +1,138 @@
+
+<div class="row">
+    <div class="col-md-12">
+        <app-branch-cc-filter (filter)="filter($event)"  (exportAsXLSXEvent)="exportAsXLSX()"
+             [withSearch]="false" [withExpensesLables]="false"
+             [withBillTypeFilter]="false" [withTime]="true" [validDate]="true" [validBranch]="false" [validCC]="false" [withAddNew]="false" [withBranch]='true'  [withCC]='CCPermissions' [withExportAsXLSX]="view"></app-branch-cc-filter>
+    </div>
+</div>
+
+<table>
+    <tr >
+      <th colspan="7" class="main-header">{{ "shared.abstractHeader" | translate }}</th>
+    </tr>
+
+    <tr>
+        <th class="row-type">{{ "shared.sales" | translate }}</th>
+        <th class="row-type">{{ "shared.refund" | translate }}</th>
+        <th class="row-type">{{ "shared.net" | translate }}</th>
+    
+    <!-- <tr>
+        <td>{{billSummary.sCash}}</td>
+        <td>{{billSummary.sNetwork}}</td>
+        <td>{{billSummary.sBank}}</td>
+        <td>{{billSummary.sDept}}</td>
+        <td>{{billSummary.sVat}}</td>
+        <td *ngIf="billSummary.stotal">{{billSummary.stotal.toFixed(2)}}</td>
+        <td *ngIf="billSummary.stotalWithVat">{{billSummary.stotalWithVat.toFixed(2)}}</td>
+        <td *ngIf="!billSummary.stotal">{{billSummary.stotal}}</td>
+        <td *ngIf="!billSummary.stotalWithVat">{{billSummary.stotalWithVat}}</td>
+        <th class="row-type">{{ "shared.sales" | translate }}</th>
+    </tr>
+
+    <tr>
+        <td>{{billSummary.rCash}}</td>
+        <td>{{billSummary.rNetwork}}</td>
+        <td>{{billSummary.rBank}}</td>
+        <td>{{billSummary.rDept}}</td>
+        <td>{{billSummary.rVat}}</td>
+        <td *ngIf="billSummary.rtotal">{{billSummary.rtotal.toFixed(2)}}</td>
+        <td *ngIf="billSummary.rtotalWithVat">{{billSummary.rtotalWithVat.toFixed(2)}}</td>
+        <td *ngIf="!billSummary.rtotal">{{billSummary.rtotal}}</td>
+        <td *ngIf="!billSummary.rtotalWithVat">{{billSummary.rtotalWithVat}}</td>
+        <th class="row-type">{{ "shared.refund" | translate }}</th>
+    </tr>
+
+    <tr>
+        <td>{{NetResult.ncash}}</td>
+        <td>{{NetResult.nnetwork}}</td>
+        <td>{{NetResult.nbank}}</td>
+        <td>{{NetResult.ndebt}}</td>
+        <td>{{NetResult.nvat}}</td>
+        <td *ngIf="NetResult.ntotal">{{NetResult.ntotal.toFixed(2)}}</td>
+        <td *ngIf="NetResult.ntotalWithVat">{{NetResult.ntotalWithVat.toFixed(2)}}</td>
+        <td *ngIf="!NetResult.ntotal">{{NetResult.ntotal}}</td>
+        <td *ngIf="!NetResult.ntotalWithVat">{{NetResult.ntotalWithVat}}</td>
+        <th class="row-type">{{ "shared.net" | translate }}</th>
+    </tr>
+  </ -->
+ 
+      
+    
+    
+     
+    </tr>
+
+    <tr>
+
+        <td>{{billSummary.sCash}}</td>
+        <td>{{billSummary.rCash}}</td>
+        <td>{{NetResult.ncash}}</td>
+        <th>{{ "shared.cash" | translate }}</th>
+    </tr>
+
+    <tr>
+        <td>{{billSummary.sNetwork}}</td>
+        <td>{{billSummary.rNetwork}}</td>
+        <td>{{NetResult.nnetwork}}</td>
+        <th>{{ "shared.network" | translate }}</th>
+     </tr>
+
+    <tr>
+        
+       
+        <td>{{billSummary.sBank}}</td>
+        <td>{{billSummary.rBank}}</td>
+        <td>{{NetResult.nbank}}</td>
+        <th>{{ "shared.bank" | translate }}</th>
+
+    </tr>
+    <tr>
+        <td>{{billSummary.sDept}}</td>
+        <td>{{billSummary.rDept}}</td>
+        <td>{{NetResult.ndebt}}</td>
+        <th>{{ "shared.debt" | translate }}</th>
+    </tr>
+    <tr>
+        <td>{{billSummary.sVat}}</td>
+        <td>{{billSummary.rVat}}</td>
+        <td>{{NetResult.nvat}}</td>
+        <th>{{ "shared.vat" | translate }}</th>
+    </tr>
+    <tr>
+        <td *ngIf="billSummary.stotal">{{billSummary.stotal.toFixed(2)}}</td>
+        <td *ngIf="billSummary.rtotal">{{billSummary.rtotal.toFixed(2)}}</td>
+        <td *ngIf="NetResult.ntotal">{{NetResult.ntotal.toFixed(2)}}</td>
+        <th *ngIf="billSummary.stotal">{{ "shared.withoutVat" | translate }}</th>
+    </tr>
+    <tr>
+        <td *ngIf="billSummary.stotalWithVat">{{billSummary.stotalWithVat.toFixed(2)}}</td>
+        <td *ngIf="billSummary.rtotalWithVat">{{billSummary.rtotalWithVat.toFixed(2)}}</td>
+        <td *ngIf="NetResult.ntotalWithVat">{{NetResult.ntotalWithVat.toFixed(2)}}</td>
+        <th *ngIf="billSummary.stotalWithVat">{{ "shared.withVat" | translate }}</th>
+    </tr>
+  </table>
+
+  <div class="form-group">
+    <div class="col-sm-7">
+        <div class="pull-right">
+         
+           
+            <button
+            type="button"
+            (click)="printDocumnent()"
+            class="btn btn-primary"
+        >
+       {{"shared.printThermal" | translate}}
+        </button>
+        <button 
+        type="button"
+        (click)="print()"
+        class="btn btn-primary">
+   
+    {{ "shared.print" | translate }}
+</button>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+<!--<div class="header">
+    <div class="form-group">
+
+        
+
+            <label class="control-label col-md-2" for="itemCategoryParentId">
+                {{ "shared.from" | translate }}
+            </label>
+            <div class="col-md-10">
+                <input type="text"
+                       attr.id="code"
+                       name="code"
+                       class="form-control"
+                       [(ngModel)]="serachModel.from"
+                       #name="ngModel"
+                       bsDatepicker />
+                <timepicker [(ngModel)]="mytime"></timepicker>
+            </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2" for="itemCategoryParentId">
+            {{ "shared.to" | translate }}
+        </label>
+        <div class="col-md-10">
+            <input
+                type="text"
+                attr.id="code"
+                name="code"
+                class="form-control"
+                [(ngModel)]="serachModel.to"
+                #name="ngModel"
+                bsDatepicker
+            />
+        </div>
+    </div>
+
+    <button class="btn btn-primary" (click)="handleSubmit($event)">
+        {{ "shared.search" | translate }}
+    </button>
+
+    <div class="col-sm-2">
+        <button (click)="exportAsXLSX()">
+            <i class="fa fa-file-excel-o" style="font-size:20px;color:blue"></i>
+        </button>
+    </div>
+</div>
+
+<ngx-datatable
+    class="material colored-header sm table table-striped table-hover"
+    [loadingIndicator]="loadingIndicator"
+    [rows]="rows"
+    [rowHeight]="35"
+    [headerHeight]="35"
+    [footerHeight]="35"
+    [columns]="columns"
+    [scrollbarV]="true"
+    [columnMode]="'force'"
+>
+</ngx-datatable>-->

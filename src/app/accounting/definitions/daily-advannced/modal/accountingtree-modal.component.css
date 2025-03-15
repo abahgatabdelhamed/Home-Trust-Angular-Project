@@ -1,0 +1,27 @@
+a {
+    color: white;
+    text-transform: none;
+}
+.flexy{
+    display: flex;
+    flex-wrap: wrap;
+}
+.form-group.required .control-label:after {
+    /* font-family: "Font Awesome 4 Brands"; */
+    /* content:"\f069"; */
+    content:"*";
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1;
+    color:rgb(201, 9, 9);
+  }
+
+  .required-filed{
+      padding: 5px;
+  }
+@media screen and (max-width:992px) {
+    .flexy{
+        display: block;
+    }
+    
+}

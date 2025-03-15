@@ -1,0 +1,496 @@
+<div>
+    <form
+        *ngIf="formResetToggle"
+        class="form-horizontal"
+        name="expensesInfoForm"
+        #f="ngForm"
+        novalidate
+        (ngSubmit)="
+            f.form.valid ? save() : showErrorAlert(gT('messages.requiredfields'), '')"
+        
+    >
+
+        <div class="form-group col-md-6 has-feedback">
+            <label
+                class="control-label col-md-12"
+                for="receiptCode-{{ uniqueId }}"
+            >
+                {{ "shared.billCode" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                    <p class="show-number form-control-static">{{ expenses.receiptCode }}</p>
+                </div>
+            <div
+                *ngIf="isEditMode"
+                class="col-md-12"
+            >
+                <input
+                    type="text"
+                    name="receiptCode-{{ uniqueId }}"
+                    attr.id="receiptCode-{{ uniqueId }}"
+                    class="form-control"
+                    [(ngModel)]="expensesEdit.receiptCode"
+                    #receiptCode="ngModel"
+                    [disabled]="true"
+                />
+            </div>
+        </div>
+<!-- 
+        <div class="row">
+                <div class="col-md-12">
+                    <hr [class.edit-separator-hr]="isEditMode" />
+                </div>
+            </div> -->
+
+    <div class="form-group col-md-6 has-feedback">
+            <label
+                class="control-label col-md-12"
+                for="accountTypeID-{{ uniqueId }}"
+            >
+                {{ "shared.paymentMethodelogy" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ expenses.accountType != null?expenses.accountType.name:'' }}</p>
+                </div>
+        <div class="col-md-12" *ngIf="isEditMode">
+            <select id="accountTypeID"
+                    name="accountTypeID"
+                    [(ngModel)]="expensesEdit.accountTypeId"
+                    (change)="onChangedAccountTypeID($event)"
+                    #accountTypeID="ngModel"
+                    #accountTypeIDSelector="bootstrap-select"
+                    class="selectpicker form-control col-md-12"
+                    bootstrapSelect
+                    data-live-search="true"
+                    data-actions-box="false"
+                    data-live-search-placeholder="Search..."
+                    *ngIf="allAccountType.length > 0">
+                <option attr.value="0"> </option>
+                <ng-container *ngFor="let accountType of allAccountType">
+                    <option *ngIf="accountType.id!=4" attr.value="{{ accountType.id }}">{{accountType.name}}</option>
+                </ng-container>
+            </select>
+        </div>
+    </div>
+
+    <!-- <div class="row">
+            <div class="col-md-12">
+                <hr [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div> -->
+
+        <div class="form-group col-md-6 has-feedback">
+                <label
+                    class="control-label col-md-12"
+                    for="accountID-{{ uniqueId }}"
+                >
+                    {{ "shared.accountName" | translate }}
+                </label>
+                <div *ngIf="!isEditMode" class="col-md-12">
+                    <p class="form-control-static">{{ expenses.account!=null?expenses.account.name:'' }}</p>
+                    </div>
+        <div class="col-md-12" *ngIf="isEditMode">
+                <select
+                    id="accountID-{{ uniqueId }}"
+                    name="accountID-{{ uniqueId }}"
+                    [(ngModel)]="expensesEdit.accountId"
+                    #accountID="ngModel"
+                    #accountIDSelector="bootstrap-select"
+                    class="selectpicker form-control col-md-12"
+                    bootstrapSelect
+                    data-live-search="true"
+                    data-actions-box="false"
+                    data-live-search-placeholder="Search..."
+                    *ngIf="allAccount.length > 0"
+                >
+                    <option attr.value="0"> </option>
+                    <option
+                        *ngFor="let account of allAccount"
+                        attr.value="{{ account.id }}"
+                    >
+                        {{ account.name }}
+                    </option>
+                </select>
+        </div>
+    </div>
+
+        <!-- <div class="row">
+                <div class="col-md-12">
+                    <hr [class.edit-separator-hr]="isEditMode" />
+                </div>
+        </div> -->
+
+        <div class="form-group col-md-6 has-feedback">
+            <label class="control-label col-md-12" for="branchID-{{ uniqueId }}">
+                {{ "shared.branch" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ expenses.branch != null?expenses.branch.name:'' }}</p>
+                </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <select
+                    id="branchID"
+                    name="branchID"
+                    [(ngModel)]="expensesEdit.branchId"
+                    #branchID="ngModel"
+                    #branchIDSelector="bootstrap-select"
+                    class="selectpicker form-control"
+                    bootstrapSelect
+                    data-live-search="true"
+                    data-actions-box="false"
+                    data-live-search-placeholder="Search..."
+                        (change)="onBranchChange()"
+                    *ngIf="allBranches.length > 0"
+                >
+                    <option attr.value="0"> </option>
+                    <option
+                        *ngFor="let branch of allBranches"
+                        attr.value="{{ branch.id }}"
+                    >
+                        {{ branch.name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div>
+
+        <div class="form-group col-md-6 has-feedback">
+            <label class="control-label col-md-12" for="costCenterID-{{ uniqueId }}">
+                {{ "shared.costCenter" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ expenses.costCenter != null?expenses.costCenter.nameAr:'' }}</p>
+                </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <ng-select name="costCenterID" [items]="allCostCenters" bindLabel="nameAr" bindValue="id" [multiple]="false"
+                      [(ngModel)]="expensesEdit.costCenterId" (change)="onCostCenterChange()">
+                </ng-select>
+            </div>
+        </div>
+
+        <!-- <div class="row">
+                <div class="col-md-12">
+                    <hr [class.edit-separator-hr]="isEditMode" />
+                </div>
+        </div> -->
+
+        <div class="form-group col-md-6 has-feedback">
+            <label class="control-label col-md-12" for="expenses-templateID-{{ uniqueId }}">
+                {{ "shared.expenses-template" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ expenses.expensessTree != null?expenses.expensessTree.nameAr:'' }}</p>
+                </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <select
+                    id="costCenterID"
+                    name="costCenterID"
+                    [(ngModel)]="expensesEdit.expensessTreeId"
+                    #costCenterID="ngModel"
+                    #costCenterIDSelector="bootstrap-select"
+                    class="selectpicker form-control"
+                    bootstrapSelect
+                    data-live-search="true"
+                    data-actions-box="false"
+                    data-live-search-placeholder="Search..."
+                    *ngIf="allExpensesTemplates.length > 0"
+                >
+                    <option attr.value="0"> </option>
+                    <option
+                        *ngFor="let expensesTemplate of allExpensesTemplates"
+                        attr.value="{{ expensesTemplate.id }}"
+                    >
+                        {{ expensesTemplate.name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <!-- <div class="row">
+                <div class="col-md-12">
+                    <hr [class.edit-separator-hr]="isEditMode" />
+                </div>
+        </div> -->
+
+        <div class="form-group col-md-6 has-feedback">
+            <label class="control-label col-md-12" for="date-{{ uniqueId }}">
+                {{ "shared.offerDate" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                    <p class="form-control-static">{{ expenses.date }}</p>
+                </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <input
+                    type="text"
+                    name="date"
+                    attr.id="date-{{ uniqueId }}"
+                    date="date"
+                    class="form-control"
+                    [(ngModel)]="expensesEdit.date"
+                    #name="ngModel"
+                    required
+                    bsDatepicker
+                />
+            </div>
+        </div>
+
+        <div class="row">
+                <div class="col-md-12">
+                    <hr [class.edit-separator-hr]="isEditMode" />
+                </div>
+        </div>
+
+        <div class="form-group col-md-6 has-feedback">
+                <label class=" col-md-12 control-label" for="membershipID"
+                        >{{ "shared.PurchasesMembership" | translate }}
+                </label>
+                <div *ngIf="!isEditMode" class="col-md-12">
+                        <p class="form-control-static">{{ expenses.person? expenses.person['nameAr']: '' }}</p>
+                    </div>
+                <div *ngIf="isEditMode" class="col-md-12">
+                        <ng-select
+                            [items]="people3$ | async"
+                            placeholder="ابحث عن المورد بالكود او الاسم"
+                            name="membershipID"
+                            bindLabel="nameAr"
+                            (change)="peopleSearchSelected($event)"
+                            [addTag]="false"
+                            [multiple]="false"
+                            [hideSelected]="true"
+                            [loading]="people3Loading"
+                            [typeahead]="people3input$"
+                            [(ngModel)]="selectedPeople"
+                            [required]="true"
+                            #membershipID="ngModel"
+                        >
+                        </ng-select>
+                </div>
+        </div>
+
+        <!-- <div *ngIf="isNewExpenses || isViewMode || isEditMode" class="row">
+                <div class="col-md-12">
+                    <hr [class.edit-separator-hr]="isNewExpenses || isViewMode || isEditMode" />
+                </div>
+        </div> -->
+
+        <div *ngIf="isNewExpenses" class="form-group col-md-6 has-feedback">
+            <label
+                class="control-label col-md-12"
+                for="vatTypeId-{{ uniqueId }}"
+                *ngIf="isNewExpenses"
+            >
+                {{ "shared.vatTypeName" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                    <p class="form-control-static">{{ expenses.vatTypeId }}</p>
+                </div>
+            <div class="col-md-12" *ngIf="isNewExpenses">
+                <select
+                    id="vatTypeId-{{ uniqueId }}"
+                    name="vatTypeId-{{ uniqueId }}"
+                    [(ngModel)]="expensesEdit.vatTypeId"
+                    #vatTypeId="ngModel"
+                    #vatTypeIdSelector="bootstrap-select"
+                    class="selectpicker form-control col-md-12"
+                    bootstrapSelect
+                    data-live-search="true"
+                    data-actions-box="false"
+                    data-live-search-placeholder="Search..."
+                    (change) = "onVatChanged()"
+                    *ngIf="allAccount.length > 0"
+                >
+                    <option attr.value="0"> </option>
+                    <option
+                        *ngFor="let vatType of allVatTypes"
+                        attr.value="{{ vatType.id }}"
+                    >
+                        {{ vatType.name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+<!-- 
+        <div  *ngIf="isNewExpenses || isViewMode" class="row">
+                <div class="col-md-12">
+                    <hr [class.edit-separator-hr]="isNewExpenses || isViewMode" />
+                </div>
+        </div> -->
+
+        <div class="form-group col-md-6 has-feedback">
+                    <label
+                        class="control-label col-md-12"
+                        for="amount-{{ uniqueId }}"
+                    >
+                        {{ "shared.amount" | translate }}
+                    </label>
+                    <div *ngIf="!isEditMode" class="col-md-12">
+                            <p class="form-control-static show-number">{{ expenses.amount }}</p>
+                        </div>
+                    <div class="col-md-12" *ngIf="isEditMode">
+                        <input
+                        *ngIf="isEditMode"
+                            id="amount-{{ uniqueId }}"
+                            name="amount-{{ uniqueId }}"
+                            [(ngModel)]="expensesEdit.amount"
+                            type="number"
+                            #amount="ngModel"
+                            class="form-control col-md-12"
+                            data-actions-box="false"
+                            required
+                            (change)="onAmountCahnged()"
+                        >
+                    </div>
+        </div>
+
+        <!-- <div class="row">
+                <div class="col-md-12">
+                    <hr [class.edit-separator-hr]="isEditMode" />
+                </div>
+        </div> -->
+
+        <div class="form-group col-md-6 has-feedback">
+            <label class="control-label col-md-12"
+                   for="finalAmount-{{ uniqueId }}">
+                {{ "shared.actualValue" | translate }}
+            </label>
+                <div *ngIf="!isEditMode" class="col-md-12">
+                    <p class="show-number form-control-static">{{ expensesEdit.vat }}</p>
+                    </div>
+            <div  *ngIf="isEditMode" class="col-md-12" >
+                <!-- <input
+                id="finalAmount-{{ uniqueId }}"
+                name="finalAmount-{{ uniqueId }}"
+                [(ngModel)]="finalAmount"
+                [disabled] = "true"
+                class="form-control col-md-12"
+                > -->
+                <p class="col-md-12 lead">{{expensesEdit.vat}}</p>
+            </div>
+        </div>
+
+        <div class="form-group col-md-6 has-feedback">
+                <label
+                    class="control-label col-md-12"
+                    for="finalAmount-{{ uniqueId }}"
+                >
+                    {{ "shared.AmountAfterVat" | translate }}
+                </label>
+                <div *ngIf="!isEditMode" class="col-md-12">
+                    <p class="form-control-static">{{ expensesEdit.vat + expensesEdit.amount }}</p>
+                    </div>
+            <div  *ngIf="isEditMode" class="col-md-12 show-number" >
+                <!-- <input
+                id="finalAmount-{{ uniqueId }}"
+                name="finalAmount-{{ uniqueId }}"
+                [(ngModel)]="finalAmount"
+                [disabled] = "true"
+                class="form-control col-md-12"
+                > -->
+                <p class="col-md-12 lead">{{finalAmount}}</p>
+            </div>
+        </div>
+
+        <!-- <div class="row">
+                <div class="col-md-12">
+                    <hr [class.edit-separator-hr]="isEditMode" />
+                </div>
+        </div> -->
+
+        <div class="form-group col-md-6 has-feedback">
+                <label class="control-label col-md-12" for="notes-{{ uniqueId }}">
+                    {{ "shared.notes" | translate }}
+                </label>
+                <div *ngIf="!isEditMode" class="col-md-12">
+                        <p class="form-control-static">{{ expenses.notes }}</p>
+                    </div>
+                <div *ngIf="isEditMode" class="col-md-12">
+                    <textarea
+                        name="notes-{{ uniqueId }}"
+                        attr.id="notes-{{ uniqueId }}"
+                        class="form-control"
+                        [(ngModel)]="expensesEdit.notes"
+                        #notes="ngModel"
+                    ></textarea>
+                </div>
+        </div>
+
+        <!-- <div class="row">
+            <div class="col-md-12">
+                <hr [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div> -->
+
+        <div class="form-group">
+            <div class="col-sm-12">
+                <div class="pull-right">
+                    <button *ngIf="!isEditMode"
+                            type="button"
+                            (click)="close()"
+                            class="btn btn-default">
+                        <i class="fa fa-close"></i>
+                        {{ "shared.Close" | translate }}
+                    </button>
+                    <button *ngIf="!isEditMode && isSuperAdmin"
+                            type="button"
+                            (click)="edit()"
+                            class="btn btn-default">
+                        <i class="fa fa-edit"></i>
+                        {{ "shared.Edit" | translate }}
+                    </button>
+                    <button *ngIf="isEditMode"
+                            type="button"
+                            (click)="cancel()"
+                            class="btn btn-danger"
+                            [disabled]="isSaving">
+                        <i class="fa fa-times"></i>
+                        {{ "shared.Cancel" | translate }}
+                    </button>
+                     <!-- <button *ngIf="!isEditMode"
+                            type="button"
+                            (click)="printDoc()"
+                            class="btn btn-danger">
+                        {{ "shared.exportAsPdf" | translate }}
+                    </button>  -->
+                    <button *ngIf="!isEditMode"
+                            type="button"
+                            (click)="printDocumnent()"
+                            class="btn btn-default">
+                        {{ "shared.print" | translate }}
+                    </button>
+                    <button *ngIf="isEditMode"
+                            type="submit"
+                            class="btn btn-primary"
+                            [disabled]="f.invalid || isSaving">
+                        <i *ngIf="!isSaving" class="fa fa-save"></i><i *ngIf="isSaving"
+                                                                       class="fa fa-circle-o-notch fa-spin"></i>
+                        {{
+                            isSaving
+                                ? ("shared.Saving" | translate)
+                                : ("shared.Save" | translate)
+                        }}
+                    </button>
+                    <button *ngIf="isEditMode"
+                            type="button"
+                            (click)="saveAndPrint()"
+                            class="btn btn-primary"
+                            [disabled]="f.invalid || isSaving">
+                        <i *ngIf="!isSaving" class="fa fa-save"></i><i *ngIf="isSaving"
+                                                                       class="fa fa-circle-o-notch fa-spin"></i>
+                        {{
+                    isSaving
+                        ? ("shared.Saving" | translate)
+                        : ("shared.SaveAndPrint" | translate)
+                        }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+    </form>
+</div>

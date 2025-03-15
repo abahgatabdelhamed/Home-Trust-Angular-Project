@@ -1,0 +1,11 @@
+.flexy{
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 45px;
+}
+@media screen and (max-width:992px) {
+    .flexy{
+        display: block;
+    }
+    
+}

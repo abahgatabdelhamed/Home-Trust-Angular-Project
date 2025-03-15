@@ -1,0 +1,19 @@
+#header-icon {
+    font-size: 1.2em;
+}
+.side-menu {
+    min-width: 120px;
+    position: relative;
+    z-index: 9;
+    margin-top: 6%;
+    
+}
+
+.separator-hr {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+[hidden] {
+    display: none;
+}

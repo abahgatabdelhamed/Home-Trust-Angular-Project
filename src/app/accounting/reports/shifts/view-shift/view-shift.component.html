@@ -1,0 +1,110 @@
+<div *ngIf="data">
+    <p> <span>{{data.userName +':  ' }}  {{ '     '}}{{ ("shared.name"|translate)  }}</span> <span> {{ data.startedDate|date :'medium'}} {{  '   :' +("shared.startDate"|translate)}} </span>
+        <span *ngIf="data.endDate"> {{ data.endDate|date :'medium'}} {{  '   :' +("shared.closedDate"|translate)}} </span> <span>{{ ("shared.totalHour"|translate) +':  ' }} {{''+ data.totalHour}}</span></p>
+        <h3>{{data.branchName}}</h3>
+   <div class="tbl-header">
+        
+      <table cellpadding="0" cellspacing="0" border="0">
+          <thead>
+              <tr >
+                <th>{{"shared.quantity"|translate}}</th>
+                  <th *ngIf="checkPermissionsService.checkGroup(9,2)">{{ "shared.price" | translate }}</th>
+                  <th>{{ "shared.nameAr" | translate }}</th>
+                  <th>{{ "shared.nameEn" | translate }}</th>
+
+                
+
+              </tr>
+          </thead>
+      </table>
+  </div>
+    <div  class="tbl-content">
+      <table cellpadding="0" cellspacing="0" border="0">
+          <tbody>
+
+              <tr *ngFor="let i of data.items ; let j=index">
+                <td >{{ i.quantity}}</td> 
+                <td *ngIf="checkPermissionsService.checkGroup(9,2)">{{ i.price }}</td>
+                  <td >{{ i.name }}</td>
+                  <td >{{ i.nameEn }}</td>
+                 
+                  
+              </tr>
+
+          </tbody>
+      </table>
+  </div> 
+  <div *ngIf="checkPermissionsService.checkGroup(9,2)">
+    <table class="table table-borderless">
+      <thead>
+        <tr style="color: black;">
+        
+          <th style="color: black;">{{ ("shared.soldBalance"|translate)  }}</th>
+          <th style="color: black;">{{ ("shared.madaSoldBalance"|translate) }}</th>
+          <th style="color: black;">{{ ("shared.cashSoldBalance"|translate) }}</th>
+          <th *ngIf="checkPermissionsService.checkGroup(3,11)" style="color: black;">{{ ("shared.deliveryAppsTotalBalance"|translate)}}</th>
+       
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+              <td >{{data.soldBalance}}</td>
+              <td >{{data.madaSoldBalance}}</td>
+     
+          <td >{{data.cashSoldBalance}}</td>
+          <td *ngIf="checkPermissionsService.checkGroup(3,11)" >{{data.deliveryAppsTotalBalance}}</td>
+         
+       
+        
+        </tr>
+       
+      </tbody>
+    </table>
+  </div>
+  <div *ngIf="checkPermissionsService.checkGroup(3,11)&&checkPermissionsService.checkGroup(9,2)">
+    <div class="container mt-3">
+       
+        <p>{{"shared.deliveryApps"|translate}}</p>            
+        <table class="table table-borderless">
+          <thead>
+            <tr style="color: black;">
+              <th style="color: black;">{{"shared.amount"|translate}}</th>
+              <th style="color: black;">{{"shared.name"|translate}}</th>
+           
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let app of data.deliveryApps">
+            <td *ngIf="app.amount>0">{{app.amount}}</td>
+            <td *ngIf="app.amount>0">{{app.name}}</td>
+              
+            </tr>
+           
+          </tbody>
+        </table>
+        <!-- <p>{{("shared.deliveryAppsTotalBalance"|translate)+' : '}}{{data.deliveryAppsTotalBalance}}</p> -->
+      </div>
+     </div>
+
+  <!-- <p *ngIf="checkPermissionsService.checkGroup(9,2)"> <span>{{ ("shared.soldBalance"|translate) +':  ' }} {{''+ data.soldBalance}} </span> <span>{{ ("shared.madaSoldBalance"|translate) +':  ' }} {{''+ data.madaSoldBalance}}</span>  <span>{{ ("shared.cashSoldBalance"|translate) +':  ' }} {{''+ data.cashSoldBalance}}</span></p> -->
+ </div>
+<div>
+  <button class="btn btn-danger" (click)="close()"> {{"shared.Close"|translate}} </button>
+           
+           
+  <button
+  type="button"
+  (click)="printDocumnent()"
+  class="btn btn-primary"
+>
+{{"shared.printThermal" | translate}}
+</button>
+<button 
+type="button"
+(click)="print()"
+class="btn btn-primary">
+
+{{ "shared.print" | translate }}
+</button>
+
+</div>

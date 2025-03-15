@@ -1,0 +1,23 @@
+<nav class="nav">
+        <ul>
+
+                    <li class="m quates"  name="table">
+                   <a [routerLink]="['/sales/bill/quate']">   {{ "Sales.Tabs.AllQuote" | translate }}
+                </a>
+                </li>
+                    <li class="m sales"  name="table">
+                   <a [routerLink]="['/sales/bill/sale']">              {{ "Sales.Tabs.AllSalesBill" | translate }}
+
+                </a>
+                </li>
+                    <li class="m rsales"  name="table">
+                   <a  [routerLink]="['/sales/bill/rsale']">    {{ "Sales.Tabs.AllRechargeBill" | translate }}
+                </a>
+                </li>
+            <li class="m exchange"  name="table">
+                <a [routerLink]="['/sales/bill/exchange']">
+                    {{ "Sales.Tabs.AllExchangeBill" | translate }}
+                </a>
+                </li>
+            </ul>
+    </nav>

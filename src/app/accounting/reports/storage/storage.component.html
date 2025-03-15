@@ -1,0 +1,73 @@
+<div class="row">
+    <div class="col-md-12">
+        <app-branch-cc-filter (filter)="filter($event)"   [withdate]="false"
+             [withSearch]="false" [withExpensesLables]="false" 
+             [withBillTypeFilter]="false" [withTime]="false" [validBranch]="false" [validCC]="false" [withAddNew]="false" [withBranch]='true'  [withCC]='CCPermissions' [withExportAsXLSX]="false"></app-branch-cc-filter>
+    </div>
+</div>
+
+<div class="custom-loader" *ngIf="!branchs">
+</div>
+<div *ngIf="branchs">
+    <div *ngFor="let branch of branchs">
+      <div class="row flexy"> 
+         <h2 class="col-md-3" *ngIf="selsectedCC">{{branch.name}} - {{selsectedCC}}</h2>
+        <h2 class="col-md-3" *ngIf="!selsectedCC">{{branch.name}}</h2>
+        <div class="btn col-md-1" (click)="exportAsXLSX(branch)"><img src="../../../../assets/Excel.png" width="35px" height="35px"></div>
+
+       <div class="col-md-4"> <input placeholder="{{'shared.SearchItem' | translate}}" class="form-control" [(ngModel)]="keyword" />
+       </div>
+    </div>
+        <div class="tbl-header">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>{{ "shared.itemUnitName" | translate }}</th>
+                        <th>{{ "shared.itemName" | translate }}</th>
+                        <th>{{ "shared.code" | translate }}</th>
+                        <th>{{ "shared.initialQuantity" | translate }}</th>
+                        <!--<th>{{ "shared.quantity" | translate }}</th>-->
+                        <th>{{ "shared.realQuantity" | translate }}</th>
+
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="tbl-content">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tbody>
+
+                    <tr *ngFor="let i of branch['itemUnitBranches'] | myfilter:keyword">
+                        <td>{{ i.itemUnitName }}</td>
+                        <td>{{ i.itemName }}</td>
+                        <td>{{ i.code }}</td>
+                        <td class=" show-number">{{ i.initialQuantity }}</td>
+                        <!--<td class=" show-number">{{ i.quantity }}</td>-->
+
+                        <td class=" show-number">{{ i.realQuantity }}</td>
+
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="form-group has-feedback col-md-4">
+                <label class="control-label">{{"shared.totalInitialQuantity"|translate}}</label>
+                    <input type="text"
+                    disabled
+                    class="form-control"
+                    [(ngModel)]="branch['totalInitialQuantity']"
+                 />
+            </div>
+
+            <div class="form-group has-feedback col-md-4">
+                <label class="control-label">{{"shared.totalRealQuantity"|translate}}</label>
+                    <input type="text"
+                    disabled
+                    class="form-control"
+                    [(ngModel)]="branch['totalRealQuantity']">
+            </div>
+        </div>
+    </div>
+</div>

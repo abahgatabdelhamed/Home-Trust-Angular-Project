@@ -1,0 +1,13 @@
+<div class="container">
+  
+    <div [@fadeInOut]  class="row">
+        
+        <div *ngIf="config.language=='en'" class="col-sm-2"></div>
+         <div class="col-sm-12 col-md-10">
+            <div [@fadeInOut] class="tab-content" >
+                <router-outlet></router-outlet>
+            </div>
+        </div> 
+        
+      </div>
+</div>

@@ -1,0 +1,161 @@
+
+
+<div class="header">
+   
+<div class="row col-md-12 flexy">
+    <div class="col-md-3 form-group">
+    <label class="control-label" for="supplier">
+        {{isSupplierMode?("shared.PurchasesMembership"|translate):("shared.customerName"|translate)}}
+        </label>
+          <ng-select  name="suppId" [items]="sups" bindLabel="nameAr" bindValue="id" 
+              [(ngModel)]="suppId"  required placeholder="{{isSupplierMode?('shared.supplierName'|translate):('shared.customerName'|translate)}}">
+          </ng-select>
+    </div>
+    <div class="col-md-3 form-group">
+        <label class="control-label" for="itemCategoryParentId">
+            {{ "shared.from" | translate }}
+        </label>
+        
+            <input type="text"
+                   attr.id="code"
+                   name="code"
+                   class="form-control"
+                   [(ngModel)]="serachModel.from"
+                   #name="ngModel"
+                   bsDatepicker />
+                   <timepicker  [(ngModel)]="serachModel.from"></timepicker>
+        
+    </div>
+    
+
+    <div class="col-md-3 form-group">
+        <label class="control-label" for="itemCategoryParentId">
+            {{ "shared.to" | translate }}
+        </label>
+            <input type="text"
+                   attr.id="code"
+                   name="code"
+                   class="form-control"
+                   [(ngModel)]="serachModel.to"
+                   #name="ngModel"
+                   bsDatepicker />
+                   <timepicker  [(ngModel)]="serachModel.to"></timepicker>
+
+</div>
+<div class="col-md-3 form-group">
+    <br/>
+<button class="btn btn-primary" (click)="handleSubmit($event) " [disabled]="!suppId">
+    {{ "shared.submit" | translate }}
+</button>
+<button type="button" (click)="printDocumnent()" [disabled]="!report" class="btn btn-primary">
+    {{"shared.print" | translate}}
+</button>
+
+
+</div>
+<div class="rwo" style="    width: 150px !important;">
+    <label class="control-label col-md-10" for="isviewbills">{{"shared.billsReport"|translate}} </label>
+<input type="checkbox" class="col-md-2" [(ngModel)]="isviewbills" name="isviewbills">
+</div>
+</div>
+    
+   
+</div>
+<!-- <div  >
+<div >
+    <div >
+        <div >
+            <h4 >
+                <i class="fa fa-itemcat-circle-o"></i>
+               {{"shared.AccountStatement"|translate}}                    </h4>
+            <button type="button" class="close pull-right" title="Close" (click)="reportModal.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div  style="direction: rtl;">
+            <div class="row">
+
+                <div class="col-md-4">
+                    <input type="text" attr.id="code" name="code" class="form-control"
+                        [(ngModel)]="serachModel.to" #name="ngModel" bsDatepicker />
+                </div>
+                <label class="control-label col-md-2" for="itemCategoryParentId">
+                    {{ "shared.to" | translate }}
+                </label>
+
+
+                <div class="col-md-4">
+                    <input type="text" attr.id="code" name="code" class="form-control"
+                        [(ngModel)]="serachModel.from" #name="ngModel" bsDatepicker />
+                </div>
+                <label class="control-label col-md-2" for="itemCategoryParentId">
+                    {{ "shared.from" | translate }}
+                </label>
+
+
+                <button style="margin-right: 20px;" class="btn btn-primary" (click)="handleSubmit($event)">
+                    {{ "shared.search" | translate }}
+                </button>
+                <span *ngIf="reportLo != null">{{reportLo}}</span>
+            </div> -->
+            <div class="row"  >
+                <div class="col-md-12">
+                    <hr [class.edit-separator-hr]="true" />
+                </div>
+            </div>
+            <div *ngIf="report">
+                <div class="row">
+                    <div class="col-sm-2" style="float:right">{{ "shared.name" | translate }}</div>
+                    <div class="col-sm-4" style="float:right">{{report.name}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2" style="float:right">  {{ "shared.code" | translate }}</div>
+                    <div class="col-sm-4" style="float:right">{{report.code}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2" style="float:right">{{"shared.address"|translate}}</div>
+                    <div class="col-sm-4" style="float:right">{{report.address}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2" style="float:right">{{"shared.mobile"|translate}}</div>
+                    <div class="col-sm-4" style="float:right">{{report.mobile}}</div>
+                </div>
+                <br><br>
+                <div class="row">
+                    <table class="table" style="text-align:center">
+                        <tr>
+                            <th style="text-align:center">{{"shared.date"|translate}}</th>
+                            <th style="text-align:center">{{"shared.Operationtime"|translate}}</th>
+                            <th style="text-align:center">{{"shared.ReceiptDocumentCode"|translate}}</th>
+                            <th style="text-align:center">{{"shared.type"|translate}}</th>
+                            <th style="text-align:center">{{"shared.amount"|translate}}</th>
+                            <th style="text-align:center">{{"shared.balance"|translate}}</th>
+                        </tr>
+                        <tr *ngFor="let i of report.items">
+                            <td>{{i.date |date:'M/d/yy'}}</td>
+                            <td>{{i.time}}</td>
+                            <td>{{i.code}}</td>
+                            <td>{{i.type}}</td>
+                            <td class="show-number">{{i.amount}}</td>
+                            <td class="show-number">{{i.total}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4" style="float:right">{{"shared.amountdue"|translate}}</div>
+                    <div class="col-sm-2 show-number" style="float:right">{{report.dueAmount}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4" style="float:right">{{isSupplierMode?("shared.totalpurchase"|translate):("shared.totalsales"|translate)}}</div>
+                    <div class="col-sm-2 show-number" style="float:right">{{isSupplierMode?report.totalPurchases: report.totalSales}}</div>
+                </div>
+                <div class="row">
+                   
+                </div>
+            </div>
+ <div *ngIf="report&&isviewbills">  
+    <p style="text-align: center;font-size: x-large;
+    padding-top: 65px;
+">{{"shared.billsReport"|translate}} </p>         
+<bills  [rows1]="report" (page1)="setpage($event)"></bills>
+</div>

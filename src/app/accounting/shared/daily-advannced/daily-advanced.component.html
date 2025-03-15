@@ -1,0 +1,138 @@
+<div>
+    <div class="row control-box">
+        <div class="col-sm-6">
+            <div class="form-group search-box">
+                <search-box
+                    (searchChange)="onSearchChanged($event)"
+                    placeholder="{{ 'shared.SearchItem' | translate }}"
+                    
+                ></search-box>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="navbar action-box">
+                <ul class="nav navbar-nav navbar-right">
+                    <li *ngIf="canManageDailyAdvancedDocs" class="toolbaritem">
+                        <a
+                            href="javascript:;"
+                            (click)="newDailyAdvancedDocs(row)"
+                        >
+                            <i class="fa fa-plus-circle"></i>
+                            {{ "shared.NewItem" | translate }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="btn" (click)="exportAsXLSX()"><img src="../../../../assets/Excel.png" width="35px" height="35px"></div>
+
+
+             <button
+            type="button"
+            *ngIf="!newDailyAdvancedDocs && !isAdvanced"
+            (click)="exportAsPDF()"
+        >
+        <i
+        class="fa fa-file-pdf-o"
+        style="font-size:20px;color:red"
+    ></i>
+        </button> 
+        </div>
+    </div>
+
+    <ngx-datatable
+        id="data"
+        class="material colored-header sm table table-striped table-hover"
+        [loadingIndicator]="loadingIndicator"
+        [rows]="rows"
+        [rowHeight]="35"
+        [headerHeight]="35"
+        [externalPaging]="true"
+        [footerHeight]="35"
+        [columns]="columns"
+        [scrollbarV]="false"
+        [columnMode]="'force'"
+        [count]="page.count"
+        [offset]="page.offset"
+        [limit]="page.size"
+        (page)="setPage($event)"
+    >
+    </ngx-datatable>
+
+    <ng-template #indexTemplate let-value="value">
+        <strong>{{ value }}</strong>
+    </ng-template>
+
+    <ng-template #parentCategory let-row="row" let-value="value" let-i="index">
+        <span class="itemcat-role badge">{{ value }}</span>
+    </ng-template>
+
+    <ng-template #actionsTemplate let-row="row" let-value="value" let-i="index">
+        <div>
+            <a
+                class="btn btn-link btn-xs"
+                href="javascript:;"
+                (click)="onSelect(row)"
+            >
+                <i class="fa fa-eye" aria-hidden="true"></i>
+                {{ "shared.Show" | translate }}
+            </a>
+            <span *ngIf="canManageDailyAdvancedDocs && !isAdvanced">|</span>
+            <a
+                *ngIf="canManageDailyAdvancedDocs && !isAdvanced"
+                class="btn btn-link btn-xs"
+                href="javascript:;"
+                (click)="editDailyAdvancedDocs(row)"
+            >
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                {{ "shared.Edit" | translate }}
+            </a>
+            <!--span *ngIf="canManageDailyAdvancedDocs">|</span>
+            <a
+                *ngIf="canDeleteSBill"
+                class="btn btn-link btn-xs"
+                href="javascript:;"
+                (click)="deleteDailyAdvancedDocs(row)"
+            >
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                {{ "shared.Delete" | translate }}
+            </a-->
+        </div>
+    </ng-template>
+
+    <div
+        class="modal fade"
+        bsModal
+        #editorModal="bs-modal"
+        (onHidden)="onEditorModalHidden()"
+        [config]="{ backdrop: 'static' }"
+        tabindex="-1"
+    >
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title pull-left">
+                        <i class="fa fa-itemcat-circle-o"></i>
+                        {{
+                            editingName
+                                ? (isShowMode? ("shared.Show" | translate ):("shared.Edit" | translate: editingName))
+                                : ("shared.NewItem" | translate)
+                        }}
+                    </h4>
+                    <button
+                        type="button"
+                        class="close pull-right"
+                        title="Close"
+                        (click)="editorModal.hide()"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <daily-ad-info #dailyDocEditor></daily-ad-info>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

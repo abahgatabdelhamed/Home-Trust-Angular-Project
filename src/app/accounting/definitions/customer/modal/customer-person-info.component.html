@@ -1,0 +1,471 @@
+<div>
+    <form *ngIf="formResetToggle"
+          class="form-horizontal"
+          name="supplierInfoForm"
+          #f="ngForm"
+          novalidate
+          (ngSubmit)="
+            f.form.valid ? save() : showErrorAlert(gT('messages.requiredfields'), '')"
+
+        >
+        <div class="form-group has-feedback">
+            <label class="control-label col-md-12" for="nameAr-{{uniqueId}}">
+                {{
+                "shared.nameAr" | translate
+                }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ supplier.nameAr }}</p>
+            </div>
+            <div *ngIf="isEditMode"
+                 class="col-md-12"
+                 [ngClass]="{
+                    'has-success': f.submitted && name.valid,
+                    'has-error': f.submitted && !name.valid
+                }">
+                <input type="text"
+                       attr.id="nameAr-{{uniqueId}}"
+                       name="nameAr"
+                       placeholder="أدخل الاسم العربي"
+                       class="form-control"
+                       [(ngModel)]="supplierEdit.nameAr"
+                       #name="ngModel"
+                       required
+                    />
+                <span *ngIf="showValidationErrors && f.submitted"
+                      class="glyphicon form-control-feedback"
+                      [ngClass]="{
+                        'glyphicon-ok ': name.valid,
+                        'glyphicon-remove': !name.valid
+                    }"></span>
+                <span *ngIf="showValidationErrors && f.submitted && !name.valid"
+                      class="errorMessage">
+                    {{ "shared.NameRequired" | translate }}
+                </span>
+            </div>
+        </div>
+
+   
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div>
+
+        <div class="form-group has-feedback">
+            <label class="control-label col-md-12" for="nameEn-{{uniqueId}}">
+                {{
+                "shared.nameEn" | translate
+                }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ supplier.nameEn }}</p>
+            </div>
+            <div *ngIf="isEditMode"
+                 class="col-md-12"
+                 [ngClass]="{
+                    'has-success': f.submitted && name.valid,
+                    'has-error': f.submitted && !name.valid
+                }">
+                <input type="text"
+                       attr.id="nameEn-{{uniqueId}}"
+                       name="nameEn"
+                       placeholder="أدخل الاسم الانكليزي"
+                       class="form-control"
+                       [(ngModel)]="supplierEdit.nameEn"
+                       #name="ngModel"/>
+                <span *ngIf="showValidationErrors && f.submitted"
+                      class="glyphicon form-control-feedback"
+                      [ngClass]="{
+                        'glyphicon-ok ': name.valid,
+                        'glyphicon-remove': !name.valid
+                    }"></span>
+                <span *ngIf="showValidationErrors && f.submitted && !name.valid"
+                      class="errorMessage">
+                    {{ "shared.NameRequired" | translate }}
+                </span>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-12" for="mobile-{{uniqueId}}">
+                {{
+                "shared.mobile" | translate
+                }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ supplier.mobile }}</p>
+            </div>
+            <div *ngIf="isEditMode"
+                 class="col-md-12"
+              >
+                <input type="text"
+                       attr.id="mobile-{{uniqueId}}"
+                       name="mobile"
+                       placeholder="{{'users.management.PhoneNumber'|translate}}"
+                       class="form-control"
+                       [(ngModel)]="supplierEdit.mobile"
+                     />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-12" for="mobile-{{uniqueId}}">
+                {{
+                "shared.phone" | translate
+                }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ supplier.phone }}</p>
+            </div>
+            <div *ngIf="isEditMode"
+                 class="col-md-12"
+            >
+                <input type="text"
+                       attr.id="phone-{{uniqueId}}"
+                       name="phone"
+                       placeholder="{{'shared.mobile'|translate}}"
+                       class="form-control"
+                       [(ngModel)]="supplierEdit.phone"
+                      />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-12" for="fax-{{uniqueId}}">
+                {{
+                "shared.fax" | translate
+                }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ supplier.fax }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <input type="text"
+                       attr.id="fax-{{uniqueId}}"
+                       name="fax"
+                       placeholder="{{'users.management.PhoneNumber'|translate}}"
+                       class="form-control"
+                       [(ngModel)]="supplierEdit.fax" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div>
+
+        <div class="form-group has-feedback">
+            <label class="control-label col-md-12" for="city-{{uniqueId}}">
+                {{
+                "shared.city" | translate
+                }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ supplier.city }}</p>
+            </div>
+            <div *ngIf="isEditMode"
+                 class="col-md-12"
+                 [ngClass]="{
+                    'has-success': f.submitted && name.valid,
+                    'has-error': f.submitted && !name.valid
+                }">
+                <input type="text"
+                       attr.id="city-{{uniqueId}}"
+                       name="city"
+                       placeholder="{{'shared.city'|translate}}"
+                       class="form-control"
+                       [(ngModel)]="supplierEdit.city"
+                       #name="ngModel"
+                     />
+                <span *ngIf="showValidationErrors && f.submitted"
+                      class="glyphicon form-control-feedback"
+                      [ngClass]="{
+                        'glyphicon-ok ': name.valid,
+                        'glyphicon-remove': !name.valid
+                    }"></span>
+                <span *ngIf="showValidationErrors && f.submitted && !name.valid"
+                      class="errorMessage">
+                    {{ "shared.NameRequired" | translate }}
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div>
+
+                <!-- نوع الضريبة -->
+                <!-- <div *ngIf="isEditMode" class="form-group has-feedback">
+                    <label class="control-label col-md-2" for="bills">
+                        {{ "shared.billTypeName" | translate }}
+                    </label>
+                    <div class="col-md-10">
+                        <select
+                            multiple
+                            id="bills"
+                            name="bills"
+                            [(ngModel)]="supplierEdit.bills"
+                            #name="ngModel"
+                            #itemCategoryParentIdSelector="bootstrap-select"
+                            class="selectpicker form-control"
+                            bootstrapSelect
+                            data-live-search="true"
+                            data-actions-box="false"
+                            data-live-search-placeholder="Search..."
+                        >
+                            <option   attr.value="0"> </option>
+                            <option
+                                *ngFor="let b of billsToSelectFrom"
+                                attr.value="{{b.id}}"
+                            >
+                                {{ b.receiptCode }}
+                            </option>
+                        </select>
+                    </div>
+                </div> -->
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <hr [class.separator-hr]="!isEditMode"
+                [class.edit-separator-hr]="isEditMode" />
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="control-label col-md-12" for="nameEn-{{uniqueId}}">
+            {{
+            "shared.vatNumber" | translate
+            }}
+        </label>
+        <div *ngIf="!isEditMode" class="col-md-12">
+            <p class="form-control-static">{{ supplier.vatNumber }}</p>
+        </div>
+        <div *ngIf="isEditMode"
+             class="col-md-12"
+             [ngClass]="{
+                'has-success': f.submitted && name.valid,
+                'has-error': f.submitted && !name.valid
+            }">
+            <input type="text"
+                   attr.id="vatNumber-{{uniqueId}}"
+                   name="vatNumber"
+                   placeholder='{{"shared.vatNumber"|translate}}'
+                   class="form-control"
+                   [(ngModel)]="supplierEdit.vatNumber"
+                   #name="ngModel"
+                    />
+            <span *ngIf="showValidationErrors && f.submitted"
+                  class="glyphicon form-control-feedback"
+                  [ngClass]="{
+                    'glyphicon-ok ': name.valid,
+                    'glyphicon-remove': !name.valid
+                }"></span>
+            <span *ngIf="showValidationErrors && f.submitted && !name.valid"
+                  class="errorMessage">
+                {{ "shared.NameRequired" | translate }}
+            </span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <hr [class.separator-hr]="!isEditMode"
+                [class.edit-separator-hr]="isEditMode" />
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="control-label col-md-12" for="notes-{{uniqueId}}">
+            {{
+            "shared.notes" | translate
+            }}
+        </label>
+        <div *ngIf="!isEditMode" class="col-md-12">
+            <p class="form-control-static">{{ supplier.notes }}</p>
+        </div>
+        <div *ngIf="isEditMode"
+             class="col-md-12"
+             [ngClass]="{
+                'has-success': f.submitted && name.valid,
+                'has-error': f.submitted && !name.valid
+            }">
+            <textarea type="text"
+                   attr.id="notes-{{uniqueId}}"
+                   name="notes"
+                   placeholder= "{{'shared.yournotes'|translate}}"
+                   class="form-control"
+                   [(ngModel)]="supplierEdit.notes"
+                   #name="ngModel"
+                  ></textarea>
+            <span *ngIf="showValidationErrors && f.submitted"
+                  class="glyphicon form-control-feedback"
+                  [ngClass]="{
+                    'glyphicon-ok ': name.valid,
+                    'glyphicon-remove': !name.valid
+                }"></span>
+            <span *ngIf="showValidationErrors && f.submitted && !name.valid"
+                  class="errorMessage">
+                {{ "shared.NameRequired" | translate }}
+            </span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <hr [class.separator-hr]="!isEditMode"
+                [class.edit-separator-hr]="isEditMode" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-12" for="canLoan-{{uniqueId}}">
+            {{
+            "shared.canLoan" | translate
+            }}
+        </label>
+
+        <div *ngIf="!isEditMode" class="col-md-12">
+            <p class="form-control-static">{{ supplier.canLoan ? ('shared.yes'|translate) : ('shared.no'|translate) }}</p>
+        </div>
+
+        <div *ngIf="isEditMode" class="col-md-12">
+            <input type="checkbox"
+                   attr.id="canLoan-{{uniqueId}}"
+                   name="canLoan"
+                   placeholder="{{'shared.loanLimit'|translate}}"
+                   class="form-control"
+                   [(ngModel)]="supplierEdit.canLoan" />
+        </div>
+    </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-12" for="loanLimit-{{uniqueId}}">
+                {{
+                "shared.loanLimit" | translate
+                }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ supplier.loanLimit }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <input type="text"
+                       attr.id="loanLimit-{{uniqueId}}"
+                       name="loanLimit"
+                       placeholder="{{'shared.loanLimit'|translate}}"
+                       class="form-control"
+                       [disabled]="!supplierEdit.canLoan"
+                       [(ngModel)]="supplierEdit.loanLimit" />
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div>
+       <div class="form-group">
+            <label class="control-label col-md-12" for="neighborhood-{{uniqueId}}">
+                {{
+                "shared.neighborhood" | translate
+                }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ supplier.neighborhood }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <input type="text"
+                       attr.id="neighborhood-{{uniqueId}}"
+                       name="neighborhood"
+                       class="form-control"
+                       [(ngModel)]="supplierEdit.neighborhood" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-7">
+                <div class="pull-right">
+                    <button *ngIf="!isEditMode"
+                            type="button"
+                            (click)="close()"
+                            class="btn btn-default">
+                        <i class="fa fa-close"></i>
+                        {{ "shared.Close" | translate }}
+                    </button>
+                    <button *ngIf="!isEditMode"
+                            type="button"
+                            (click)="edit()"
+                            class="btn btn-default">
+                        <i class="fa fa-edit"></i>
+                        {{ "shared.Edit" | translate }}
+                    </button>
+                    <button *ngIf="isEditMode"
+                            type="button"
+                            (click)="cancel()"
+                            class="btn btn-danger"
+                            [disabled]="isSaving">
+                        <i class="fa fa-times"></i>
+                        {{ "shared.Cancel" | translate }}
+                    </button>
+                    <button *ngIf="isEditMode"
+                            type="submit"
+                            class="btn btn-primary"
+                            [disabled]="isSaving">
+                        <i *ngIf="!isSaving" class="fa fa-save"></i><i *ngIf="isSaving"
+                                                                       class="fa fa-circle-o-notch fa-spin"></i>
+                        {{
+                            isSaving
+                                ? ("shared.Saving" | translate)
+                                : ("shared.Save" | translate)
+                        }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </form>
+</div>

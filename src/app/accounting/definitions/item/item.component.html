@@ -1,0 +1,143 @@
+<div>
+    <div class="row control-box">
+        <div class="col-sm-6">
+            <div class="form-group search-box">
+                <ng-select [items]="items$ | async"
+                bindLabel="nameAr"
+                [multiple]="false"
+                [hideSelected]="true"
+                [loading]="itemSearchLoading"
+                [typeahead]="itemsInput$"
+                [(ngModel)]="selectdItem"
+                (change)="SearchSelected()">
+            </ng-select>
+
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="navbar action-box">
+                <ul class="nav navbar-nav navbar-right">
+                    <li *ngIf="canManageItemCat" class="toolbaritem">
+                        <a href="javascript:;" [routerLink]="['add-item']" routerLinkActive="router-link-active">
+                            <i class="fa fa-plus-circle"></i>
+                            {{ "shared.NewItem" | translate }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="btn" (click)="exportAsXLSX()"><img src="../../../../assets/Excel.png" width="35px" height="35px"></div>
+        </div>
+    </div>
+
+    <ngx-datatable class="material colored-header sm table table-striped table-hover"
+                   [loadingIndicator]="loadingIndicator"
+                   [rows]="rows"
+                   [rowHeight]="35"
+                   [headerHeight]="35"
+                   [externalPaging]="true"
+                   [footerHeight]="35"
+                   [columns]="columns"
+                   [scrollbarV]="false"
+                   [columnMode]="'force'"
+                   [count]="page.count"
+                   [offset]="page.offset"
+                   [limit]="page.size"
+                   (page)="setPage($event)">
+    </ngx-datatable>
+
+    <ng-template #indexTemplate let-value="value">
+        <strong>{{ value }}</strong>
+    </ng-template>
+
+    <ng-template #parentCategory let-row="row" let-value="value" let-i="index">
+        <span class="itemcat-role badge">{{value}}</span>
+    </ng-template>
+
+    <ng-template #actionsTemplate let-row="row" let-value="value" let-i="index">
+        <div>
+            <!-- <a class="btn btn-link btn-xs"
+               href="javascript:;"
+               (click)="onSelect(row)">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+
+            </a>
+            <span *ngIf="canManageItemCat">|</span> -->
+            <a *ngIf="canManageItemCat" class="btn btn-link btn-xs"
+               href="javascript:;"
+               [routerLink]="['add-item', row.id]" routerLinkActive="router-link-active">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+
+            </a>
+            <span *ngIf="canManageItemCat">|</span>
+            <a *ngIf="canManageItemCat" class="btn btn-link btn-xs"
+               href="javascript:;"
+               (click)="deleteItemCat(row)">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+
+        </a>
+    <!-- <span *ngIf="canManageItemCat">|</span>
+            <a *ngIf="canManageItemCat" class="btn btn-link btn-xs"
+               href="javascript:;"
+               (click)="transaction(row)">
+                <i class="fa fa-report" aria-hidden="true"></i>
+                {{ "shared.Movement" | translate }}
+            </a>  -->
+        </div>
+    </ng-template>
+
+    <div class="modal fade"
+         bsModal
+         #editorModal="bs-modal"
+         (onHidden)="onEditorModalHidden()"
+         [config]="{ backdrop: 'static' }"
+         tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title pull-left">
+                        <i class="fa fa-itemcat-circle-o"></i>
+                        {{
+                            editingName
+                                ? ("shared.Edit" | translate: editingName)
+                                : ("shared.NewItem" | translate)
+                        }}
+                    </h4>
+                    <button type="button"
+                            class="close pull-right"
+                            title="Close"
+                            (click)="editorModal.hide()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <app-item-modal #itemModalEditor></app-item-modal>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div *ngIf="report">
+        <div id="printedArea">
+            <table class="table table-striped">
+                <tr>
+                    <th>{{"shared.date"|translate}}</th>
+                    <th>{{"shared.process"|translate}}</th>
+                    <th>{{"shared.item"|translate}}</th>
+                    <th>{{"shared.itemUnitName"|translate}}</th>
+                    <th>{{"shared.quantity"|translate}}</th>
+                    <th>{{ "shared.price" | translate }}</th>
+                </tr>
+                <tr *ngFor="let itemReport of report">
+                    <td>{{itemReport.date | date}}</td>
+                    <td>{{itemReport.operation}}</td>
+                    <td>{{itemReport.name}}</td>
+                    <td>{{itemReport.unitName}}</td>
+                    <td>{{itemReport.quantity}}</td>
+                    <td>{{itemReport.price}}</td>
+                </tr>
+            </table>
+        </div>
+        <button type="button" (click)="printReport()" class="btn btn-default">طباعة</button>
+    </div> -->
+</div>

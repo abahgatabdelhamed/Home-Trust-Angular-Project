@@ -1,0 +1,622 @@
+<form class="main-form" #f="ngForm" novalidate >
+    <section>
+        <h2 class="section-title">
+            {{ "shared.mainInfo" | translate }}
+        </h2>
+        <div style="display: none;" *ngIf="!isEdit" class="form-group col-md-12">
+            <label for="isOffer" class="control-label col-md-12">
+                {{ "shared.itemoffers" | translate }}
+            </label>
+            <div class="col-md-12">
+                <!-- <input id="isOffer" type="checkbox" name="isOffer" #name="ngModel" [(ngModel)]="item.isOffer"
+                    class="item-itemUnits-input" /> -->
+                <div class="radio">
+                    <label class="col-md-6"><input class="col-md-12" type="radio" name="optradio" [checked]="item.isOffer"
+                            (change)="changeFormProcess($event)">{{"shared.itemoffers"|translate}}</label>
+                </div>
+                <div class="radio">
+                    <label class="col-md-6"><input class="col-md-12" type="radio" name="optradio" [checked]="!item.isOffer"
+                            (change)="changeFormProcess($event)"> {{ "shared.NewItem" | translate }}</label>
+                </div>
+            </div>
+        </div>
+        <br />
+
+        <section *ngIf="item.isOffer">
+
+            <h2 class="section-title">
+                {{ "shared.itemoffers" | translate }}
+            </h2>
+            <div *ngIf="item.id == null || item.id == '' || item.id == 0" class="row control-box">
+                <div class="col-sm-12">
+                    <ng-select [items]="item3$ | async" placeholder="ابحث عن العنصر  بالكود او الاسم" name="select"
+                        bindLabel="nameAr" (change)="itemSearchSelected($event)" [addTag]="false" [multiple]="false"
+                        [hideSelected]="true" [loading]="item3Loading" [typeahead]="item3input$"
+                        [(ngModel)]="selectedItem">
+                    </ng-select>
+                </div>
+            </div>
+
+            <div class="tbl-header">
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <thead>
+                        <tr>
+                            <th>{{ "shared.NameAr" | translate }}</th>
+                            <th *ngIf="item.id == null || item.id == '' || item.id == 0">
+                                {{ "shared.Delete" | translate }}</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="tbl-content">
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tbody>
+                        <tr *ngFor="let f of item.offerItems">
+                            <td>{{ f.nameAr }}</td>
+                            <td *ngIf="item.id == null || item.id == '' || item.id == 0">
+                                <button (click)="deleteItemOffer(f)" class="btn btn-danger">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.edit-separator-hr]="true" />
+            </div>
+        </div>
+        <div class="row flexy">
+            <div class="form-group col-md-6">
+                <label class="control-label col-md-12" for="namrAr">
+                    {{ "shared.nameAr" | translate }} (*)
+                </label>
+                <div class="col-md-12" [ngClass]="{
+                    'has-success': f.submitted && name.valid,
+                    'has-error': f.submitted && !name.valid
+                }">
+                    <input type="text" attr.id="namrAr" name="namrAr" class="form-control" [(ngModel)]="item.nameAr"
+                        required />
+                    <span *ngIf="f.submitted" class="glyphicon form-control-feedback" [ngClass]="{
+                        'glyphicon-ok ': name.valid,
+                        'glyphicon-remove': !name.valid
+                    }"></span>
+                    <span *ngIf="f.submitted && !name.valid" class="errorMessage">
+                        {{ "shared.NameRequired" | translate }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- <div class="row">
+                <div class="col-md-12">
+                    <hr [class.edit-separator-hr]="true" />
+                </div>
+            </div> -->
+
+            <!-- ااسم الصنف بالانكليزية -->
+            <div class="form-group col-md-6">
+                <label class="control-label col-md-12" for="nameEn">
+                    {{ "shared.nameEn" | translate }}
+                </label>
+                <div class="col-md-12">
+                    <input type="text" attr.id="nameEn" name="nameEn" class="form-control" [(ngModel)]="item.nameEn" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <hr [class.edit-separator-hr]="true" />
+                </div>
+            </div>
+
+
+            
+            <div *ngIf="isVatEnable" class="form-group col-md-6 has-feedback">
+                <label class="control-label col-md-12" for="vatTypeName">
+                    {{ "shared.vatTypeName" | translate }} (*)
+                </label>
+                <div class="col-md-12">
+                    <select id="vatTypeName" name="vatTypeName" [(ngModel)]="item.vatTypeId" (change)="setvattype()"
+                    [disabled]="!isVatEnable"
+                        class="selectpicker form-control" bootstrapSelect data-live-search="true"
+                        data-actions-box="false" data-live-search-placeholder="Search..." *ngIf="vatTyepes" required>
+                        <option attr.value="0"></option>
+                        <option *ngFor="let type of vatTyepes" value="{{type.id}}">
+                            {{ type.name }}
+                        </option>
+                    </select>
+                    <span *ngIf="f.submitted" class="glyphicon form-control-feedback" [ngClass]="{
+                        'glyphicon-ok ': name.valid,
+                        'glyphicon-remove': !name.valid
+                    }"></span>
+                    <span *ngIf="f.submitted && !name.valid" class="errorMessage">
+                        {{ "shared.vatTypeName" | translate }}
+                    </span>
+                </div>
+            </div>
+            
+                <!-- نوع الضريبة -->
+                <div class="form-group col-md-6 has-feedback tobacco-vat">
+           
+                    <div  *ngIf="checkPermissions.checkGroup(7,5)||(item.vatTypeId==1&&item.vatTypeTwoId&&!checkPermissions.checkGroup(7,5))" class="form-group has-feedback">
+                        <label class="control-label " for="Tobacco">
+                            {{ "shared.Tobacco" | translate }} (*)
+                        </label>
+                        <input [disabled]="item.vatTypeTwoId&&!checkPermissions.checkGroup(7,5)" id="Tobacco" type="checkbox" name="Tobacco" #name="ngModel" [(ngModel)]="item.vatTypeTwoId"  class="" (change)="checktobaco($event.target.checked)" />
+                  
+                    </div>
+                </div>
+
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <hr [class.edit-separator-hr]="true" />
+                </div>
+            </div>
+
+            
+
+            <!-- االكود -->
+            <div class="form-group col-md-6">
+                <label class="control-label col-md-12" for="itemCategoryParentId">
+                    {{
+                "shared.code" | translate
+                }}
+                </label>
+                <div class="col-md-12">
+                    <input type="text" attr.id="code" name="code" class="form-control" [(ngModel)]="item.code"
+                        #name="ngModel" />
+                </div>
+            </div>
+
+            <!-- <div class="row">
+                <div class="col-md-12">
+                    <hr [class.edit-separator-hr]="true" />
+                </div>
+            </div> -->
+
+            <!-- مواصفات الصنف -->
+            <div class="form-group col-md-6">
+                <label class="control-label col-md-12" for="itemCategoryParentId">
+                    {{
+                "shared.specification" | translate
+                }}
+                </label>
+                <div class="col-md-12">
+                    <input type="text" attr.id="specification" name="specification" class="form-control"
+                        [(ngModel)]="item.specification" #name="ngModel" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <hr [class.edit-separator-hr]="true" />
+                </div>
+            </div>
+            
+       
+            <div class="row">
+                <div class="col-md-12">
+                    <hr [class.edit-separator-hr]="true" />
+                </div>
+            </div>
+
+            <!-- نوع الصنف -->
+            <div class="form-group col-md-6">
+                <label class="control-label col-md-12" for="itemCategoryParentId">
+                    {{
+                "shared.ItemCategoryParentName" | translate
+                }} (*)
+                </label>
+                <div class="col-md-12" [ngClass]="{
+                    'has-success': f.submitted && name.valid,
+                    'has-error': f.submitted && !name.valid
+                }">
+                    <select id="itemCategoryName" name="itemCategoryName" [(ngModel)]="item.itemCategoryId"
+                        #itemCategoryParentIdSelector="bootstrap-select" class="selectpicker form-control"
+                        bootstrapSelect data-live-search="true" data-actions-box="false"
+                        data-live-search-placeholder="Search..." required *ngIf="categries">
+                        <option attr.value="0"></option>
+                        <option *ngFor="let p of categries" attr.value="{{p.id}}">
+                            {{ p.nameAr ? p.nameAr : "بلا اسم" }}
+                        </option>
+                    </select>
+                    <span *ngIf="f.submitted" class="glyphicon form-control-feedback" [ngClass]="{
+                        'glyphicon-ok ': name.valid,
+                        'glyphicon-remove': !name.valid
+                    }"></span>
+                    <span *ngIf="f.submitted && !name.valid" class="errorMessage">
+                        {{    "shared.ItemCategoryParentName" | translate }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- <div class="row">
+                <div class="col-md-12">
+                    <hr [class.edit-separator-hr]="true" />
+                </div>
+            </div> -->
+
+            <!-- الموردين -->
+            <div class="form-group has-feedback col-md-6">
+                <label class="control-label col-md-12" for="itemPeopleId">
+                    {{ "shared.itemPeople" | translate }}
+                </label>
+                <div class="col-md-12">
+                    <select id="itemPeopleId" multiple name="itemPeopleId" [(ngModel)]="item.itemPeopleId"
+                        #itemPeopleId="ngModel" #itemPeopleId="bootstrap-select" class="selectpicker form-control"
+                        bootstrapSelect (onchange)="watch($event)" data-live-search="true" data-actions-box="false"
+                        data-live-search-placeholder="Search..." *ngIf="people">
+                        <option *ngFor="let p of people" attr.value="{{p.id}}">
+                            {{ p.nameAr ? p.nameAr : "بلا اسم" }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <hr [class.edit-separator-hr]="true" />
+                </div>
+            </div>
+            <!-- الملاحظات -->
+            <div class="form-group col-md-6 has-feedback">
+                <label class="control-label col-md-12" for="notes">
+                    {{ "shared.notes" | translate }}
+                </label>
+                <div class="col-md-12">
+                    <textarea attr.id="notes" name="notes" class="form-control" [(ngModel)]="item.notes"
+                        #name="ngModel"></textarea>
+                </div>
+            </div>
+            <div class="col-md-6 file">
+                <img *ngIf="item.imagePath && !imgURL" [src]='item.imagePath' style="height:100px">
+                <img [src]="imgURL" height="200" *ngIf="imgURL" style="height:100px">
+                <label for="file-input">{{ "shared.chooseImage" | translate }}</label>
+                <input (change)="handleFileChange($event)" id="file-input" type="file">
+                <span *ngIf="uploadDone">تم رفع الملف بنجاح</span>
+            </div>
+           
+        </div>
+
+    </section>
+
+    <section>
+        <h2 class="section-title item-units">
+            {{ "shared.itemUnits" | translate }}
+        </h2>
+        <div class="group">
+            <div class="form-group has-feedback form-input-group">
+                <label for="unitName" class="control-label ">
+                    {{ "shared.itemUnitsName" | translate }}
+                </label>
+                <div class="col-md-12">
+                    <!-- <input id="unitName" type="text" name="itemUnitName" #name="ngModel" [(ngModel)]="itemUnit.name"
+                        class="form-control item-unitName-input" /> -->
+                    <textarea id="unitName" type="text" name="itemUnitName" #name="ngModel" [(ngModel)]="itemUnit.name"
+                        class="form-control item-unitName-input" rows="1" ></textarea>
+                </div>
+            </div>
+            <div class="form-group has-feedback form-input-group">
+                <label for="unitName" class="control-label ">
+                    {{ "shared.nameEn" | translate }}
+                </label>
+                <div class="col-md-12">
+                    <!-- <input id="unitName" type="text" name="itemUnitName" #name="ngModel" [(ngModel)]="itemUnit.name"
+                        class="form-control item-unitName-input" /> -->
+                    <textarea id="unitNameEn" type="text" name="itemUnitNameEn" #name="ngModel" [(ngModel)]="itemUnit.nameEn"
+                        class="form-control item-unitName-input" rows="1" ></textarea>
+                </div>
+            </div>
+            <div class="form-group has-feedback form-input-group">
+                <label for="unittransferAmount" class="control-label">
+                    {{ "shared.itemUnitsTransferedAmount" | translate }}
+                </label>
+                <div class="col-md-12 show-number">
+                    <input id="unittransferAmount" type="text" name="itemUnitTransferAmount"
+                        #itemUnitTransferAmount="ngModel" [(ngModel)]="itemUnit.transferAmount"
+                        class="form-control item-itemUnits-input" />
+                </div>
+            </div>
+
+            <div class="form-group show-number has-feedback form-input-group">
+                <label for="unitPrice" class="control-label">
+                    {{ "shared.unitPrice" | translate }}
+                </label>
+                <div class="col-md-12">
+                    <input id="unitPrice" type="text" name="itemUnitPrice" #name="ngModel" [(ngModel)]="itemUnit.price"
+                        class="form-control item-itemUnits-input" [disabled]="isWithVat"/>
+                </div>
+            </div>
+            <div class="form-group show-number has-feedback form-input-group">
+                <label for="unitdiscountPrice" class="control-label">
+                    {{ "shared.discountPrice" | translate }}
+                </label>
+                <div class="col-md-12">
+                    <input id="unitdiscountPrice" type="text" name="itemUnitdiscountPrice" #name="ngModel" [(ngModel)]="itemUnit.discountPrice"
+                        class="form-control item-itemUnits-input" [disabled]="isWithVat"/>
+                </div>
+            </div>
+            <div class="show-number form-group has-feedback form-input-group">
+                <label for="unitCost" class="control-label">
+                    {{ "shared.unitCost" | translate }}
+                </label>
+                <div class="col-md-12">
+                    <input id="unitCost" type="text" name="itemUnitCost" #name="ngModel" [(ngModel)]="itemUnit.cost"
+                        class="form-control item-itemUnits-input" />
+                </div>
+            </div>
+        </div>
+
+        <div class="group-checkbox">
+            <div class="form-group has-feedback ">
+                <label for="isDefaultPurc" class="control-label col-md-12">
+                    {{ "shared.isDefaultPurchase" | translate }}
+                </label>
+                <div class="col-md-12">
+                    <input id="isDefaultPurc" type="checkbox" name="isDefaultPurc" #name="ngModel"
+                        [(ngModel)]="itemUnit.isDefaultPurc" class="item-itemUnits-input" (change)="isDefaultPurcTrigger($event.target.checked)" />
+                </div>
+            </div>
+
+            <div class="form-group has-feedback">
+                <label for="isDefaultSale" class="control-label col-md-12">
+                    {{ "shared.isDefaultSale" | translate }}
+                </label>
+                <div class="col-md-12">
+                    <input id="isDefaultSale" type="checkbox" name="isDefaultSale" #name="ngModel"
+                        [(ngModel)]="itemUnit.isDefaultSale" class="item-itemUnits-input" (change)="isDefaultSaleTrigger($event.target.checked)"/>
+                </div>
+            </div>
+
+            <div class="form-group has-feedback">
+                <label for="unitIsWithVat" class="control-label col-md-12">
+                  {{"shared.unitIsWithVat"|translate}}
+                </label>
+                <div class="col-md-12">
+                    <input id="unitNotes" type="checkbox" name="itemUnitIsWithVat" #name="ngModel"
+                        [(ngModel)]="isWithVat" class="item-itemUnits-input" />
+                </div>
+            </div>
+            <div class="form-group has-feedback">
+                <label for="unitIsWithVat" class="control-label col-md-12">
+                  {{"shared.isAddition"|translate}}
+                </label>
+                <div class="col-md-12">
+                    <input id="unitNotes" type="checkbox" name="itemUnitisFeature" #name="ngModel"
+                        [(ngModel)]="itemUnit.isFeature" class="item-itemUnits-input" (change)="isAdditionTrigger($event.target.checked)"/>
+                </div>
+            </div>
+        </div>
+        <div class="row  align-items-end" *ngIf="isWithVat" style="border: 2px;border-style: dashed;">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="u-price-before-vat-no-h">
+      {{"shared.priceBeforeVatWithoutHalals"|translate}}
+                    </label>
+                    <input id="u-price-before-vat-no-h" name="u-price-before-vat-no-h" class="form-control" type="number" disabled [(ngModel)]="u_priceWithoutVat"/>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="u-price-before-vat-cents">
+                        {{"shared.halalInPrice"|translate}}
+                    </label>
+                    <select name="u-price-before-vat-cents" id="u-price-before-vat-cents" bootstrapSelect [(ngModel)]="u_priceCents" (change)="utilityChanged(true)">
+                        <option selected value="0">
+                            00
+                        </option>
+                        <option  value="0.2">
+                            20
+                        </option>
+                        <option  value="0.4">
+                            40
+                        </option>
+                        <option  value="0.6">
+                            60
+                        </option>
+                        <option value="0.8">
+                            80
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="u-vat-h">
+                        {{"shared.vat"|translate}}
+                    </label>
+                    <input id="u-vat-h" class="form-control" type="number" disabled [value]="u_vat"/>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="u-price-with-vat-h">
+                        {{"shared.priceAfterVat"|translate}}
+                    </label>
+                    <input id="u-price-with-vat-h" name="u-price-with-vat-h"
+                    class="form-control" type="number" [(ngModel)] ="u_priceWithVat" (change)="utilityChanged()"/>
+                </div>
+            </div>
+
+            <div class="col-md-2 align-self-end">
+
+                    <button class="btn btn-success" (click)="approvePrice()">موافق</button>
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr [class.edit-separator-hr]="true" />
+            </div>
+        </div>
+
+
+        <!-- <div class="form-group has-feedback">
+            <label for="unitNotes" class="control-label col-md-2">
+                {{ "shared.notes" | translate }}
+            </label>
+            <div class="col-md-8">
+                <textarea id="unitNotes" name="itemUnitNotes" #name="ngModel" [(ngModel)]="itemUnit.notes"
+                    class="form-control item-itemUnits-input"></textarea>
+            </div>
+        </div> -->
+        <div class="table-buttons">
+
+            <button  *ngIf="!hasClickedEdit"  type="button" (click)="pushUnit()" class="btn btn-secondary">
+                {{ "shared.addUnit" | translate }}
+            </button>
+            <button type="button" *ngIf="hasClickedEdit" (click)="saveEdited()" class="btn btn-secondary">
+                {{ "shared.saveEdited" | translate }}
+            </button>
+        </div>
+
+        <div class="tbl-header">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>{{ "shared.itemUnitsName" | translate }}</th>
+                        <th>{{ "shared.nameEn" | translate }}</th>
+                        <th>{{ "shared.unitPrice" | translate }}</th>
+                        <th>{{ "shared.discountPrice" | translate }}</th>
+                        <th>{{ "shared.unitCost" | translate }}</th>
+                        <th>{{ "shared.transferedAmount" | translate }}</th>
+                        <th>{{ "shared.isDefaultPurchase" | translate }}</th>
+                        <th>{{ "shared.isDefaultSale" | translate }}</th>
+                        <th>{{ "shared.isAddition" | translate }}</th>
+                        <!--th>{{ "shared.unitIsWithVat" | translate }}</th-->
+                        <th>{{ "shared.Edit" | translate }}</th>
+                        <!--th>{{ "shared.Delete" | translate }}</th-->
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="tbl-content">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tbody>
+                    <tr *ngFor="let unit of item.itemUnits">
+                        <td>{{ unit.name }}</td>
+                        <td>{{ unit.nameEn }}</td>
+                        <td>{{ unit.price }}</td>
+                        <td>{{unit.discountPrice}}</td>
+                        <td>{{ unit.cost }}</td>
+                        <td>{{ unit.transferAmount }}</td>
+                        <td>{{ unit.isDefaultPurchDisplay }}</td>
+                        <td>{{ unit.isDefaultSaleDisplay }}</td>
+                        <td>{{ unit.isAdditionDisplay }}</td>
+                        <!--td>{{ unit.isWithVatDisplay }}</td-->
+                        <td>
+                            <button type="button" (click)="editUnit(unit)" class="btn btn-info">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                        </td>
+                        <!--td>
+                            <button type="button" (click)="deleteUnit(unit)" class="btn btn-danger">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td-->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- <section>
+        <h2 class="section-title">
+            {{ "shared.itemFeatures" | translate }}
+        </h2>
+        <div class="group">
+            <div class="form-group has-feedback form-input-group">
+                <label for="unit" class="control-label">
+                    {{ "shared.featureName" | translate }}
+                </label>
+                <div class="col-md-10">
+                    <input id="unit" type="text" name="itemUnitName" #name="ngModel" [(ngModel)]="itemFeature.name"
+                        class="form-control item-itemUnits-input" />
+                </div>
+            </div>
+
+            <div class="form-group has-feedback form-input-group">
+                <label for="itemFeaturePrice" class="control-label ">
+                    {{ "shared.featurePrice" | translate }}
+                </label>
+                <div class="col-md-10">
+                    <input id="itemFeaturePrice" type="text" name="itemFeaturePrice" #name="ngModel"
+                        [(ngModel)]="itemFeature.price" class="form-control item-itemUnits-input" />
+                </div>
+            </div>
+
+        </div>
+        <button type="button" (click)="pushFeature()" class="btn btn-secondary">
+            {{ "shared.add" | translate }}
+        </button>
+        <button type="button" *ngIf="hasClickedEditFeature" (click)="saveFeatureEdited()" class="btn btn-secondary">
+            {{ "shared.saveEdited" | translate }}
+        </button>
+
+        <div class="tbl-header">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>{{ "shared.featureName" | translate }}</th>
+                        <th>{{ "shared.featurePrice" | translate }}</th>
+                        <th>{{ "shared.Edit" | translate }}</th>
+                        <th>{{ "shared.Delete" | translate }}</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="tbl-content">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tbody>
+                    <tr *ngFor="let f of item.itemFeatures">
+                        <td>{{ f.name }}</td>
+                        <td>{{ f.price }}</td>
+                        <td>
+                            <button type="button" (click)="editFeature(f)" class="btn btn-info">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button type="button" (click)="deleteFeature(f)" class="btn btn-danger">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+    </section> -->
+
+
+    <div class="btns">
+        <button class="btn btn-primary" type="button" [disabled]="!(f.form.valid )"  (click)="
+            f.form.valid ? handleSubmit() : showErrorAlert(gT('messages.requiredfields'), '')
+        ">
+            {{ "shared.submit" | translate }}
+        </button>
+        <button class="btn btn-primary" [disabled]="!(f.form.valid )" (click)="saveAndPrint()" type="button">
+            {{ "shared.SaveAndPrint" | translate }}
+        </button>
+        <button class="btn btn-primary" [disabled]="!(f.form.valid )  "  (click)="justPrint()" type="button">
+            {{ "shared.print" | translate }}
+        </button>
+    </div>
+
+</form>

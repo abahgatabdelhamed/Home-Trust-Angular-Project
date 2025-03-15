@@ -1,0 +1,165 @@
+
+<div>
+  <div class="row control-box flexy">
+      <div class="col-sm-6">
+            <div class="form-group search-box ">
+                <search-box
+                    (searchChange)="onSearchChanged($event)"
+                    placeholder="{{'shared.SearchItem' | translate}}"
+                    >></search-box
+                >
+            </div>
+        </div>
+        
+        <div class="row col-sm-4">
+            <div class="navbar action-box">
+                <ul class="nav navbar-nav navbar-right">
+                    <li *ngIf="type==0 && entryActive" class="toolbaritem">
+                        <a
+                            href="javascript:;"
+                            (click)="newAssetTabels(row)"
+                            [routerLink]="['/permissions/newentrystatments']"
+                        >
+                            <i class="fa fa-plus-circle"></i>
+                            {{ "shared.NewItem" | translate }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+  </div>
+            <div class="row col-md-12 flexy">
+                 
+            <div class="col-md-2 ">
+                
+                <label class="control-label " for="itemCategoryParentId">
+                    {{"shared.billCode"|translate}}
+                </label>
+                <ng-select  name="billId"  [items]="sBill" bindLabel="receiptCode" bindValue="id" 
+                    [(ngModel)]="billId" [loading] = "loadingIndicator"  placeholder='{{"shared.billCode"|translate}}'>
+                </ng-select>
+              </div>
+              <div class="col-md-2">
+                  
+                <label class="control-label " for="itemCategoryParentId">
+                    {{"mainMenu.permissions"|translate}}
+                </label>
+                  <ng-select  name="type"  [items]="statementtype" bindLabel="name" bindValue="id" (change)="onchangetype($event)"
+                      [(ngModel)]="type" [loading] = "loadingIndicator"  placeholder='{{"mainMenu.permissions"|translate}}'>
+                  </ng-select>
+                </div>
+              <div class="col-md-2" >
+               
+                <div>
+                    <label class="control-label " for="itemCategoryParentId">
+                        {{ "shared.from" | translate }}
+                    </label>
+                    
+                        <input type="text"
+                               attr.id="code"
+                               name="code"
+                               class="form-control"
+                               [(ngModel)]="serachModel.from"
+                               #name="ngModel"
+                               bsDatepicker />
+                    
+                    </div>
+               
+              </div>
+              <div class=" col-md-2" >
+               <div >
+                <label class="control-label " for="itemCategoryParentId">
+                    {{ "shared.to" | translate }}
+                </label>
+                    <input type="text"
+                           attr.id="code"
+                           name="code"
+                           class="form-control"
+                           [(ngModel)]="serachModel.to"
+                           #name="ngModel"
+                           bsDatepicker />
+                
+              </div>
+            </div>
+           <div class="col-md-2">   
+            <br/>   
+            <button type="button" class="btn btn-success"  (click)="loadData()"> {{"shared.submit" | translate}}</button>
+           </div>
+        </div> 
+        
+            
+               
+                  
+             
+              
+             
+       <div class="row">
+     <div class="col-md-12">
+        <br/> 
+     </div>       
+    </div>
+        
+      
+      <!-- <div class="col-sm-2">
+          <button (click)="exportAsXLSX()">
+              <i
+                  class="fa fa-file-excel-o"
+                  style="font-size:20px;color:blue"
+              ></i>
+          </button>
+      </div> -->
+  
+
+  <ngx-datatable
+      class="material colored-header sm table table-striped table-hover"
+      [loadingIndicator]="loadingIndicator"
+      [rows]="rows"
+      [rowHeight]="35"
+      [headerHeight]="35"
+      [footerHeight]="35"
+      [columns]="columns"
+      [scrollbarV]="false"
+      [columnMode]="'force'"
+      [externalPaging]="true"
+      [count]="page.count"
+      [offset]="page.offset"
+      [limit]="page.size"
+      (page)="setPage($event)">
+  </ngx-datatable>
+
+  <ng-template #indexTemplate let-value="value">
+      <strong>{{ value }}</strong>
+  </ng-template>
+
+  <ng-template #parentCategory let-row="row" let-value="value" let-i="index">
+      <span class="itemcat-role badge">{{ value }}</span>
+  </ng-template>
+
+  <ng-template #actionsTemplate let-row="row" let-value="value" let-i="index">
+     
+    <div>
+        <a 
+        *ngIf="type==0 && exitActive"
+        class="btn btn-link btn-xs"
+        href="javascript:;"
+        [routerLink]="row.exitStatementId?['/permissions/newexitstatments', row.exitStatementId]:['/permissions/newexitentrystatments',row.id]" routerLinkActive="router-link-active"
+        >
+       
+       
+        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        {{row.exitStatementId?("permissions.viewexitstatement"|translate):("permissions.setexitstatement"|translate)}}
+    </a>
+    <span *ngIf="type==0 && exitActive">|</span> 
+          <a
+              class="btn btn-link btn-xs"
+              href="javascript:;"
+              [routerLink]="type==0?['/permissions/newentrystatments', row.id]:['/permissions/newexitstatments', row.id]" routerLinkActive="router-link-active">
+          
+              <i class="fa fa-eye" aria-hidden="true"></i>
+              {{ "shared.Show" | translate }}
+          </a>
+         
+      </div>
+  </ng-template>
+ 
+</div>

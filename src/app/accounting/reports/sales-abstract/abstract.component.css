@@ -1,0 +1,35 @@
+.header {
+    display: flex;
+    align-items: flex-start;
+}
+
+.form-group {
+    margin-right: 20px;
+    padding-top: 20px;
+}
+table, tr, th, td {
+    border: 1px solid black;
+    
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+      padding: 5px;
+      font-weight: bolder;
+      font-size: 1.8rem;
+    text-align: center;
+  }
+
+  .row-type, th {
+    background: var(--user-theme);
+    color: white;
+  }
+
+  .main-header {
+      background: #222;
+      color:#fff;
+  }

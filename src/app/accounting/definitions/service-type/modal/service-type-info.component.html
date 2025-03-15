@@ -1,0 +1,295 @@
+<div>
+    <form
+        *ngIf="formResetToggle"
+        class="form-horizontal"
+        name="serviceTypeInfoForm"
+        #f="ngForm"
+        novalidate
+        (ngSubmit)="f.form.valid ? save() : showErrorAlert(gT('messages.requiredfields'), '') "
+    >
+    <div class="flexy">
+        <div class="form-group col-md-6 has-feedback">
+            <label class="control-label col-md-12" for="name-{{ uniqueId }}">
+                {{ "shared.nameAr" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ serviceType.nameAr }}</p>
+            </div>
+            <div
+                *ngIf="isEditMode"
+                class="col-md-12">
+                <input
+                    type="text"
+                    attr.id="nameAr-{{ uniqueId }}"
+                    name="nameAr"
+                    class="form-control"
+                    [(ngModel)]="serviceTypeEdit.nameAr"
+                    #name="ngModel"
+                    required
+                />
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            <label class="control-label col-md-12" for="nameEn-{{ uniqueId }}">
+                {{ "shared.nameEn" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ serviceType.nameEn }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <input
+                    type="text"
+                    attr.id="nameEn-{{ uniqueId }}"
+                    name="nameEn"
+                    class="form-control"
+                    [(ngModel)]="serviceTypeEdit.nameEn"
+                />
+            </div>
+        </div>
+        <!-- <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div> -->
+
+        <div class="form-group col-md-6" *ngIf=" isVatEnable">
+            <label
+                class="control-label col-md-12"
+                for="vatTypeId-{{ uniqueId }}"
+            >
+                {{ "shared.vatTypeId" | translate }}
+            </label>
+            <div *ngIf="!isEditMode " class="col-md-12">
+                <p class="form-control-static">{{ serviceType.vatTypeId }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+
+                <select attr.id="vatTypeId-{{ uniqueId }}"
+                        name="vatTypeId"
+                        [(ngModel)]="serviceTypeEdit.vatTypeId"
+                        #name="ngModel"
+                        #bane="bootstrap-select"
+                        class="selectpicker form-control"
+                        bootstrapSelect
+                        data-live-search="true"
+                        data-actions-box="false"
+                        data-live-search-placeholder="Search..."
+                        [disabled]="!isVatEnable"
+                        required>
+                    <option attr.value="0"> </option>
+                    <option attr.value="{{vatType.id}}"
+                            *ngFor="let vatType of vatTypes"
+                            >
+                        {{vatType['name']}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-md-6 has-feedback">
+            <label class="control-label col-md-12" for="code-{{ uniqueId }}">
+                {{ "shared.code" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ serviceType.code }}</p>
+            </div>
+            <div
+                *ngIf="isEditMode"
+                class="col-md-12"
+            >
+                <input
+                    type="text"
+                    attr.id="code-{{ uniqueId }}"
+                    name="name"
+                    class="form-control"
+                    [(ngModel)]="serviceTypeEdit.code"
+                    #name="ngModel"
+                    required
+
+                />
+            </div>
+        </div>        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+       
+        <!-- <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div> -->
+        <div class="form-group col-md-6">
+            <label
+                class="control-label col-md-12"
+                for="defaultCost-{{ uniqueId }}"
+            >
+                {{ "shared.defaultCost" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ serviceType.defaultCost }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <input
+                    type="text"
+                    attr.id="defaultCost-{{ uniqueId }}"
+                    name="defaultCost"
+                    class="form-control"
+                    [(ngModel)]="serviceTypeEdit.defaultCost"
+                    required
+                />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+
+        <!-- <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div> -->
+        <div class="form-group col-md-6">
+            <label
+                class="control-label col-md-12"
+                for="vatTypeId-{{ uniqueId }}"
+            >
+                {{ "shared.notes" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ serviceType.notes }}</p>
+            </div>
+            <div *ngIf="isEditMode" class="col-md-12">
+                <textarea
+                    type="text"
+                    attr.id="notes-{{ uniqueId }}"
+                    name="notes"
+                    class="form-control"
+                    [(ngModel)]="serviceTypeEdit.notes"
+                ></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+    </div>
+        <div class="form-group buttions-group">
+            <div class="col-sm-7">
+                <div class="">
+                    
+                    <button
+                        *ngIf="isEditMode"
+                        type="submit"
+                        class="btn btn-primary"
+                        [disabled]="f.invalid"
+                    >
+                        <i *ngIf="!isSaving" class="fa fa-save"></i
+                        ><i
+                            *ngIf="isSaving"
+                            class="fa fa-circle-o-notch fa-spin"
+                        ></i>
+                        {{
+                            isSaving
+                                ? ("shared.Saving" | translate)
+                                : ("shared.Save" | translate)
+                        }}
+                    </button>
+                    <button
+                        *ngIf="isEditMode"
+                        type="button"
+                        (click)="saveAndPrint()"
+                        class="btn btn-primary"
+                        [disabled]="isSaving ||f.invalid"
+                    >
+                        <i *ngIf="!isSaving" class="fa fa-save"></i
+                        ><i
+                            *ngIf="isSaving"
+                            class="fa fa-circle-o-notch fa-spin"
+                        ></i>
+                        {{
+                            isSaving
+                                ? ("shared.Saving" | translate)
+                                : ("shared.SaveAndPrint" | translate)
+                        }}
+                    </button>
+                  
+                    <button
+                        *ngIf="!isEditMode"
+                        type="button"
+                        (click)="edit()"
+                        [disabled]="isSaving ||f.invalid"
+                        class="btn btn-default"
+                    >
+                        <i class="fa fa-edit"></i>
+                        {{ "shared.Edit" | translate }}
+                    </button>
+
+                   
+                    <button
+                        *ngIf="isEditMode"
+                        type="button"
+                        (click)="printDocumnent()"
+                        class="btn btn-primary"
+                        [disabled]="isSaving ||f.invalid"
+                    >
+                    {{"shared.print" | translate}}
+                    </button>
+                     <!-- <button
+                    type="button"
+                    (click)="exportAsPDFDocumnent()"
+                    class="btn btn-primary"
+                    [disabled]="isSaving ||f.invalid"
+                >
+                    <i class="fa fa-pdf"></i>
+                    {{ "shared.exportAsPdf" | translate }}
+                </button>  -->
+                <button
+                *ngIf="!isEditMode"
+                type="button"
+                (click)="close()"
+                class="btn btn-default"
+            >
+                <i class="fa fa-close"></i>
+                {{ "shared.Close" | translate }}
+            </button>
+            <button
+            *ngIf="isEditMode"
+            type="button"
+            (click)="cancel()"
+            class="btn btn-danger"
+            [disabled]="isSaving"
+        >
+            <i class="fa fa-times"></i>
+            {{ "shared.Cancel" | translate }}
+        </button>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </form>
+</div>

@@ -1,0 +1,81 @@
+<form class="main-form">
+    <section>
+        <h2 class="section-title">{{ "shared.mainInfo" | translate }}</h2>
+        <div class="form-group">
+            <label class="control-label col-md-12" for="namrAr">
+                {{ "shared.name" | translate }}
+            </label>
+            <div class="col-md-12">
+                <input
+                    type="text"
+                    attr.id="name"
+                    name="name"
+                    class="form-control"
+                    [(ngModel)]="vatType.name"
+                />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12"><hr [class.edit-separator-hr]="true" /></div>
+        </div>
+
+        <!-- ااسم الصنف بالانكليزية -->
+        <div class="form-group">
+            <label class="control-label col-md-12" for="notes">
+                {{ "shared.notes" | translate }}
+            </label>
+            <div class="col-md-12">
+                <textarea
+                    type="text"
+                    attr.id="notes"
+                    name="notes"
+                    class="form-control"
+                    [(ngModel)]="vatType.notes"
+                ></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12"><hr [class.edit-separator-hr]="true" /></div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-12" for="defaultValue">
+                {{ "shared.defaultValue" | translate }}
+            </label>
+            <div class="col-md-12">
+                <input
+                    type="text"
+                    attr.id="defaultValue"
+                    name="defaultValue"
+                    class="form-control"
+                    [(ngModel)]="vatType.defaultValue"
+                />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12"><hr [class.edit-separator-hr]="true" /></div>
+        </div>
+
+        <!-- نوع الضريبة -->
+        <div class="form-group has-feedback">
+            <label class="control-label col-md-12" for="isDefault">
+                {{ "shared.isDefault" | translate }}
+            </label>
+            <div class="col-md-12">
+                <input
+                    id="isDefault"
+                    type="checkbox"
+                    name="isDefault"
+                    [(ngModel)]="vatType.isDefault"
+                    #name="ngModel"
+                />
+            </div>
+        </div>
+    </section>
+
+    <button class="btn btn-primary" (click)="handleSubmit()" type="submit">
+        {{ "shared.submit" | translate }}
+    </button>
+</form>

@@ -1,0 +1,373 @@
+<div>
+    <form
+        *ngIf="formResetToggle"
+        (keydown.enter)="$event.preventDefault()"
+        class="form-horizontal"
+        name="itemcatInfoForm"
+        #f="ngForm"
+        novalidate
+        (ngSubmit)="save()"
+    >
+        <!-- اسم الصنف بالعربية -->
+        <div class="form-group">
+            <label class="control-label col-md-12" for="code-{{uniqueId}}">
+                {{ "shared.nameAr" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ item.nameAr }}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <!-- ااسم الصنف بالانكليزية -->
+        <div class="form-group">
+            <label class="control-label col-md-12" for="code-{{uniqueId}}">
+                {{ "shared.nameEn" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ item.nameEn }}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <!-- الملاحظات -->
+        <div class="form-group has-feedback">
+            <label class="control-label col-md-12" for="notes-{{uniqueId}}">
+                {{ "shared.notes" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">{{ item.notes }}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+        <!-- الملاحظات -->
+        <div class="form-group has-feedback">
+            <label class="control-label col-md-12" for="notes-{{uniqueId}}">
+                {{ "shared.image" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <img *ngIf="item.imagePath" [src]='item.imagePath' style="height:100px">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <!-- االكود -->
+        <div class="form-group">
+            <label class="control-label col-md-12" for="itemCategoryParentId">{{
+                "shared.code" | translate
+            }}</label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">
+                    <span class="badge">{{ item.code }}</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <!-- نوع الصنف -->
+        <div class="form-group">
+            <label class="control-label col-md-12" for="itemCategoryParentId">{{
+                "shared.itemCategoryName" | translate
+            }}</label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">
+                    <span class="badge">{{ item.itemCategoryName }}</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <!-- مواصفات الصنف -->
+        <div class="form-group">
+            <label class="control-label col-md-12" for="itemCategoryParentId">{{
+                "shared.specification" | translate
+            }}</label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">
+                    <span class="badge">{{ item.specification }}</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <!-- نوع الضريبة -->
+        <div class="form-group has-feedback">
+            <label class="control-label col-md-12"
+                   for="vatTypeName-{{uniqueId}}">
+                {{ "shared.vatTypeName" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12">
+                <p class="form-control-static">
+                    <span>{{ item.vatTypeName }}</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <!-- الموردين -->
+        <div class="form-group has-feedback">
+            <label
+                class="control-label col-md-12"
+                for="vatTypeName-{{uniqueId}}"
+            >
+                {{ "shared.itemPeople" | translate }}
+            </label>
+            <div *ngIf="!isEditMode" class="col-md-12 item-people">
+                <p class="form-control-static" *ngFor="let person of item.itemPeople">
+                    {{ person.nameAr? person.nameAr: 'لا يوجد اسم' }},
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr
+                    [class.separator-hr]="!isEditMode"
+                    [class.edit-separator-hr]="isEditMode"
+                />
+            </div>
+        </div>
+
+        <!-- الواحدات -->
+        <div class="form-group has-feedback">
+            <label class="control-label col-md-12" for="itemUnits-{{uniqueId}}">
+                {{ "shared.itemUnits" | translate }}
+            </label>
+            <div class="col-md-12">
+                <div class="tbl-header">
+                    <table cellpadding="0" cellspacing="0" border="0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    {{ "shared.itemUnitsName" | translate }}
+                                </th>
+                                <th>{{ "shared.unitPrice" | translate }}</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="tbl-content">
+                    <table cellpadding="0" cellspacing="0" border="0">
+                        <tbody>
+                            <tr *ngFor="let unit of item.itemUnits">
+                                <td>{{ unit.name }}</td>
+                                <td class=" show-number">{{ unit.price }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <hr [class.separator-hr]="!isEditMode"
+                        [class.edit-separator-hr]="isEditMode" />
+                </div>
+            </div>
+            <!-- الميزات -->
+            <div class="form-group has-feedback item-feature-details">
+                <label class="control-label col-md-12"
+                       for="itemFeatures-{{uniqueId}}">
+                    {{ "shared.itemFeatures" | translate }}
+                </label>
+                <div class="col-md-12">
+                    <div class="tbl-header">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        {{
+                                            "shared.itemFeatureName" | translate
+                                        }}
+                                    </th>
+                                    <th>
+                                        {{
+                                            "shared.itemFeaturePrice"
+                                                | translate
+                                        }}
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="tbl-content">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tbody>
+                                <tr *ngFor="let f of item.itemFeatures">
+                                    <td>{{ f.name }}</td>
+                                    <td class=" show-number">{{ f.price }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group has-feedback item-feature-details">
+                <label class="control-label col-md-12"
+                       for="itemFeatures-{{uniqueId}}">
+                    {{ "shared.itemoffers" | translate }}
+                </label>
+                <div class="col-md-12">
+                    <div class="tbl-header">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <thead>
+                                <tr>
+                                    <th>{{ "shared.NameAr" | translate }}</th>
+                                    <!--th *ngIf="item.id == null || item.id == '' || item.id == 0">{{ "shared.Delete" | translate }}</th-->
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="tbl-content">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tbody>
+                                <tr *ngFor="let f of item.offerItems">
+                                    <td>{{ f.nameAr }}</td>
+                                    <!--td *ngIf="item.id == null || item.id == '' || item.id == 0">
+                                        <button (click)="deleteItemOffer(f)"
+                                                class="btn btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td-->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-7">
+                <div class="pull-right">
+                    <button
+                        *ngIf="!isEditMode"
+                        type="button"
+                        (click)="close()"
+                        class="btn btn-default"
+                    >
+                        <i class="fa fa-close"></i>
+                        {{ "shared.Close" | translate }}
+                    </button>
+                    <button
+                        *ngIf="!isEditMode"
+                        type="button"
+                        [routerLink]="['add-item', item['id']]"
+                        class="btn btn-default"
+                    >
+                        <i class="fa fa-edit"></i>
+                        {{ "shared.Edit" | translate }}
+                    </button>
+                    <button
+                    *ngIf="!isEditMode"
+                    type="button"
+                    (click)="printDocumnent()"
+                    class="btn btn-primary"
+                >
+               {{"shared.print" | translate}}
+                </button>
+                    <button
+                        *ngIf="isEditMode"
+                        type="button"
+                        (click)="cancel()"
+                        class="btn btn-danger"
+                        [disabled]="isSaving"
+                    >
+                        <i class="fa fa-times"></i>
+                        {{ "shared.Cancel" | translate }}
+                    </button>
+                     <!-- <button
+                        type="button"
+                        (click)="exportAsPDFDocumnent()"
+                        class="btn btn-primary"
+                        [disabled]="isSaving"
+                    >
+                        <i class="fa fa-pdf"></i>
+                        {{ "shared.exportAsPdf" | translate }}
+                    </button>  -->
+                    <button
+                        *ngIf="isEditMode"
+                        type="submit"
+                        class="btn btn-primary"
+                        [disabled]="isSaving"
+                    >
+                        <i *ngIf="!isSaving" class="fa fa-save"></i
+                        ><i
+                            *ngIf="isSaving"
+                            class="fa fa-circle-o-notch fa-spin"
+                        ></i>
+                        {{
+                            isSaving
+                                ? ("shared.Saving" | translate)
+                                : ("shared.Save" | translate)
+                        }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </form>
+</div>

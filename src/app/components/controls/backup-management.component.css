@@ -1,0 +1,43 @@
+
+.control-box {
+    margin-bottom: 5px;
+}
+
+.search-box {
+    margin: 0;
+}
+
+.action-box {
+    margin: 0 50px 0 0;
+    min-height: 0;
+}
+
+    .action-box .toolbaritem a {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        min-width: 100px;
+    }
+
+
+    .file input {
+        display: none;
+      }
+    
+    .file{
+        
+        /* margin-top: -30px; */
+    
+    }
+      .file label {
+        border: 1px solid var(--user-theme);
+        padding: 5px 10px;
+        color: var(--user-theme-background);
+        background: var(--user-theme);
+        border-radius: 10px;
+        box-shadow: 0px 0px 3px var(--user-theme-secoundary);
+      }
+@media (max-width: 768px) {
+    .action-box {
+        margin: 0 14px;
+    }
+}

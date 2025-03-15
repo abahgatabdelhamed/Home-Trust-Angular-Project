@@ -1,0 +1,36 @@
+<div class="header">
+
+  <div class="row flexy col-md-12">
+      <div class="col-md-10">
+          <app-branch-cc-filter (filter)="filter($event)" (exportAsXLSXEvent)="exportAsXLSX()"
+               [withSearch]="false" [withExpensesLables]="false"
+               [withBillTypeFilter]="false"  [validBranch]="isBranch" [validDate]="isProfit"[withAddNew]="false" [withBranch]='true'  [withCC]='false' [withExportAsXLSX]="showExcelButton"></app-branch-cc-filter>
+     
+  </div>
+ 
+</div>
+
+<table *ngIf="row1" style="direction: rtl;">
+
+<tr class="annotation">
+  <tr class="titles">
+    <th  class="right-raduis">{{ "shared.index" | translate }}</th>
+    <th>{{ "shared.costCenter" | translate }}</th>
+    <th>{{ "shared.itemName" | translate }}</th>
+    <th>{{ "shared.itemUnitName" | translate }}</th>
+    <th>{{ "shared.productionQuantity" | translate }}</th>
+    <th>{{ "shared.saledQuantity" | translate }}</th>
+    <th  class="left-raduis">{{ "shared.netQuantity" | translate }}</th>
+
+  
+</tr>
+<tr *ngFor="let report of row1" class="data">
+    <td>{{ report.ccId}}</td>
+    <td>{{ report.ccNameAr }}</td>
+    <td>{{ report.itemNameAR }}</td>
+    <td>{{ report.itemUnitNameAr }}</td>
+    <td>{{ report.productionQuantity }}</td>
+    <td>{{ report.saledQunatity }}</td>
+    <td>{{ report.netQuantity }}</td>
+</tr>
+</table>

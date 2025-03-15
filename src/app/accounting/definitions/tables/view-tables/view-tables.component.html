@@ -1,0 +1,115 @@
+
+<div>
+    <div class="row control-box ">
+      <app-branch-cc-filter  (filter)="filter($event)"  (addNewEvent)="addTable()"
+     [withbtn]="true" [withSearch]="false" [withExpensesLables]="false"
+      [withBillTypeFilter]="false" [validBranch]="false" [validCC]="false" [withBranch]="true"   [withCC]="false" [withdate]="false" [withAddNew]="true" [withExportAsXLSX]="false"></app-branch-cc-filter>
+  
+  <!--         
+          <div class="row col-sm-4">
+              <div class="navbar action-box">
+                  <ul class="nav navbar-nav navbar-right">
+                      <li  class="toolbaritem">
+                          <a
+                              href="javascript:;"
+                              (click)="addTable()"
+                             
+                          >
+                              <i class="fa fa-plus-circle"></i>
+                              {{ "shared.NewItem" | translate }}
+                          </a>
+                      </li>
+                  </ul>
+              </div>
+          </div> -->
+          
+    </div>
+            
+          
+        
+        <!-- <div class="col-sm-2">
+            <button (click)="exportAsXLSX()">
+                <i
+                    class="fa fa-file-excel-o"
+                    style="font-size:20px;color:blue"
+                ></i>
+            </button>
+        </div> -->
+    
+  
+    <ngx-datatable
+        class="material colored-header sm table table-striped table-hover"
+        [loadingIndicator]="loadingIndicator"
+        [rows]="rows"
+        [rowHeight]="35"
+        [headerHeight]="35"
+        [footerHeight]="35"
+        [columns]="columns"
+        [scrollbarV]="false"
+        [columnMode]="'force'"
+        [externalPaging]="true"
+        [count]="page.count"
+        [offset]="page.offset"
+        [limit]="page.size"
+        (page)="setPage($event)">
+    </ngx-datatable>
+  
+    <ng-template #indexTemplate let-value="value">
+        <strong>{{ value }}</strong>
+    </ng-template>
+  
+    <ng-template #parentCategory let-row="row" let-value="value" let-i="index">
+        <span class="itemcat-role badge">{{ value }}</span>
+    </ng-template>
+  
+    <ng-template #actionsTemplate let-row="row" let-value="value" let-i="index">
+       
+      <div>
+          <a 
+        
+          class="btn btn-link btn-xs"
+          href="javascript:;"
+          (click)="newTable1(row)"
+          >
+         
+         
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          {{("shared.Edit"|translate)}}
+      </a>
+      <span >|</span> 
+            <a
+                class="btn btn-link btn-xs"
+                href="javascript:;"
+                (click)="Delete(row)">
+                <i class="fa fa-delete" aria-hidden="true"></i>
+                {{ "shared.Delete" | translate }}
+            </a>
+           
+        </div>
+    </ng-template>
+   
+   
+  </div>
+  <div class="modal fade " bsModal #editorModal="bs-modal" 
+  [config]="{ backdrop: 'static' }" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content col-md-10">
+          <div class="modal-header">
+              <h4 class="modal-title pull-left">
+                  <i class="fa fa-itemcat-circle-o"></i>
+                  {{
+                
+                   ("shared.NewTable" | translate)
+                  }}
+              </h4>
+              <button type="button" class="close pull-right" title="Close" (click)="editorModal.hide()">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <app-add-table #newTable></app-add-table>
+          </div>
+          
+      </div>
+  </div>
+  </div>

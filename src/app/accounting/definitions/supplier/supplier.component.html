@@ -1,0 +1,188 @@
+<div>
+    <div class="row control-box">
+        <div class="col-sm-6">
+            <div class="form-group search-box">
+                <search-box (searchChange)="onSearchChanged($event)" placeholder="{{'shared.SearchItem' | translate}}">>
+                </search-box>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="navbar action-box">
+                <ul class="nav navbar-nav navbar-right">
+                    <li *ngIf="canManageSupplier" class="toolbaritem">
+                        <a href="javascript:;" (click)="newSupplier(row)">
+                            <i class="fa fa-plus-circle"></i>
+                            {{ "shared.NewItem" | translate }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="btn" (click)="exportAsXLSX()"><img src="../../../../assets/Excel.png" width="35px" height="35px"></div>
+        </div>
+    </div>
+
+    <ngx-datatable class="material colored-header sm table table-striped table-hover"
+
+        [loadingIndicator]="loadingIndicator"
+        [rows]="rows"
+         [rowHeight]="35"
+        [headerHeight]="35"
+        [footerHeight]="35"
+        [columns]="columns"
+        [scrollbarV]="false"
+        [columnMode]="'force'"
+        [externalPaging]="true"
+         [count]="page.count"
+         [offset]="page.offset"
+        [limit]="page.size"
+       (page)="setPage($event)">
+    </ngx-datatable>
+
+    <ng-template #indexTemplate let-value="value">
+        <strong>{{ value }}</strong>
+    </ng-template>
+
+    <ng-template #parentCategory let-row="row" let-value="value" let-i="index">
+        <span class="itemcat-role badge">{{value}}</span>
+    </ng-template>
+
+    <ng-template #actionsTemplate let-row="row" let-value="value" let-i="index">
+        <div>
+            <a class="btn btn-link btn-xs" href="javascript:;" (click)="onSelect(row)">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+                {{ "shared.Show" | translate }}
+            </a>
+            <span *ngIf="canManageSupplier">|</span>
+            <a *ngIf="canManageSupplier" class="btn btn-link btn-xs" href="javascript:;" (click)="editSupplier(row)">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                {{ "shared.Edit" | translate }}
+            </a>
+            <!-- <span *ngIf="canManageSupplier">|</span>
+
+            <a *ngIf="canManageSupplier" class="btn btn-link btn-xs" href="javascript:;" (click)="reportSupplier(row)">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                {{ "shared.AccountStatement" | translate }}
+            </a> -->
+        </div>
+    </ng-template>
+
+    <div class="modal fade" bsModal #editorModal="bs-modal" (onHidden)="onEditorModalHidden()"
+        [config]="{ backdrop: 'static' }" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title pull-left">
+                        <i class="fa fa-itemcat-circle-o"></i>
+                        {{
+                        editingName
+                        ? ("shared.Edit" | translate: editingName)
+                        : ("shared.NewItem" | translate)
+                        }}
+                    </h4>
+                    <button type="button" class="close pull-right" title="Close" (click)="editorModal.hide()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <supplier-info #supplierEditor></supplier-info>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" bsModal #reportModal="bs-modal" (onHidden)="onEditorModalHidden()"
+        [config]="{ backdrop: 'static' }" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title pull-left">
+                        <i class="fa fa-itemcat-circle-o"></i>
+                       {{"shared.AccountStatement"|translate}}                    </h4>
+                    <button type="button" class="close pull-right" title="Close" (click)="reportModal.hide()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="direction: rtl;">
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <input type="text" attr.id="code" name="code" class="form-control"
+                                [(ngModel)]="serachModel.to" #name="ngModel" bsDatepicker />
+                        </div>
+                        <label class="control-label col-md-2" for="itemCategoryParentId">
+                            {{ "shared.to" | translate }}
+                        </label>
+
+
+                        <div class="col-md-4">
+                            <input type="text" attr.id="code" name="code" class="form-control"
+                                [(ngModel)]="serachModel.from" #name="ngModel" bsDatepicker />
+                        </div>
+                        <label class="control-label col-md-2" for="itemCategoryParentId">
+                            {{ "shared.from" | translate }}
+                        </label>
+
+
+                        <button style="margin-right: 20px;" class="btn btn-primary" (click)="handleSubmit($event)">
+                            {{ "shared.search" | translate }}
+                        </button>
+                        <span *ngIf="reportLo != null">{{reportLo}}</span>
+                    </div>
+                    <div *ngIf="report">
+                        <div class="row">
+                            <div class="col-sm-2" style="float:right">{{ "shared.name" | translate }}</div>
+                            <div class="col-sm-4" style="float:right">{{report.name}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2" style="float:right">  {{ "shared.code" | translate }}</div>
+                            <div class="col-sm-4" style="float:right">{{report.code}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2" style="float:right">{{"shared.adderss"|translate}}</div>
+                            <div class="col-sm-4" style="float:right">{{report.address}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2" style="float:right">{{"shared.mobile"|translate}}</div>
+                            <div class="col-sm-4" style="float:right">{{report.mobile}}</div>
+                        </div>
+                        <div class="row">
+                            <table class="table" style="text-align:center">
+                                <tr>
+                                    <th style="text-align:center">{{"shared.date"|translate}}</th>
+                                    <th style="text-align:center">{{"shared.Operationtime"|translate}}</th>
+                                    <th style="text-align:center">{{"shared.ReceiptDocumentCode"|translate}}</th>
+                                    <th style="text-align:center">{{"shared.type"|translate}}</th>
+                                    <th style="text-align:center">{{"shared.amount"|translate}}</th>
+                                    <th style="text-align:center">{{"shared.balance"|translate}}</th>
+                                </tr>
+                                <tr *ngFor="let i of report.items">
+                                    <td>{{i.date}}</td>
+                                    <td>{{i.time}}</td>
+                                    <td>{{i.code}}</td>
+                                    <td>{{i.type}}</td>
+                                    <td class="show-number">{{i.amount}}</td>
+                                    <td class="show-number">{{i.total}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4" style="float:right">{{"shared.amountdue"|translate}}</div>
+                            <div class="col-sm-2 show-number" style="float:right">{{report.dueAmount}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4" style="float:right">{{"shared.totalsales"|translate}}</div>
+                            <div class="col-sm-2 show-number" style="float:right">{{ report.totalSales}}</div>
+                        </div>
+                        <div class="row">
+                            <button type="button" (click)="printDocumnent()" class="btn btn-primary">
+                                {{"shared.print" | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

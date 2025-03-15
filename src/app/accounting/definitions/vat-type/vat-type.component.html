@@ -1,0 +1,107 @@
+<div>
+    <div class="row control-box">
+        <div class="col-sm-6">
+            <div class="form-group search-box">
+                <search-box
+                    (searchChange)="onSearchChanged($event)"
+                    placeholder="{{ 'shared.SearchVatType' | translate }}"
+                    >></search-box
+                >
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="btn" (click)="exportAsXLSX()"><img src="../../../../assets/Excel.png" width="35px" height="35px"></div>
+
+        </div>
+    </div>
+
+    <ngx-datatable
+        class="material colored-header sm table table-striped table-hover"
+        [loadingIndicator]="loadingIndicator"
+        [rows]="rows"
+        [rowHeight]="35"
+        [headerHeight]="35"
+        [footerHeight]="35"
+        [columns]="columns"
+        [scrollbarV]="true"
+        [columnMode]="'force'"
+    >
+    </ngx-datatable>
+
+    <ng-template #indexTemplate let-value="value">
+        <strong>{{ value }}</strong>
+    </ng-template>
+
+    <ng-template #parent let-row="row" let-value="value" let-i="index">
+        <span class="vatType-role badge">{{ value }}</span>
+    </ng-template>
+
+    <ng-template #actionsTemplate let-row="row" let-value="value" let-i="index">
+        <div>
+            <a
+                class="btn btn-link btn-xs"
+                href="javascript:;"
+                (click)="onSelect(row)"
+            >
+                <i class="fa fa-eye" aria-hidden="true"></i>
+                {{ "shared.Show" | translate }}
+            </a>
+            <span *ngIf="canManageVatType">|</span>
+            <a
+                *ngIf="canManageVatType"
+                class="btn btn-link btn-xs"
+                href="javascript:;"
+                [routerLink]="['add-vat-type', row.id]"
+                routerLinkActive="router-link-active"
+            >
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                {{ "shared.Edit" | translate }}
+            </a>
+            <span *ngIf="canManageVatType">|</span>
+            <!--a
+                *ngIf="canManageVatType"
+                class="btn btn-link btn-xs"
+                href="javascript:;"
+                (click)="deleteVatType(row)"
+            >
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                {{ "shared.Delete" | translate }}
+            </a-->
+        </div>
+    </ng-template>
+
+    <div
+        class="modal fade"
+        bsModal
+        #editorModal="bs-modal"
+        (onHidden)="onEditorModalHidden()"
+        [config]="{ backdrop: 'static' }"
+        tabindex="-1"
+    >
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title pull-left">
+                        <i class="fa fa-vatType-circle-o"></i>
+                        {{
+                            editingName
+                                ? ("shared.Edit" | translate: editingName)
+                                : ("shared.NewVatType" | translate)
+                        }}
+                    </h4>
+                    <button
+                        type="button"
+                        class="close pull-right"
+                        title="Close"
+                        (click)="editorModal.hide()"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <vat-type-modal #vatTypeModalEditor></vat-type-modal>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

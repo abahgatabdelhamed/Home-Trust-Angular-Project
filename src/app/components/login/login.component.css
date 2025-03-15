@@ -1,0 +1,75 @@
+.b-filter{
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    backdrop-filter: blur(4px);
+    background: rgb(255 255 255 / 20%);
+}
+.boxshadow {
+   
+    direction: ltr;
+    height: 380px !important;
+    backdrop-filter: blur(9px);
+    box-shadow: 0px 3px 4px #312e2e59;
+    border-color: none !important;
+    background-color:rgb(255, 255, 255 ,1) !important;
+    border-color: rgb(255, 255, 255 ,0) !important;
+    text-align: center;
+    color: var(--user-theme) !important;
+    padding: 8% 0%;
+    font-size: 18px;
+    border-radius: 20px;
+}
+.panel-heading {
+    padding: 26px 15px;
+    font-size: 18px;
+    font-weight: 900;
+}
+
+    .boxshadow::after {
+        content: '';
+        position: absolute;
+        z-index: -1; /* hide shadow behind image */
+        -webkit-box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
+        -moz-box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
+        width: auto;
+        left: 15%; /* one half of the remaining 30% */
+        height: 100px;
+        bottom: 0;
+    }
+
+
+.cardshadow {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+.separator-hr {
+    margin: 0;
+}
+
+.last-control-group {
+    margin-bottom: -25px;
+}
+
+
+
+@media (min-width: 768px) {
+    .login-container {
+        width: 500px ;
+    }
+}
+
+/*@media (min-width: 992px) {
+    .login-container {
+        width: 700px;
+    }
+}*/
+
+@media (min-width: 1200px) {
+    .login-container {
+        width: 500px ;
+    }
+}

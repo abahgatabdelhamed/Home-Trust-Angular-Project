@@ -1,0 +1,63 @@
+/*.row:not(:last-child) {
+    //border-bottom: 1px solid #ccc;
+}*/
+
+.separator-hr {
+    margin: 0 5px;
+    border-top-style: dashed;
+}
+
+.edit-separator-hr {
+    margin: 10px 5px;
+    border-top-style: dashed;
+}
+
+.last-separator-hr {
+    margin-top: 5px;
+}
+
+.edit-last-separator-hr {
+    margin-top: 15px;
+}
+
+.password-separator-hr {
+    margin: 5px;
+    border-style: none;
+}
+
+.form-group {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+input.form-control {
+    border-left-width: 5px;
+}
+.control-label{
+    padding-bottom:10px ;
+}
+.password-well {
+    margin-bottom: 0;
+}
+.buttions-group{
+padding-top: 50px;
+}
+
+.hint-sm {
+    display: block;
+}
+
+input[type="checkbox"] {
+    height: 15px;
+}
+.flexy{
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 45px;
+}
+@media screen and (max-width:992px) {
+    .flexy{
+        display: block;
+    }
+    
+}
