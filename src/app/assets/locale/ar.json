@@ -488,6 +488,7 @@
     "settings": {
         "tab": {
             "Profile": "الملف الشخصي",
+            "statistics": "الإحصائيات",
             "Preferences": "التفضيلات",
             "Users": "المستخدمين",
             "Roles": "قاعدة الصلاحيات",

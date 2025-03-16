@@ -74,6 +74,7 @@ import { ReportsService } from "./accounting/reports/services/reports.service";
 import { ReportsEndpointService } from "./accounting/reports/services/reports-endpoint.service";
 import { SBillService } from "./accounting/shared/services/sbill.service";
 import { SBillEndpoint } from "./accounting/shared/services/sbill-endpoint.service";
+import { StatisticsComponent } from "./components/Statistics/Statistics.component";
 const BASE_MODULES = [BrowserModule, BrowserAnimationsModule, AppRoutingModule,HttpClientModule];
 
 const SERVICES = [
@@ -129,7 +130,8 @@ const COMPONENTS = [
     UsersManagementComponent,
     RolesManagementComponent,
     BackupManagementComponent,
-    RoleEditorComponent
+    RoleEditorComponent,
+    StatisticsComponent
 ];
 
 const PIPS = [GroupByPipe];

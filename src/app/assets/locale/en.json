@@ -448,6 +448,7 @@
     "settings": {
         "tab": {
             "Profile": "Profile",
+            "statistics": "statistics",
             "Preferences": "Preferences",
             "Users": "Users",
             "Roles": "Roles",
