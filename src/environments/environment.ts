@@ -10,7 +10,8 @@
 
 export const environment = {
     production: false,
-    baseUrl:  '',
+    baseUrl:  'http://localhost:51554',
+    baseUrl2:  'https://localhost:7091',
     authSerials:'',
     loginUrl: "/Login",
     pagination: { size: 20 , offset: 0}

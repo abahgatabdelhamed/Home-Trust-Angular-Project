@@ -1,0 +1,29 @@
+.LinkActive{
+    font-weight: bold;
+}
+
+.navMod{
+    background-color: #FAFAFA;
+    border: none;
+    margin-top: 10px;
+    border-bottom: 1px solid #d6d6d6 ;
+}
+
+.Links{
+    border-left: 1px solid #888888 ;
+}
+
+.list{
+    /* background-color: blanchedalmond; */
+}
+.list li 
+{
+    color: #444444;
+   
+}
+.list li :hover
+{
+    color: #444444;
+    color: #16afdd;
+    border-bottom: 2px solid #16afdd ;
+}

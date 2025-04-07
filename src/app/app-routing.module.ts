@@ -18,6 +18,9 @@ import { StatementsGuard } from "./services/statements.guard";
 import { DefinitionsGuard } from "./services/definitions.guard";
 import { SettingGuard } from "./services/setting.guard";
 import { ToolsGuard } from "./services/tools.guard";
+import { StatisticsComponent } from "./components/Statistics/Statistics.component";
+import { ChartsComponent } from "./components/Statistics/Charts/Charts.component";
+import { ReportsComponent } from "./components/Statistics/Reports/Reports.component";
 
 
 @NgModule({
@@ -67,6 +70,19 @@ import { ToolsGuard } from "./services/tools.guard";
                 canActivate: [AuthGuardService,ReportsGuard],
                 data: {feature: null},
             },
+
+            {
+                path: "statistics",
+                component:StatisticsComponent,
+                // canActivate: [AuthGuardService],
+                children:[
+                    {path: "charts", component:ChartsComponent},
+                    {path: "new_reports", component:ReportsComponent }
+                ]
+          
+            },
+
+         
             {
                 path: "definitions",
                 loadChildren:

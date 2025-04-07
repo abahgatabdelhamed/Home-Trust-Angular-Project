@@ -589,6 +589,16 @@ settingsMenu={pageHeader:'pageHeader.Settings',groupNumber:7,icon:'fa fa-cog fa-
     id:'updatesTab',
   fragment:"updates"
   },
+  {
+    name:'settings.tab.statistics' ,
+    routerLink:'/statistics/charts',
+    isActive:true,
+    groupNumber:7,
+    featureNumber:null,
+    icon:'fas fa-chart-line',
+    id:'statisticsTab',
+     fragment:"statistics"
+  },
  ]}
 }
 
