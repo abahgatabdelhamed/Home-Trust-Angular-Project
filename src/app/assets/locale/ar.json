@@ -765,5 +765,23 @@
         "NoExitStatement":"لا يوجد تصريح للخروج",
         "QuantityIssue":"خطأ في الكمية",
         "changeDiscount":" هل انت متأكد من الغاء تفعيل الخصم على كافة الاصناف ؟"
-    }
+    },
+    "charts":{
+        
+       "FromDate": "من التاريخ",
+    "ToDate": "إلى التاريخ",
+    "RvenueChart": "مخطط الإيرادات",
+    "QuantityChart": "مخطط الكمية",
+    "TopItems": "أفضل العناصر",
+    "Rank": "الترتيب",
+    "Quantity": "الكمية",
+    "TopServices": "أفضل الخدمات",
+    "TopItemFeatures": "أفضل ميزات العناصر",
+    "TopSoldTogether": "الأكثر مبيعًا معًا",
+    "Submit": "بحث",
+    "Name": "الاسم",
+    "TotalCompany": "كل الفروع"
+    
+    
+}
 }

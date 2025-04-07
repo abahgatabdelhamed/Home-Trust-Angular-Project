@@ -5,6 +5,8 @@ import { AppErrorHandler } from "./app-error.handler";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppRoutingModule } from "./app-routing.module";
+import { ChartsModule } from 'ng2-charts';
+import { FormsModule } from '@angular/forms';
 
 //TRANSLATE
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
@@ -27,6 +29,7 @@ import { SettingsService } from "./services/settings.service";
 import { SettingsEndpoint } from "./services/settings-endpoint.service";
 import { ExcelService } from "./services/excel.service";
 import { UserPreferencesService } from "./accounting/definitions/services/user-preferences.service";
+import { StaticsServiceService } from "./services/New_Service/StaticsService.service";
 
 //pips
 import { GroupByPipe } from "./pipes/group-by.pipe";
@@ -75,7 +78,9 @@ import { ReportsEndpointService } from "./accounting/reports/services/reports-en
 import { SBillService } from "./accounting/shared/services/sbill.service";
 import { SBillEndpoint } from "./accounting/shared/services/sbill-endpoint.service";
 import { StatisticsComponent } from "./components/Statistics/Statistics.component";
-const BASE_MODULES = [BrowserModule, BrowserAnimationsModule, AppRoutingModule,HttpClientModule];
+import { ChartsComponent } from "./components/Statistics/Charts/Charts.component";
+import { ReportsComponent } from "./components/Statistics/Reports/Reports.component";
+const BASE_MODULES = [BrowserModule, BrowserAnimationsModule, AppRoutingModule,HttpClientModule, ChartsModule ,FormsModule ];
 
 const SERVICES = [
     AppTitleService,
@@ -111,7 +116,9 @@ const SERVICES = [
     ReportsService,
     ReportsEndpointService,
     SBillService,
-    SBillEndpoint
+    SBillEndpoint,
+    StaticsServiceService
+    
     
 ];
 
@@ -131,7 +138,9 @@ const COMPONENTS = [
     RolesManagementComponent,
     BackupManagementComponent,
     RoleEditorComponent,
-    StatisticsComponent
+    StatisticsComponent,
+    ChartsComponent , 
+    ReportsComponent
 ];
 
 const PIPS = [GroupByPipe];

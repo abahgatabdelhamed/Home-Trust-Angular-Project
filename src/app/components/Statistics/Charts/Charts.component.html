@@ -1,0 +1,171 @@
+<!-- {{'mainMenu.Update' | translate}} -->
+<div class="row">
+  <div class="col-md-2"></div>
+  <form action="GET" (submit)="CreateChart($event)" class="col-md-7 form">
+    <label>{{'charts.FromDate' | translate}}</label>
+    <input type="date" name="FromDate" class="form-control" id="FromDate" [(ngModel)]="fromDate">
+    <br>
+    <label>{{'charts.ToDate' | translate}}</label>
+    <input type="date" name="ToDate" class="form-control" id="ToDate" [(ngModel)]="toDate">
+
+    <select class="form-control" name="branches" class="form-control" id="branchesID" [(ngModel)]="SelectedBranchID" (change)="onBranchChange($event)">
+      <option value="-1" selected>{{'charts.TotalCompany' | translate}}
+      </option>
+      <ng-container *ngFor="let branch of branchList; let i = index; trackBy: TrackedItem">
+        <option [value]="branch.id">
+          {{ branch.name }}
+        </option>
+        <!-- <ng-template #Empty>
+          <option value="0">Empty Branch</option>
+        </ng-template> -->
+      </ng-container>
+    </select>
+    <input type="submit"  class="form-control " value="{{'charts.Submit' | translate}}">
+  </form>
+</div>
+
+<div class="row">
+  <div class="col-md-1">
+
+  </div>
+  <div class="col-md-8">
+    <h1 class="text-center">{{SelectedBranchName}}</h1>
+  </div>
+</div>
+
+<div class="row" style="margin-bottom: 10px;">
+  <div class="col-md-1"></div>
+  <div class="col-md-8 ">
+    <h3 class="text-center">{{'charts.RvenueChart' | translate}}</h3>
+    <div id="canvas1" class="canvas">
+    </div>
+  </div>
+
+</div>
+
+
+<div class="row " >
+  <div class="col-md-1"></div>
+  <div class="col-md-8 ">
+    <h3 class="text-center"> {{'charts.QuantityChart' | translate}} </h3>
+    <div id="canvas2"  class="canvas"></div>
+  </div>
+  
+
+</div>
+
+
+<div class="row tableContainer">
+  <div class="col-md-2"></div>
+  <div class="col-md-7">
+ <!-- Top Items Table -->
+ <h2 class="text-primary text-center"> {{'charts.TopItems' | translate}}</h2>
+ <div class="table-responsive">
+   <table class="table table-bordered table-striped table" dir="rtl">
+     <thead>
+       <tr>
+         <th> {{'charts.Rank' | translate}}</th>
+         <th> {{'charts.Name' | translate}}</th>
+         <th> {{'charts.Quantity' | translate}}</th>
+       </tr>
+     </thead>
+     <tbody>
+       <tr *ngFor="let item of topItems">
+         <td>{{ item.rank }}</td>
+         <td>{{ item.itemName }}</td>
+         <td>{{ item.quantity }}</td>
+       </tr>
+     </tbody>
+   </table>
+ </div>
+  </div>
+ 
+</div>
+
+
+
+
+  <!-- Top Services Table -->
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-7">
+      <h2 class="text-primary text-center"> {{'charts.TopServices' | translate}}</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped" dir="rtl">
+          <thead>
+            <tr>
+              <th> {{'charts.Rank' | translate}}</th>
+              <th> {{'charts.Name' | translate}}</th>
+              <th> {{'charts.Quantity' | translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let service of topServices">
+              <td>{{ service.Rank }}</td>
+              <td>{{ service.ServiceName }}</td>
+              <td>{{ service.Quantity }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+ 
+</div>
+
+  <!-- Top Item Features Table -->
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-7">
+      <h2 class="text-primary text-center"> {{'charts.TopItemFeatures' | translate}}</h2>
+  <div class="table-responsive ">
+    <table class="table table-bordered table-striped " dir="rtl">
+      <thead>
+        <tr>
+          <th> {{'charts.Rank' | translate}}</th>
+          <th> {{'charts.Name' | translate}}</th>
+          <th> {{'charts.Quantity' | translate}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let feature of topItemFeatures">
+          <td>{{ feature.Rank }}</td>
+          <td>{{ feature.ItemName }}</td>
+          <td>{{ feature.FeatureCount }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+    </div>
+  
+</div>
+
+  <!-- Top Sold Together Table -->
+  <div class="row">
+    <div class="col-md-2"></div>
+<div class="col-md-7">
+  <h2 class="text-primary text-center">{{'charts.TopSoldTogether' | translate}}</h2>
+  <div class="table-responsive ">
+    <table class="table table-bordered table-striped" dir="rtl">
+      <thead>
+        <tr>
+          <th> {{'charts.Rank' | translate}}</th>
+          <th> {{'charts.Name' | translate}}</th>
+          <th> {{'charts.Quantity' | translate}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sold of topSoldTogether">
+          <td>{{ sold.Rank }}</td>
+          <td>{{ sold.ItemName }}</td>
+          <td>{{ sold.PairCount }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+ 
+</div>
+
+
+
+

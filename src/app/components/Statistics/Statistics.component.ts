@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { IStatisticsModel } from '../Interface/IStatisticsModel';
+import { ChartsModule } from 'ng2-charts';
+import { Branch } from '../../accounting/definitions/models/brach.model';
+import { RouterLink , RouterLinkActive,RouterOutlet } from '@angular/router';
+
 
 @Component({
   selector: 'app-Statistics',
@@ -7,9 +12,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StatisticsComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit() {
+  ngOnInit(): void {
+   
   }
+  StatisList: IStatisticsModel[];
+  Title :string = "Statistics bahgat"
+  SelectedBranchID:number = 1000
+  chartLabels :string[] 
+
+   
 
 }

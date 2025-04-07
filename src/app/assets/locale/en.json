@@ -731,6 +731,25 @@
         "changeDiscount":"Are you sure to deactivate the discount on all items?"
        
         
+    },
+    "charts":{
+        
+            "FromDate": "From Date",
+            "ToDate": "To Date",
+            "RvenueChart": "Revenue Chart",
+            "QuantityChart": "Quantity Chart",
+            "TopItems": "Top Items",
+            "Rank": "Rank",
+            "Quantity": "Quantity",
+            "Name": "Name",
+            "TopServices": "Top Services",
+            "TopItemFeatures": "Top Item Features",
+            "TopSoldTogether": "Top Sold Together",
+            "Submit": "Search",
+            "TotalCompany": "Total Companies"
+
+        
+        
     }
     
 }

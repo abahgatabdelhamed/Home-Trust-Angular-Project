@@ -53,6 +53,7 @@ import { Event, RouterEvent, Router } from '@angular/router';
 import { filter } from "rxjs/operators";
 import { SideBarMenuService } from "../services/side-bar-menu.service";
 import { NgIf } from "@angular/common";
+
 var alertify: any = require("../assets/scripts/alertify.js");
 
 @Component({
