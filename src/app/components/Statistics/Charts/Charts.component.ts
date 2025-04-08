@@ -11,6 +11,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { ChangeDetectorRef } from '@angular/core';
 import { Chart, ChartConfiguration , ChartData } from 'chart.js';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { Recommendation } from '../../../recommendation';
 
 
 
@@ -22,6 +23,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 export class ChartsComponent implements OnInit {
   chartInstance1: Chart;
   chartInstance2: Chart;
+  recommend:Recommendation[] = []
  StatisList: IStatisticsModel[];
  StatisticsModel: IStatisticsModel;
   Title :string = "Statistics "
@@ -37,6 +39,14 @@ export class ChartsComponent implements OnInit {
   // Branches
   branchList: { id: number; name: string }[] = [];
 
+
+
+  //=========================================================
+  // recommendation 
+
+  
+
+  //==================================
 QuantityChartData = []
 
   topItems: TopItemModel[];
@@ -266,6 +276,16 @@ QuantityChartData = []
         
       }
     })
+
+
+    this.Service.get_AiRecommendation(fromDateObj, toDateObj).subscribe({
+      next:(data)=>{
+        console.log("bahgat_AI");
+        console.log(data);
+        this.recommend = data
+        // this.rec = document.getElementById("recommendation").innerHTML = this.recommend.RecommendationsHtml
+      }
+    })
     
   }
 
@@ -299,3 +319,6 @@ onBranchChange(event: any) {
   }
 }
 }
+
+
+

@@ -80,6 +80,9 @@ import { SBillEndpoint } from "./accounting/shared/services/sbill-endpoint.servi
 import { StatisticsComponent } from "./components/Statistics/Statistics.component";
 import { ChartsComponent } from "./components/Statistics/Charts/Charts.component";
 import { ReportsComponent } from "./components/Statistics/Reports/Reports.component";
+import { ArabicMonthPipe } from './arabic-month.pipe';
+
+
 const BASE_MODULES = [BrowserModule, BrowserAnimationsModule, AppRoutingModule,HttpClientModule, ChartsModule ,FormsModule ];
 
 const SERVICES = [
@@ -157,7 +160,7 @@ const PIPS = [GroupByPipe];
         }),
         ThemeModule.forRoot()
     ],
-    declarations: [...COMPONENTS, ...PIPS],
+    declarations: [...COMPONENTS, ...PIPS, ArabicMonthPipe],
     providers: [
         { provide: "BASE_URL", useFactory: getBaseUrl },
         { provide: ErrorHandler, useClass: AppErrorHandler },

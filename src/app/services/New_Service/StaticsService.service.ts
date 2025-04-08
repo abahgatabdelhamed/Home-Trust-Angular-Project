@@ -3,6 +3,7 @@ import { Branches, IStatisticsModel } from '../../components/Interface/IStatisti
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { Recommendation } from '../../recommendation';
 
 @Injectable()
 export class StaticsServiceService {
@@ -25,5 +26,18 @@ getBranchStatistcsByID(BranchID : number , FromDate:string , ToDate:string):Obse
 getAllBranches():Branches[]{
     return this.BranchesModel
 }
+
+get_AiRecommendation(fromDate: Date, toDate: Date): Observable<Recommendation[]> {
+  const formattedFromDate = fromDate.toISOString().split('T')[0]; // YYYY-MM-DD
+  const formattedToDate = toDate.toISOString().split('T')[0];     // YYYY-MM-DD
+
+  const url = `${environment.baseUrl2}/api/v2/AIRecommendationReports/recommendations?FromDate=${formattedFromDate}&ToDate=${formattedToDate}`;
+  return this.http.get<Recommendation[]>(url);
+}
+
+
+
+
+
 
 }

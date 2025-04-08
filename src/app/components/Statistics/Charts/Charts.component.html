@@ -166,6 +166,34 @@
  
 </div>
 
+<div class="row" *ngFor="let rec of recommend; let i = index;">
+  <div class="col-md-2"></div>
 
+  <div class="panel-group col-md-7" [attr.id]="'accordion' + i" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
 
+      <div class="panel-heading" role="tab" [attr.id]="'heading' + i">
+        <h4 class="panel-title">
+          <a role="button"
+             data-toggle="collapse"
+             [attr.data-parent]="'#accordion' + i"
+             [attr.href]="'#collapse' + i"
+             aria-expanded="true"
+             [attr.aria-controls]="'collapse' + i">
+             توصية شهر {{ rec.month | arabicMonth }}  
+          </a>
+        </h4>
+      </div>
+
+      <div [attr.id]="'collapse' + i"
+           class="panel-collapse collapse"
+           role="tabpanel"
+           [attr.aria-labelledby]="'heading' + i">
+        <div class="panel-body" [innerHTML]="rec.recommendationsHtml">
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
