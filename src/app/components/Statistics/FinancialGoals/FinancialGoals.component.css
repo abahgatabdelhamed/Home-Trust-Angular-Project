@@ -1,0 +1,42 @@
+
+ thead tr th { 
+    text-align: center;
+}
+
+.brName{
+    color: white;
+    background-color: rgb(5, 5, 54);
+}
+
+.form {
+    display: flex;
+    flex-direction: row; /* Aligns items in a row */
+    gap: 10px; /* Adds space between elements */
+    align-items: center; /* Aligns items vertically */
+    padding: 10px;
+    background: #f4f4f4;
+    border-radius: 8px;
+}
+
+.form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    flex: 1; /* Makes inputs flexible to fill available space */
+}
+
+.form button {
+    padding: 10px 15px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap; /* Prevents button text from wrapping */
+}
+
+.form button:hover {
+    background: #0056b3;
+}
+
+

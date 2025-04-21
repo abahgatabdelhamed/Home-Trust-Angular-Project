@@ -591,7 +591,7 @@ settingsMenu={pageHeader:'pageHeader.Settings',groupNumber:7,icon:'fa fa-cog fa-
   },
   {
     name:'settings.tab.statistics' ,
-    routerLink:'/statistics/charts',
+    routerLink:'/statistics',
     isActive:true,
     groupNumber:7,
     featureNumber:null,

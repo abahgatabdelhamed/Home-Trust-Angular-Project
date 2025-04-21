@@ -81,6 +81,8 @@ import { StatisticsComponent } from "./components/Statistics/Statistics.componen
 import { ChartsComponent } from "./components/Statistics/Charts/Charts.component";
 import { ReportsComponent } from "./components/Statistics/Reports/Reports.component";
 import { ArabicMonthPipe } from './arabic-month.pipe';
+import { MonthlyGoalServiceService } from "./services/New_Service/MonthlyGoalService.service";
+import { FinancialGoalsComponent } from "./components/Statistics/FinancialGoals/FinancialGoals.component";
 
 
 const BASE_MODULES = [BrowserModule, BrowserAnimationsModule, AppRoutingModule,HttpClientModule, ChartsModule ,FormsModule ];
@@ -120,7 +122,8 @@ const SERVICES = [
     ReportsEndpointService,
     SBillService,
     SBillEndpoint,
-    StaticsServiceService
+    StaticsServiceService, 
+    MonthlyGoalServiceService
     
     
 ];
@@ -143,7 +146,8 @@ const COMPONENTS = [
     RoleEditorComponent,
     StatisticsComponent,
     ChartsComponent , 
-    ReportsComponent
+    ReportsComponent,
+    FinancialGoalsComponent
 ];
 
 const PIPS = [GroupByPipe];

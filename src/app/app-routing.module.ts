@@ -21,6 +21,7 @@ import { ToolsGuard } from "./services/tools.guard";
 import { StatisticsComponent } from "./components/Statistics/Statistics.component";
 import { ChartsComponent } from "./components/Statistics/Charts/Charts.component";
 import { ReportsComponent } from "./components/Statistics/Reports/Reports.component";
+import { FinancialGoalsComponent } from "./components/Statistics/FinancialGoals/FinancialGoals.component";
 
 
 @NgModule({
@@ -77,7 +78,8 @@ import { ReportsComponent } from "./components/Statistics/Reports/Reports.compon
                 // canActivate: [AuthGuardService],
                 children:[
                     {path: "charts", component:ChartsComponent},
-                    {path: "new_reports", component:ReportsComponent }
+                    {path: "new_reports", component:ReportsComponent },
+                    {path: "financialgoals", component:FinancialGoalsComponent }
                 ]
           
             },

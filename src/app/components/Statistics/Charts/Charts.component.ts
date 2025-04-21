@@ -2,16 +2,12 @@ import {ViewChild, Component, ElementRef, OnInit, Type } from '@angular/core';
 import { IStatisticsModel, TopItemFeatureModel, TopItemModel, TopServiceModel, TopSoldTogetherModel } from '../../Interface/IStatisticsModel';
 import { Branch } from '../../../accounting/definitions/models/brach.model';
 import { StaticsServiceService } from '../../../services/New_Service/StaticsService.service';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms'; 
-import { CommonModule } from '@angular/common';
-import { ChartsModule } from 'ng2-charts';
-import { setDayOfYear } from 'ngx-bootstrap/chronos/units/day-of-year';
-import { forEach } from '@angular/router/src/utils/collection';
 import { ChangeDetectorRef } from '@angular/core';
 import { Chart, ChartConfiguration , ChartData } from 'chart.js';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Recommendation } from '../../../recommendation';
+import { MonthlyGoalInterface } from '../../Interface/MonthlyGoalInterface';
+import { MonthlyGoalServiceService } from '../../../services/New_Service/MonthlyGoalService.service';
 
 
 
@@ -26,11 +22,14 @@ export class ChartsComponent implements OnInit {
   recommend:Recommendation[] = []
  StatisList: IStatisticsModel[];
  StatisticsModel: IStatisticsModel;
+
   Title :string = "Statistics "
   SelectedBranchID:number = -1
+
   chartLabels :string[] 
   fromDate: Date;
   toDate: Date;
+
   chartData = [
     // { data: [65, 70, 80, 85, 60, 75, 90, 95, 85, 80, 70, 60], label: 'Sales', borderColor: 'red', fill: false },
     // { data: [30, 50, 45, 40, 70, 85, 100, 95, 90, 75, 60, 50], label: 'Revenue', borderColor: 'blue', fill: false },
@@ -58,12 +57,7 @@ QuantityChartData = []
 
 
 
-  constructor( private Service :StaticsServiceService , private cdr:ChangeDetectorRef) {
-
-
-   
-
-
+  constructor( private Service :StaticsServiceService,private goalService : MonthlyGoalServiceService , private cdr:ChangeDetectorRef) {
    }
 
 
@@ -289,6 +283,8 @@ QuantityChartData = []
     
   }
 
+
+  
 
 
   public chartOptions = {

@@ -1,0 +1,104 @@
+
+<!-- for search  -->
+
+<div class="row">
+  <div class="col-md-2"></div>
+  <form action="GET" (submit)="CreateChart($event)" class="col-md-7 form">
+    <label>{{'charts.FromDate' | translate}}</label>
+    <input type="date" name="FromDate" class="form-control" id="FromDate" [(ngModel)]="fromDate">
+    <br>
+    <label>{{'charts.ToDate' | translate}}</label>
+    <input type="date" name="ToDate" class="form-control" id="ToDate" [(ngModel)]="toDate">
+
+    <select class="form-control" name="branches" class="form-control" id="branchesID" [(ngModel)]="SelectedBranchID" (change)="onBranchChange($event)">
+      <option value="-1" selected>{{'charts.TotalCompany' | translate}}
+      </option>
+      <ng-container *ngFor="let branch of branchList; let i = index; trackBy: TrackedItem">
+        <option [value]="branch.id">
+          {{ branch.name }}
+        </option>
+        <!-- <ng-template #Empty>
+          <option value="0">Empty Branch</option>
+        </ng-template> -->
+      </ng-container>
+    </select>
+    <input type="submit"  class="form-control " value="{{'charts.Submit' | translate}}">
+  </form>
+</div>
+
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-2"></div>
+    <form action="POST" (submit)="CreateMonthGoal($event)" class="col-md-7 form">
+      <!-- <label>{{'charts.FromDate' | translate}}</label> -->
+      <label>شهر</label>
+      <input type="month" name="FromDate" class="form-control" id="FromDate" [(ngModel)]="MonthOfGoal">
+      
+      
+      <!-- <label>{{'charts.ToDate' | translate}}</label> -->
+      <label>الهدف المالي للشهر </label>
+      <input type="number"   id="MonthlyGoal"   name="MonthlyGoal"  [(ngModel)]="MonthGoal"  min="0" step="0.01" required>
+    
+       
+  
+      <select class="form-control" name="branches" class="form-control" id="branchesID" [(ngModel)]="SelectedBranchIDForMonthGoal" >
+        <option value="-1" selected>{{'charts.TotalCompany' | translate}}
+        </option>
+        <ng-container *ngFor="let branch of branchList; let i = index; trackBy: TrackedItem">
+          <option [value]="branch.id">
+            {{ branch.name }}
+          </option>
+          <!-- <ng-template #Empty>
+            <option value="0">Empty Branch</option>
+          </ng-template> -->
+        </ng-container>
+      </select>
+      <input type="submit"  class="form-control " value="حفظ">
+    </form>
+  </div>
+  
+
+</div>
+
+<br><br><br><br><br>
+
+<div class="container" dir="rtl">
+  <div *ngFor="let branch of GoalList let i = index" class="row justify-content-center mb-5">
+    <div class="col-md-10">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center fw-bold fs-5">
+          {{ branch.branchName }}
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover align-middle mb-0 text-center">
+            <thead class="table-light">
+              <tr>
+                <th>التاريخ</th>
+                <th>الهدف المالي</th>
+                <th>العمليات</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let goal of branch.goals">
+                
+                <td>{{ goal.date | date:'yyyy-MM-dd' }}</td>
+                <td>{{ goal.goal | number }}</td>
+                <td>
+                  <button class="btn btn-outline-success btn-sm me-1" title="تعديل" (click)="onUpdate(goal.id)">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="btn btn-outline-danger btn-sm" title="حذف" (click)="onDelete(goal.id)">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
