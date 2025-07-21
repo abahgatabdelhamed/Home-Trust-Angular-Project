@@ -1,19 +1,77 @@
+<div class="container" style="text-align: center;">
+  
+  <div class="row">
+    <div class="col-md-6"></div>
+  <button type="button" class="btn btn-primary" style="background-color: #143367;" data-toggle="modal" data-target="#monthlyGoalModal">
+    إضافة هدف شهري
+  </button>
+</div>
+</div>
+
+<br><br><br>
+
+<!-- Modal -->
+<div class="modal fade" id="monthlyGoalModal" tabindex="-1" role="dialog" aria-labelledby="monthlyGoalModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="monthlyGoalModalLabel">إضافة هدف شهري</h4>
+      </div>
+
+      <form (submit)="CreateMonthGoal($event)">
+        <div class="modal-body">
+
+          <label>الشهر</label>
+          <input type="month" name="FromDate" class="form-control" id="FromDate" [(ngModel)]="MonthOfGoal">
+
+          <br>
+
+          <label>الهدف المالي للشهر</label>
+          <input type="number" id="MonthlyGoal" name="MonthlyGoal" class="form-control" [(ngModel)]="MonthGoal" min="0" step="0.01" required>
+
+          <br>
+
+          <label>الفرع</label>
+          <select class="form-control" name="branches" id="branchesID" [(ngModel)]="SelectedBranchIDForMonthGoal">
+            <option value="-1" selected>{{'charts.TotalCompany' | translate}}</option>
+            <ng-container *ngFor="let branch of branchList; let i = index; ">
+              <option [value]="branch.id">
+                {{ branch.name }}
+              </option>
+            </ng-container>
+          </select>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">حفظ</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">إغلاق</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
 
 <!-- for search  -->
 
 <div class="row">
   <div class="col-md-2"></div>
-  <form action="GET" (submit)="CreateChart($event)" class="col-md-7 form">
+  <form action="GET"  class="col-md-7 form">
     <label>{{'charts.FromDate' | translate}}</label>
     <input type="date" name="FromDate" class="form-control" id="FromDate" [(ngModel)]="fromDate">
     <br>
     <label>{{'charts.ToDate' | translate}}</label>
     <input type="date" name="ToDate" class="form-control" id="ToDate" [(ngModel)]="toDate">
 
-    <select class="form-control" name="branches" class="form-control" id="branchesID" [(ngModel)]="SelectedBranchID" (change)="onBranchChange($event)">
+    <select class="form-control" name="branches" class="form-control" id="branchesID" [(ngModel)]="SelectedBranchIDForMonthGoal" (change)="onBranchChange($event)">
       <option value="-1" selected>{{'charts.TotalCompany' | translate}}
       </option>
-      <ng-container *ngFor="let branch of branchList; let i = index; trackBy: TrackedItem">
+      <ng-container *ngFor="let branch of branchList; let i = index;">
         <option [value]="branch.id">
           {{ branch.name }}
         </option>
@@ -22,21 +80,22 @@
         </ng-template> -->
       </ng-container>
     </select>
-    <input type="submit"  class="form-control " value="{{'charts.Submit' | translate}}">
   </form>
 </div>
+<br><br>
 
+<!-- 
 <div class="container">
 
   <div class="row">
     <div class="col-md-2"></div>
     <form action="POST" (submit)="CreateMonthGoal($event)" class="col-md-7 form">
-      <!-- <label>{{'charts.FromDate' | translate}}</label> -->
+      <label>{{'charts.FromDate' | translate}}</label>
       <label>شهر</label>
       <input type="month" name="FromDate" class="form-control" id="FromDate" [(ngModel)]="MonthOfGoal">
       
       
-      <!-- <label>{{'charts.ToDate' | translate}}</label> -->
+      <label>{{'charts.ToDate' | translate}}</label>
       <label>الهدف المالي للشهر </label>
       <input type="number"   id="MonthlyGoal"   name="MonthlyGoal"  [(ngModel)]="MonthGoal"  min="0" step="0.01" required>
     
@@ -49,9 +108,7 @@
           <option [value]="branch.id">
             {{ branch.name }}
           </option>
-          <!-- <ng-template #Empty>
-            <option value="0">Empty Branch</option>
-          </ng-template> -->
+       
         </ng-container>
       </select>
       <input type="submit"  class="form-control " value="حفظ">
@@ -59,46 +116,106 @@
   </div>
   
 
+</div>  -->
+
+<br><br>
+
+<div class="row " id="mainGoals"  *ngIf="monthlyGoals.length > 0">
+  <div class="col-md-2"></div>
+  <div class="col-md-7">
+    <table class="table table-bordered table-sm" dir="rtl">
+      <thead class="thead-light">
+        <tr>
+          <th>الترتيب</th>
+          <th>الفرع</th>
+          <th>التاريخ</th>
+          <th>الهدف المالي</th>
+          <th>العمليات</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let goal of monthlyGoals let i = index">
+          <td>{{ i+1 }}</td>
+          <td>
+            <!-- Check if goal.branchId is -1 -->
+            <ng-container *ngIf="goal.branchId === -1">
+              كل الفروع
+            </ng-container>
+            <ng-container *ngIf="goal.branchId !== -1">
+              {{ goal.branchName }}
+            </ng-container>
+          </td>
+          <td>{{ goal.date | date: 'MMMM yyyy' }}</td>
+          <td>{{ goal.goal | number }}</td>
+          <td>
+            <ng-container *ngIf="isFutureMonth(goal.date);else pastGoal">
+              <button class="btn btn-sm" (click)="onUpdate(goal)">
+                <i class="fas fa-edit" style="color: green;"></i>
+              </button>
+            <button class="btn btn-sm" (click)="onDelete(goal.id)">
+              <i class="fas fa-trash-alt" style="color: red;"></i>
+            </button>
+          </ng-container>
+          <ng-template #pastGoal>
+            <span class="text-muted">لا يمكن التعديل أو الحذف على هدف مالي في السابق</span>
+          </ng-template>
+        </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
-<br><br><br><br><br>
 
-<div class="container" dir="rtl">
-  <div *ngFor="let branch of GoalList let i = index" class="row justify-content-center mb-5">
-    <div class="col-md-10">
-      <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white text-center fw-bold fs-5">
-          {{ branch.branchName }}
-        </div>
 
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover align-middle mb-0 text-center">
-            <thead class="table-light">
-              <tr>
-                <th>التاريخ</th>
-                <th>الهدف المالي</th>
-                <th>العمليات</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let goal of branch.goals">
-                
-                <td>{{ goal.date | date:'yyyy-MM-dd' }}</td>
-                <td>{{ goal.goal | number }}</td>
-                <td>
-                  <button class="btn btn-outline-success btn-sm me-1" title="تعديل" (click)="onUpdate(goal.id)">
-                    <i class="fas fa-edit"></i>
-                  </button>
-                  <button class="btn btn-outline-danger btn-sm" title="حذف" (click)="onDelete(goal.id)">
-                    <i class="fas fa-trash-alt"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+<div class="row" *ngIf="hasError">
+  <div class="col-md-2"></div>
+  <div class="col-md-7">
+    <div class="alert alert-warning text-center">
+      {{ errorMessage }}
     </div>
   </div>
 </div>
 
+
+<div *ngIf="ChkEditGoal()" class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-7">
+    <h4>تعديل الهدف المالي</h4>
+    <h4>
+      <ng-container *ngIf="editGoal.branchId === -1">
+        كل الفروع
+      </ng-container>
+      <ng-container *ngIf="editGoal.branchId !== -1">
+        {{ editGoal.branchName }}
+      </ng-container>
+    </h4>
+    <form (ngSubmit)="submitUpdate()">
+
+      <div class="form-group" style="display: none;">
+        <label>رقم الهدف</label>
+        <input type="text" class="form-control" [(ngModel)]="editGoal.id" name="goalId" readonly>
+      </div>
+
+      <div class="form-group" style="display: none;">
+        <label>رقم الهدف</label>
+        <label>{{editGoal.id}}</label>
+        <input type="text" class="form-control" [(ngModel)]="editGoal.id" name="goalId" readonly>
+      </div>
+
+      <div class="form-group" style="display: none;">
+        <label>التاريخ</label>
+        <input type="month" class="form-control" [(ngModel)]="editGoal.date" name="date" readonly>
+      </div>
+
+      
+      <div class="form-group">
+        <label>الهدف المالي</label>
+        <input type="number" class="form-control" [(ngModel)]="editGoal.goal" name="goal" required>
+      </div>
+
+      <button type="submit" class="btn btn-success">تحديث</button>
+      <button type="button" class="btn btn-default" (click)="cancelUpdate()">إلغاء</button>
+    </form>
+  </div>
+</div>

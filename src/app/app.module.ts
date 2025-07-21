@@ -83,7 +83,9 @@ import { ReportsComponent } from "./components/Statistics/Reports/Reports.compon
 import { ArabicMonthPipe } from './arabic-month.pipe';
 import { MonthlyGoalServiceService } from "./services/New_Service/MonthlyGoalService.service";
 import { FinancialGoalsComponent } from "./components/Statistics/FinancialGoals/FinancialGoals.component";
-
+import { registerLocaleData } from '@angular/common';
+import localeAr from '@angular/common/locales/ar';
+import { LOCALE_ID } from '@angular/core';
 
 const BASE_MODULES = [BrowserModule, BrowserAnimationsModule, AppRoutingModule,HttpClientModule, ChartsModule ,FormsModule ];
 
@@ -151,7 +153,7 @@ const COMPONENTS = [
 ];
 
 const PIPS = [GroupByPipe];
-
+registerLocaleData(localeAr);
 @NgModule({
     imports: [
         ...BASE_MODULES,
@@ -169,6 +171,7 @@ const PIPS = [GroupByPipe];
         { provide: "BASE_URL", useFactory: getBaseUrl },
         { provide: ErrorHandler, useClass: AppErrorHandler },
         { provide: HTTP_INTERCEPTORS, useClass: RequesthandlerInterceptor, multi: true },
+        { provide: LOCALE_ID, useValue: 'ar' },
         ...SERVICES
     ],
     

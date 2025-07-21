@@ -17,3 +17,14 @@ export interface MonthlyGoalsByBranch {
   branchName: string;
   goals: Goal[];
 }
+
+
+export interface MonthlyGoal {
+  id: number;
+  branchId: number;
+  branchName: string;
+  date: string; // or use Date if you're converting it later
+  isCompany: boolean;
+  goal: number;
+}
+
