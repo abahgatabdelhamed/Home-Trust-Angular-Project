@@ -22,7 +22,6 @@ export class ChartsComponent implements OnInit {
   recommend:Recommendation[] = []
  StatisList: IStatisticsModel[];
  StatisticsModel: IStatisticsModel;
-
   Title :string = "Statistics "
   SelectedBranchID:number = -1
 
@@ -110,18 +109,19 @@ QuantityChartData = []
           const revenueChartData: ChartData = {
             labels: labels,
             datasets: [
-              { label: 'الاجمالي', data:this.StatisticsModel.revenues.map(x => x.salesRevenue), borderColor: 'red', fill: false },
-              { label: 'المرتجع', data: this.StatisticsModel.revenues.map(x => x.returnsTotal) , borderColor: 'blue', fill: false },
-              { label: 'الصافي', data: this.StatisticsModel.revenues.map(x => x.netSalesRevenue) , borderColor: '#e8b106', fill: false }
+              { label: 'الاجمالي', data:this.StatisticsModel.revenues.map(x => x.salesRevenue), borderColor: 'blue', fill: false },
+              { label: 'المرتجع', data: this.StatisticsModel.revenues.map(x => x.returnsTotal) , borderColor: 'red', fill: false },
+              { label: 'الصافي', data: this.StatisticsModel.revenues.map(x => x.netSalesRevenue) , borderColor: 'green', fill: false },
+              { label: 'الهدف المالي', data: this.StatisticsModel.monthlyGoalAmount , borderColor: 'yellow', fill: false }
             ]
           };
       
           const quantityChartData: ChartData = {
             labels: labels,
             datasets: [
-              { label: 'الاجمالي', data: this.StatisticsModel.itemsQty.map(x => x.totalSoldItems), borderColor: 'red', fill: false },
-              { label: 'المرتجع', data: this.StatisticsModel.itemsQty.map(x => x.totalReturnedItems), borderColor: 'blue', fill: false },
-              { label: 'الصافي', data: this.StatisticsModel.itemsQty.map(x => x.netTotalSoldItems), borderColor: '#e8b106', fill: false }
+              { label: 'الاجمالي', data: this.StatisticsModel.itemsQty.map(x => x.totalSoldItems), borderColor: 'blue', fill: false },
+              { label: 'المرتجع', data: this.StatisticsModel.itemsQty.map(x => x.totalReturnedItems), borderColor: 'red', fill: false },
+              { label: 'الصافي', data: this.StatisticsModel.itemsQty.map(x => x.netTotalSoldItems), borderColor: 'green', fill: false }
             ]
           };
       
@@ -223,7 +223,8 @@ QuantityChartData = []
             datasets: [
               { label: 'الاجمالي', data:this.StatisticsModel.revenues.map(x => x.salesRevenue), borderColor: 'blue', fill: false },
               { label: 'المرتجع', data: this.StatisticsModel.revenues.map(x => x.returnsTotal) , borderColor: 'red', fill: false },
-              { label: 'الصافي', data: this.StatisticsModel.revenues.map(x => x.netSalesRevenue) , borderColor: 'green', fill: false }
+              { label: 'الصافي', data: this.StatisticsModel.revenues.map(x => x.netSalesRevenue) , borderColor: 'green', fill: false },
+              { label: 'الهدف المالي', data: this.StatisticsModel.monthlyGoalAmount , borderColor: 'yellow', fill: false }
             ]
           };
       

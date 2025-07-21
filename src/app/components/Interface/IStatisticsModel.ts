@@ -10,6 +10,7 @@ export interface IStatisticsModel {
     topServices: TopServiceModel[];
     topItemFeatures: TopItemFeatureModel[];
     topSoldTogether: TopSoldTogetherModel[];
+    monthlyGoalAmount:number
   }
   
   export interface RevenueModel {
